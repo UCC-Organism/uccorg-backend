@@ -1,0 +1,16 @@
+{
+  "name": "uccorg-backend",
+  "version": "0.0.0",
+  "author": "Rasmus Erik Voel Jensen",
+  "description": "Backend for the UCC-organism",
+  "dependencies": {
+    "faye": "*",
+    "express": "*"
+  },
+  "scripts": {
+    "test": "jshint uccorg-backend.js && node uccorg-backend.js test"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
