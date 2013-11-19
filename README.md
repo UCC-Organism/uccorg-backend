@@ -7,4 +7,4 @@ Backend for processing the nightly data dump and pushing it to the frontend
 
 ----
 
-Code transfer in progress (code for development prototype is running in another environment and needs some refactoring before coming here).
+Code transfer in progress, and therefore currently defunct (code for development prototype is running in another environment and needs some refactoring before coming here).

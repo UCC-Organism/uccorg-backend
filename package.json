@@ -4,11 +4,12 @@
   "author": "Rasmus Erik Voel Jensen",
   "description": "Backend for the UCC-organism",
   "dependencies": {
+    "jshint": "*",
     "faye": "*",
     "express": "*"
   },
   "scripts": {
-    "test": "jshint uccorg-backend.js && node uccorg-backend.js test"
+    "test": "./node_modules/jshint/bin/jshint uccorg-backend.js && node uccorg-backend.js test"
   },
   "engines": {
     "node": "*"
