@@ -5,6 +5,7 @@
   "description": "Backend for the UCC-organism",
   "dependencies": {
     "jshint": "*",
+    "request": "*",
     "faye": "*",
     "express": "*"
   },

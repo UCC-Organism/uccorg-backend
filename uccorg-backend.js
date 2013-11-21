@@ -1,4 +1,67 @@
 /*jshint sub:true*/
+
+//{{{1 util
+// memoiseAsync
+memoiseAsync = function(fn) {
+  var cache;
+  cache = {};
+  return function() {
+    var callback;
+    var argsKey;
+    var args;
+    args = arraycopy(arguments);
+    argsKey = String(args.slice(- 1));
+    callback = args[args.length - 1];
+    if(cache[argsKey] !== undefined) {
+      callback(null, cache[argsKey]);
+    } else if(true) {
+      args[args.length - 1] = function(err, result) {
+        if(!err) {
+          cache[argsKey] = result;
+        };
+        callback(err, result);
+      };
+      fn.apply(this, args);
+    };
+  };
+};
+// `arraycopy`
+// Sometimes we need to create a new array, from something arraylike. Especially for turning `arguments` into a real array.
+arraycopy = function(arr) {
+return Array.prototype.slice.call(arr, 0);
+};
+// loadfile {{{3
+loadfile = function(filename, callback) {
+  require("fs").readFile(__dirname + "/" + filename, "utf8", callback);
+};
+// loadCacheFile
+loadCacheFile = memoiseAsync(loadfile);
+
+//{{{3 asyncSeqMap
+asyncSeqMap = function(arr, fn, cb) {
+  var handleEntry;
+  var acc;
+  var i;
+  i = 0;
+  acc = [];
+  handleEntry = function() {
+    if(i >= arr.length) {
+      cb(undefined, acc);
+    } else if(true) {
+      fn(arr[i], function(err, data) {
+        acc.push(data);
+        if(err) {
+          cb(err, acc);
+        } else if(true) {
+          i = i + 1;
+          handleEntry();
+        };
+      });
+    };
+  };
+  handleEntry();
+};
+
 //{{{1 server
 express = require("express");
 server = express();
@@ -8,7 +71,8 @@ server.use(function(req, res, next) {
     res.removeHeader("X-Powered-By");
     next();
 });
-//{{{1 uccorg
+
+//{{{2 uccorg
 //{{{3 notes
 //
 // TODO:
@@ -74,7 +138,7 @@ getWebuntisData = memoiseAsync(function(processData) {
     //{{{4 `webuntis` api call
     untisCall = 0;
     webuntis = function(name, cb) {
-        loadCacheFile("/../apikey.webuntis", function(err, apikey) {
+        loadCacheFile("apikey.webuntis", function(err, apikey) {
             var url;
             apikey = apikey.trim();
             if (err) {
@@ -82,7 +146,7 @@ getWebuntisData = memoiseAsync(function(processData) {
             }
             console.log("webuntis", name, untisCall = untisCall + 1);
             url = "https://api.webuntis.dk/api/" + name + "?api_key=" + apikey;
-            urlGet(url, function(err, result, content) {
+            require("request")(url, function(err, result, content) {
                 if (err) {
                     return cb(err);
                 }
@@ -141,13 +205,13 @@ getWebuntisData = memoiseAsync(function(processData) {
         });
     };
     //{{{4 try load cached data from file, or otherwise call createData, and cache it
-    loadCacheFile("/../webuntisdata", function(err, data) {
+    loadCacheFile("webuntisdata", function(err, data) {
         if (err) {
             createData(function(err, data) {
                 if (err) {
                     return processData(err, data);
                 }
-                savefile("/../webuntisdata", JSON.stringify(data, null, 4), function() {
+                savefile("webuntisdata", JSON.stringify(data, null, 4), function() {
                     processData(err, data);
                 });
             });
@@ -164,16 +228,6 @@ uccorgDashboard = function(app) {
     app.done(html);
 };
 //{{{3 route uccorg
-route("uccorg", function(app) {
-    var path;
-    path = app.args[1];
-    if (isBrowser) {
-        if (path === "dashboard") {
-            return uccorgDashboard(app);
-        } else if (true) {
-            return app.done();
-        }
-    }
     getWebuntisData(function(err, webuntis) {
         var html;
         var act;
@@ -365,4 +419,3 @@ route("uccorg", function(app) {
             app.done(html);
         }
     });
-});
