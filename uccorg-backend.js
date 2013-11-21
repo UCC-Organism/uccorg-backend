@@ -18,11 +18,11 @@ memoiseAsync = function(fn) {
       args[args.length - 1] = function(err, result) {
         if(!err) {
           cache[argsKey] = result;
-        };
+        }
         callback(err, result);
       };
       fn.apply(this, args);
-    };
+    }
   };
 };
 // foreach {{{3
@@ -68,9 +68,9 @@ asyncSeqMap = function(arr, fn, cb) {
         } else if(true) {
           i = i + 1;
           handleEntry();
-        };
+        }
       });
-    };
+    }
   };
   handleEntry();
 };
@@ -370,7 +370,9 @@ uccorgDashboard = function(app) {
             return result;
         };
         //{{{4 activities
-        if (app.args[1] === "activities") {
+        if(true) {
+          //do nothing, - we are not in an app environment
+        } else if (app.args[1] === "activities") {
             when = (app.args[2] ? (new Date(app.args[2])) : new Date()).toJSON();
             day = when.slice(0, 10);
             console.log(day, Object.keys(webuntis["lessons"]), webuntis["lessons"][day]);
