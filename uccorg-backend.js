@@ -25,7 +25,14 @@ memoiseAsync = function(fn) {
     };
   };
 };
-// `arraycopy`
+// foreach {{{3
+foreach = function(obj, fn) {
+  Object.keys(obj).forEach(function(key) {
+    fn(key, obj[key]);
+  });
+};
+
+// `arraycopy` {{{3
 // Sometimes we need to create a new array, from something arraylike. Especially for turning `arguments` into a real array.
 arraycopy = function(arr) {
 return Array.prototype.slice.call(arr, 0);
@@ -34,6 +41,12 @@ return Array.prototype.slice.call(arr, 0);
 loadfile = function(filename, callback) {
   require("fs").readFile(__dirname + "/" + filename, "utf8", callback);
 };
+
+// savefile {{{3
+savefile = function(filename, content, callback) {
+  require("fs").writeFile(__dirname  + "/" + filename, content, callback);
+};
+
 // loadCacheFile
 loadCacheFile = memoiseAsync(loadfile);
 
