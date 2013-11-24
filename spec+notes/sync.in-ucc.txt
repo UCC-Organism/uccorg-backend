@@ -1,0 +1,157 @@
+Schema based of http://25.media.tumblr.com/9664bda992a5cc587df7f56a5dc544c9/tumblr_mm2isevShi1spd0c0o1_1280.png
+https://docs.google.com/spreadsheet/ccc?key=0AtUqJ5IIwHicdGRENjM5QnJlYmx6dXp0ekxJcW1XZlE#gid=15
+
+events
+
+start activity : activity id, location id
+end activity: activity id, location id
+
+start state
+end state
+
+train: 
+payment: {}
+
+/activity/id/students
+
+[
+    student : {
+    id:,
+    gender:
+    longevity: "",
+    programme: ""    
+    activity: {
+    previous: 
+    current: 
+    next:
+        }
+    }
+]   
+
+/activity/id
+
+{
+    locationid: ""?
+    type: "",
+    subject: "",
+    period: {
+                start: "",
+                end: "",
+                duration: "",
+                },
+ }
+ 
+ /activity/id/teacher
+ 
+[
+    teacher : {
+    id:,
+    gender:
+    longevity: "",
+    programme: ""    
+    activity: {
+    previous: 
+    current: 
+    next:
+        }
+    }
+]   
+
+/location/id
+
+acitvites:[
+    current: id
+    schedule: [ { id:sdaf, time:234 } ]
+]
+
+current: {
+            programme,
+            subject,
+            period: {
+                start: "",
+                end: ""
+                },
+            students: [
+                {
+                    id:,
+                    gender:
+                    longevity: "",
+                    programme: ""
+                }
+            ],
+             
+         }
+
+/state
+
+{
+    current: [cleaning, party],
+    today: [normal,exam,holiday,party,graduation,end start term ]
+}
+
+
+/todaystate
+
+
+returns list of locations
+
+/location/id
+
+returns single location
+
+/location
+
+location : {
+    id: "",
+    building: "",
+    floor: "",
+    activity: {
+        current: {
+            programme,
+            subject,
+            period: {
+                start: "",
+                end: ""
+                },
+            students: [
+                {
+                    id:,
+                    gender:
+                    longevity: "",
+                    programme: ""
+                }
+            ],
+             teacher:            {
+                    id:,
+                    gender:
+                    longevity: "",
+                    department: ""
+                }
+         },
+         next : {
+             }
+        }
+    ]
+}
+
+{
+    
+}
+location/activity/current
+
+list of of current activites for all rooms
+
+/activity/next
+
+list of of next activites for all rooms
+
+location/id/activity/current
+
+list of of current activites for room
+
+/activity/next
+
+activity: {
+    id:
+ }
+

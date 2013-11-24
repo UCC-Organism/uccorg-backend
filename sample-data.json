@@ -1,0 +1,3077 @@
+{
+    "activities": [
+        {
+            "id": 191,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                23
+            ],
+            "locations": [
+                "A.101"
+            ],
+            "subject": "Studiemetodik",
+            "groups": [
+                2
+            ]
+        },
+        {
+            "id": 192,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                23
+            ],
+            "locations": [
+                "A.101"
+            ],
+            "subject": "Studiemetodik",
+            "groups": [
+                2
+            ]
+        },
+        {
+            "id": 265,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                35
+            ],
+            "locations": [
+                "C.224"
+            ],
+            "subject": "Ana/fys og biokemi",
+            "groups": [
+                2
+            ]
+        },
+        {
+            "id": 266,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                35
+            ],
+            "locations": [
+                "C.224"
+            ],
+            "subject": "Ana/fys og biokemi",
+            "groups": [
+                2
+            ]
+        },
+        {
+            "id": 267,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                35
+            ],
+            "locations": [
+                "C.224"
+            ],
+            "subject": "Ana/fys og biokemi",
+            "groups": [
+                2
+            ]
+        },
+        {
+            "id": 450,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                22
+            ],
+            "locations": [
+                "C.206"
+            ],
+            "subject": "Ana/fys og genetik",
+            "groups": [
+                8
+            ]
+        },
+        {
+            "id": 451,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                22
+            ],
+            "locations": [
+                "C.206"
+            ],
+            "subject": "Ana/fys og genetik",
+            "groups": [
+                8
+            ]
+        },
+        {
+            "id": 452,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                22
+            ],
+            "locations": [
+                "C.206"
+            ],
+            "subject": "Ana/fys og genetik",
+            "groups": [
+                8
+            ]
+        },
+        {
+            "id": 680,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 681,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 682,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 683,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 684,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 685,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 686,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 687,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 688,
+            "start": "2013-09-20T13:50:00",
+            "end": "2013-09-20T14:45:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 689,
+            "start": "2013-09-20T14:45:00",
+            "end": "2013-09-20T15:30:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                18
+            ]
+        },
+        {
+            "id": 4189,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                27
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Filosofi",
+            "groups": [
+                23
+            ]
+        },
+        {
+            "id": 4190,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                27
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Filosofi",
+            "groups": [
+                23
+            ]
+        },
+        {
+            "id": 4191,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                27
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Filosofi",
+            "groups": [
+                23
+            ]
+        },
+        {
+            "id": 4231,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                26
+            ],
+            "locations": [
+                "Ude af huset"
+            ],
+            "subject": "Museum - info fra UV",
+            "groups": [
+                23
+            ]
+        },
+        {
+            "id": 4232,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                26
+            ],
+            "locations": [
+                "Ude af huset"
+            ],
+            "subject": "Museum - info fra UV",
+            "groups": [
+                23
+            ]
+        },
+        {
+            "id": 4530,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                18
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Ledelsens time",
+            "groups": [
+                23
+            ]
+        },
+        {
+            "id": 4902,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                32
+            ],
+            "locations": [
+                "C.201"
+            ],
+            "subject": "Guided egen beslutn.",
+            "groups": [
+                28
+            ]
+        },
+        {
+            "id": 4903,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                32
+            ],
+            "locations": [
+                "C.201"
+            ],
+            "subject": "Guided egen beslutn.",
+            "groups": [
+                28
+            ]
+        },
+        {
+            "id": 4904,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                32
+            ],
+            "locations": [
+                "C.201"
+            ],
+            "subject": "Guided egen beslutn.",
+            "groups": [
+                28
+            ]
+        },
+        {
+            "id": 4905,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                32
+            ],
+            "locations": [
+                "C.201"
+            ],
+            "subject": "Guided egen beslutn.",
+            "groups": [
+                28
+            ]
+        },
+        {
+            "id": 5093,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5094,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5095,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5096,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5097,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5098,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5099,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5100,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5101,
+            "start": "2013-09-20T13:50:00",
+            "end": "2013-09-20T14:45:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5102,
+            "start": "2013-09-20T14:45:00",
+            "end": "2013-09-20T15:30:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Kliniske studier",
+            "groups": [
+                29
+            ]
+        },
+        {
+            "id": 5779,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                12
+            ],
+            "locations": [
+                "Bevægelse B.001"
+            ],
+            "subject": "Samundervisning M1 &",
+            "groups": [
+                33,
+                41
+            ]
+        },
+        {
+            "id": 5780,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                12
+            ],
+            "locations": [
+                "Bevægelse B.001"
+            ],
+            "subject": "Samundervisning M1 &",
+            "groups": [
+                33,
+                41
+            ]
+        },
+        {
+            "id": 5781,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                12
+            ],
+            "locations": [
+                "Bevægelse B.001"
+            ],
+            "subject": "Samundervisning M1 &",
+            "groups": [
+                33,
+                41
+            ]
+        },
+        {
+            "id": 5833,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                13
+            ],
+            "locations": [
+                "Bevægelse B.001"
+            ],
+            "subject": "Basisøvelser",
+            "groups": [
+                33
+            ]
+        },
+        {
+            "id": 5834,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                13
+            ],
+            "locations": [
+                "Bevægelse B.001"
+            ],
+            "subject": "Basisøvelser",
+            "groups": [
+                33
+            ]
+        },
+        {
+            "id": 5835,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                13
+            ],
+            "locations": [
+                "Bevægelse B.001"
+            ],
+            "subject": "Basisøvelser",
+            "groups": [
+                33
+            ]
+        },
+        {
+            "id": 6409,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                5
+            ],
+            "locations": [
+                "Behandlingsrum C.033"
+            ],
+            "subject": "Samundervisning M1 &",
+            "groups": [
+                41
+            ]
+        },
+        {
+            "id": 6410,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                5
+            ],
+            "locations": [
+                "Behandlingsrum C.033"
+            ],
+            "subject": "Samundervisning M1 &",
+            "groups": [
+                41
+            ]
+        },
+        {
+            "id": 6411,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                5
+            ],
+            "locations": [
+                "Behandlingsrum C.033"
+            ],
+            "subject": "Samundervisning M1 &",
+            "groups": [
+                41
+            ]
+        },
+        {
+            "id": 6841,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                13
+            ],
+            "locations": [
+                "C.123"
+            ],
+            "subject": "Supervisionsgrupper",
+            "groups": [
+                39
+            ]
+        },
+        {
+            "id": 6842,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                13
+            ],
+            "locations": [
+                "C.123"
+            ],
+            "subject": "Supervisionsgrupper",
+            "groups": [
+                39
+            ]
+        },
+        {
+            "id": 6843,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                13
+            ],
+            "locations": [
+                "C.123"
+            ],
+            "subject": "Supervisionsgrupper",
+            "groups": [
+                39
+            ]
+        },
+        {
+            "id": 6986,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                5
+            ],
+            "locations": [
+                "A.101"
+            ],
+            "subject": "Supervisionsgrupper",
+            "groups": [
+                41
+            ]
+        },
+        {
+            "id": 6987,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                5
+            ],
+            "locations": [
+                "A.101"
+            ],
+            "subject": "Supervisionsgrupper",
+            "groups": [
+                41
+            ]
+        },
+        {
+            "id": 6988,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                5
+            ],
+            "locations": [
+                "A.101"
+            ],
+            "subject": "Supervisionsgrupper",
+            "groups": [
+                41
+            ]
+        },
+        {
+            "id": 7483,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                14
+            ],
+            "locations": [
+                "C.117"
+            ],
+            "subject": "Livshistorie",
+            "groups": [
+                35
+            ]
+        },
+        {
+            "id": 7484,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                14
+            ],
+            "locations": [
+                "C.117"
+            ],
+            "subject": "Livshistorie",
+            "groups": [
+                35
+            ]
+        },
+        {
+            "id": 7485,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                14
+            ],
+            "locations": [
+                "C.117"
+            ],
+            "subject": "Livshistorie",
+            "groups": [
+                35
+            ]
+        },
+        {
+            "id": 7806,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                113
+            ],
+            "locations": [
+                "B.101"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7807,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                113
+            ],
+            "locations": [
+                "B.101"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7808,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                113
+            ],
+            "locations": [
+                "B.101"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7809,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                113
+            ],
+            "locations": [
+                "B.101"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7814,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                41
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7815,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                41
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7816,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                41
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7817,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [
+                41
+            ],
+            "locations": [
+                "A.103"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7824,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                19
+            ],
+            "locations": [
+                "C.226"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7825,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                19
+            ],
+            "locations": [
+                "C.226"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 7826,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [
+                19
+            ],
+            "locations": [
+                "C.226"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 8107,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                103
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                62
+            ]
+        },
+        {
+            "id": 8108,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                103
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                62
+            ]
+        },
+        {
+            "id": 8109,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                103
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                62
+            ]
+        },
+        {
+            "id": 8110,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                103
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                62
+            ]
+        },
+        {
+            "id": 8501,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                82
+            ],
+            "locations": [
+                "C.106"
+            ],
+            "subject": "DKK",
+            "groups": [
+                66
+            ]
+        },
+        {
+            "id": 8502,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                82
+            ],
+            "locations": [
+                "C.106"
+            ],
+            "subject": "DKK",
+            "groups": [
+                66
+            ]
+        },
+        {
+            "id": 8503,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                82
+            ],
+            "locations": [
+                "C.106"
+            ],
+            "subject": "DKK",
+            "groups": [
+                66
+            ]
+        },
+        {
+            "id": 8504,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                82
+            ],
+            "locations": [
+                "C.106"
+            ],
+            "subject": "DKK",
+            "groups": [
+                66
+            ]
+        },
+        {
+            "id": 8610,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                100
+            ],
+            "locations": [
+                "C.107"
+            ],
+            "subject": "IIS",
+            "groups": [
+                70
+            ]
+        },
+        {
+            "id": 8611,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                100
+            ],
+            "locations": [
+                "C.107"
+            ],
+            "subject": "IIS",
+            "groups": [
+                70
+            ]
+        },
+        {
+            "id": 8612,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                100
+            ],
+            "locations": [
+                "C.107"
+            ],
+            "subject": "IIS",
+            "groups": [
+                70
+            ]
+        },
+        {
+            "id": 8613,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [
+                100
+            ],
+            "locations": [
+                "C.107"
+            ],
+            "subject": "IIS",
+            "groups": [
+                70
+            ]
+        },
+        {
+            "id": 9307,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                115
+            ],
+            "locations": [
+                "C.230"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                84
+            ]
+        },
+        {
+            "id": 9308,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                115
+            ],
+            "locations": [
+                "C.230"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                84
+            ]
+        },
+        {
+            "id": 9309,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                115
+            ],
+            "locations": [
+                "C.230"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                84
+            ]
+        },
+        {
+            "id": 9310,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                115
+            ],
+            "locations": [
+                "C.230"
+            ],
+            "subject": "PÆD",
+            "groups": [
+                84
+            ]
+        },
+        {
+            "id": 9452,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                129
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "IIS",
+            "groups": [
+                85
+            ]
+        },
+        {
+            "id": 9453,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                129
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "IIS",
+            "groups": [
+                85
+            ]
+        },
+        {
+            "id": 9454,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                129
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "IIS",
+            "groups": [
+                85
+            ]
+        },
+        {
+            "id": 9455,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [
+                129
+            ],
+            "locations": [
+                "C.101"
+            ],
+            "subject": "IIS",
+            "groups": [
+                85
+            ]
+        },
+        {
+            "id": 10577,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10578,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10579,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10580,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10581,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10582,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10583,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10584,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10585,
+            "start": "2013-09-20T13:50:00",
+            "end": "2013-09-20T14:45:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10586,
+            "start": "2013-09-20T14:45:00",
+            "end": "2013-09-20T15:30:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 10587,
+            "start": "2013-09-20T15:30:00",
+            "end": "2013-09-20T18:15:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Opgaveskriv. og vejl",
+            "groups": [
+                100,
+                101,
+                102
+            ]
+        },
+        {
+            "id": 14110,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [
+                "C.116"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                67
+            ]
+        },
+        {
+            "id": 14111,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [
+                "C.116"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                67
+            ]
+        },
+        {
+            "id": 14112,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [],
+            "locations": [
+                "C.116"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                67
+            ]
+        },
+        {
+            "id": 14113,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [],
+            "locations": [
+                "C.116"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                67
+            ]
+        },
+        {
+            "id": 18045,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "S-Studiegrupper",
+            "groups": [
+                63,
+                86
+            ]
+        },
+        {
+            "id": 18229,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                95
+            ],
+            "locations": [
+                "Auditorium"
+            ],
+            "subject": "S-Forældresamtaler o",
+            "groups": [
+                63,
+                86
+            ]
+        },
+        {
+            "id": 18230,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                95
+            ],
+            "locations": [
+                "Auditorium"
+            ],
+            "subject": "S-Forældresamtaler o",
+            "groups": [
+                63,
+                86
+            ]
+        },
+        {
+            "id": 18231,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                95
+            ],
+            "locations": [
+                "Auditorium"
+            ],
+            "subject": "S-Forældresamtaler o",
+            "groups": [
+                63,
+                86
+            ]
+        },
+        {
+            "id": 18232,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                95
+            ],
+            "locations": [
+                "Auditorium"
+            ],
+            "subject": "S-Forældresamtaler o",
+            "groups": [
+                63,
+                86
+            ]
+        },
+        {
+            "id": 18305,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [
+                "C.208"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                61
+            ]
+        },
+        {
+            "id": 18306,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [
+                "C.208"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                61
+            ]
+        },
+        {
+            "id": 18307,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [],
+            "locations": [
+                "C.208"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                61
+            ]
+        },
+        {
+            "id": 18308,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [],
+            "locations": [
+                "C.208"
+            ],
+            "subject": "Undervisning",
+            "groups": [
+                61
+            ]
+        },
+        {
+            "id": 19440,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                69
+            ],
+            "locations": [
+                "Brikserum C.129",
+                "SIM Lab C.220",
+                "Learning Lab C.216"
+            ],
+            "subject": "Førstehjælp",
+            "groups": [
+                46
+            ]
+        },
+        {
+            "id": 19441,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                69
+            ],
+            "locations": [
+                "Brikserum C.129",
+                "SIM Lab C.220",
+                "Learning Lab C.216"
+            ],
+            "subject": "Førstehjælp",
+            "groups": [
+                46
+            ]
+        },
+        {
+            "id": 19442,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                69
+            ],
+            "locations": [
+                "Brikserum C.129",
+                "SIM Lab C.220",
+                "Learning Lab C.216"
+            ],
+            "subject": "Førstehjælp",
+            "groups": [
+                46
+            ]
+        },
+        {
+            "id": 19443,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                69
+            ],
+            "locations": [
+                "Brikserum C.129",
+                "SIM Lab C.220",
+                "Learning Lab C.216"
+            ],
+            "subject": "Førstehjælp",
+            "groups": [
+                46
+            ]
+        },
+        {
+            "id": 19444,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                69
+            ],
+            "locations": [
+                "Brikserum C.129",
+                "SIM Lab C.220",
+                "Learning Lab C.216"
+            ],
+            "subject": "Førstehjælp",
+            "groups": [
+                46
+            ]
+        },
+        {
+            "id": 19445,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                69
+            ],
+            "locations": [
+                "Brikserum C.129",
+                "SIM Lab C.220",
+                "Learning Lab C.216"
+            ],
+            "subject": "Førstehjælp",
+            "groups": [
+                46
+            ]
+        },
+        {
+            "id": 19446,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [
+                69
+            ],
+            "locations": [
+                "Brikserum C.129",
+                "SIM Lab C.220",
+                "Learning Lab C.216"
+            ],
+            "subject": "Førstehjælp",
+            "groups": [
+                46
+            ]
+        },
+        {
+            "id": 19859,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Se særskilt skema",
+            "groups": [
+                50
+            ]
+        },
+        {
+            "id": 20074,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                6
+            ],
+            "locations": [
+                "Bevægelse 2"
+            ],
+            "subject": "Træning og bevægelse",
+            "groups": [
+                52
+            ]
+        },
+        {
+            "id": 20075,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                6
+            ],
+            "locations": [
+                "Bevægelse 2"
+            ],
+            "subject": "Træning og bevægelse",
+            "groups": [
+                52
+            ]
+        },
+        {
+            "id": 20076,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                6
+            ],
+            "locations": [
+                "Bevægelse 2"
+            ],
+            "subject": "Træning og bevægelse",
+            "groups": [
+                52
+            ]
+        },
+        {
+            "id": 20077,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                6
+            ],
+            "locations": [
+                "Bevægelse 2"
+            ],
+            "subject": "Træning og bevægelse",
+            "groups": [
+                52
+            ]
+        },
+        {
+            "id": 21002,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "S-Studiegrupper",
+            "groups": [
+                63,
+                86
+            ]
+        },
+        {
+            "id": 21270,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                72
+            ],
+            "locations": [
+                "C.108"
+            ],
+            "subject": "Målemet. test og val",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 21271,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                72
+            ],
+            "locations": [
+                "C.108"
+            ],
+            "subject": "Målemet. test og val",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 21272,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [
+                72
+            ],
+            "locations": [
+                "C.108"
+            ],
+            "subject": "Målemet. test og val",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 21463,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                4
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 21464,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                4
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 21465,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                4
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 22845,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                19
+            ],
+            "locations": [
+                "C.226"
+            ],
+            "subject": "Interventionsstudie",
+            "groups": [
+                22
+            ]
+        },
+        {
+            "id": 22846,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                19
+            ],
+            "locations": [
+                "C.226"
+            ],
+            "subject": "Interventionsstudie",
+            "groups": [
+                22
+            ]
+        },
+        {
+            "id": 22847,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                19
+            ],
+            "locations": [
+                "C.226"
+            ],
+            "subject": "Interventionsstudie",
+            "groups": [
+                22
+            ]
+        },
+        {
+            "id": 22863,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                126
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                52
+            ]
+        },
+        {
+            "id": 22864,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                126
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                52
+            ]
+        },
+        {
+            "id": 22865,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [
+                126
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                52
+            ]
+        },
+        {
+            "id": 23064,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23065,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23066,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23067,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23068,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23069,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23070,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23071,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23072,
+            "start": "2013-09-20T13:50:00",
+            "end": "2013-09-20T14:45:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23073,
+            "start": "2013-09-20T14:45:00",
+            "end": "2013-09-20T15:30:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Klinisk undervisning",
+            "groups": [
+                54
+            ]
+        },
+        {
+            "id": 23422,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                56
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                48
+            ]
+        },
+        {
+            "id": 23423,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                56
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                48
+            ]
+        },
+        {
+            "id": 23424,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                56
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                48
+            ]
+        },
+        {
+            "id": 23425,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                6
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                48
+            ]
+        },
+        {
+            "id": 23426,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                6
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                48
+            ]
+        },
+        {
+            "id": 23427,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                6
+            ],
+            "locations": [
+                "A.124"
+            ],
+            "subject": "Fysioterapi T&M",
+            "groups": [
+                48
+            ]
+        },
+        {
+            "id": 23515,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                131
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23516,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                131
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23517,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                131
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23518,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                131
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23519,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                47
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23520,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                47
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23521,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                47
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23522,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                47
+            ],
+            "locations": [
+                "Brikserum C.125"
+            ],
+            "subject": "Konceptdag",
+            "groups": [
+                56
+            ]
+        },
+        {
+            "id": 23730,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                2
+            ],
+            "locations": [
+                "C.108"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 23731,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                2
+            ],
+            "locations": [
+                "C.108"
+            ],
+            "subject": "Modul 5 undervisning",
+            "groups": [
+                123
+            ]
+        },
+        {
+            "id": 24009,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                7
+            ],
+            "locations": [
+                "A.102"
+            ],
+            "subject": "Praktikundervisning",
+            "groups": [
+                43
+            ]
+        },
+        {
+            "id": 24010,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                7
+            ],
+            "locations": [
+                "A.102"
+            ],
+            "subject": "Praktikundervisning",
+            "groups": [
+                43
+            ]
+        },
+        {
+            "id": 24011,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                7
+            ],
+            "locations": [
+                "A.102"
+            ],
+            "subject": "Praktikundervisning",
+            "groups": [
+                43
+            ]
+        },
+        {
+            "id": 24653,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                16
+            ],
+            "locations": [
+                "C.117"
+            ],
+            "subject": "Somatisk sygdomslære",
+            "groups": [
+                39
+            ]
+        },
+        {
+            "id": 24654,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                16
+            ],
+            "locations": [
+                "C.117"
+            ],
+            "subject": "Somatisk sygdomslære",
+            "groups": [
+                39
+            ]
+        },
+        {
+            "id": 24655,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                16
+            ],
+            "locations": [
+                "C.117"
+            ],
+            "subject": "Somatisk sygdomslære",
+            "groups": [
+                39
+            ]
+        },
+        {
+            "id": 24679,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [
+                76
+            ],
+            "locations": [
+                "A.004"
+            ],
+            "subject": "DKK",
+            "groups": [
+                109
+            ]
+        },
+        {
+            "id": 24680,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [
+                76
+            ],
+            "locations": [
+                "A.004"
+            ],
+            "subject": "DKK",
+            "groups": [
+                109
+            ]
+        },
+        {
+            "id": 24681,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [
+                76
+            ],
+            "locations": [
+                "A.004"
+            ],
+            "subject": "DKK",
+            "groups": [
+                109
+            ]
+        },
+        {
+            "id": 24682,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [
+                76
+            ],
+            "locations": [
+                "A.004"
+            ],
+            "subject": "DKK",
+            "groups": [
+                109
+            ]
+        },
+        {
+            "id": 24683,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                76
+            ],
+            "locations": [
+                "A.004"
+            ],
+            "subject": "DKK",
+            "groups": [
+                109
+            ]
+        },
+        {
+            "id": 24833,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                10
+            ],
+            "locations": [
+                "C.116"
+            ],
+            "subject": "Ledelsens time",
+            "groups": [
+                35
+            ]
+        },
+        {
+            "id": 25360,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Vejl. efter aftale",
+            "groups": [
+                107
+            ]
+        },
+        {
+            "id": 25365,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Vejl. efter aftale",
+            "groups": [
+                108
+            ]
+        },
+        {
+            "id": 25371,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Vejl. efter aftale",
+            "groups": [
+                109
+            ]
+        },
+        {
+            "id": 25377,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Vejl. efter aftale",
+            "groups": [
+                110
+            ]
+        },
+        {
+            "id": 25406,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Vejl. efter aftale",
+            "groups": [
+                118,
+                119
+            ]
+        },
+        {
+            "id": 25455,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Vejl. efter aftale",
+            "groups": [
+                119
+            ]
+        },
+        {
+            "id": 25833,
+            "start": "2013-09-20T06:30:00",
+            "end": "2013-09-20T07:25:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25834,
+            "start": "2013-09-20T07:25:00",
+            "end": "2013-09-20T08:20:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25835,
+            "start": "2013-09-20T08:20:00",
+            "end": "2013-09-20T09:15:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25836,
+            "start": "2013-09-20T09:15:00",
+            "end": "2013-09-20T10:10:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25837,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25838,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25839,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25840,
+            "start": "2013-09-20T12:55:00",
+            "end": "2013-09-20T13:50:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25841,
+            "start": "2013-09-20T13:50:00",
+            "end": "2013-09-20T14:45:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 25842,
+            "start": "2013-09-20T14:45:00",
+            "end": "2013-09-20T15:30:00",
+            "teachers": [],
+            "locations": [],
+            "subject": "Studiedag",
+            "groups": [
+                1
+            ]
+        },
+        {
+            "id": 30011,
+            "start": "2013-09-20T10:10:00",
+            "end": "2013-09-20T11:05:00",
+            "teachers": [
+                27
+            ],
+            "locations": [
+                "C.208"
+            ],
+            "subject": "Filosofi",
+            "groups": [
+                22
+            ]
+        },
+        {
+            "id": 30012,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                27
+            ],
+            "locations": [
+                "C.208"
+            ],
+            "subject": "Filosofi",
+            "groups": [
+                22
+            ]
+        },
+        {
+            "id": 30013,
+            "start": "2013-09-20T12:00:00",
+            "end": "2013-09-20T12:55:00",
+            "teachers": [
+                27
+            ],
+            "locations": [
+                "C.208"
+            ],
+            "subject": "Filosofi",
+            "groups": [
+                22
+            ]
+        },
+        {
+            "id": 30114,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                82
+            ],
+            "locations": [
+                "A.004"
+            ],
+            "subject": "Evaluering af forløb",
+            "groups": [
+                109
+            ]
+        },
+        {
+            "id": 30115,
+            "start": "2013-09-20T11:05:00",
+            "end": "2013-09-20T12:00:00",
+            "teachers": [
+                76
+            ],
+            "locations": [
+                "A.004"
+            ],
+            "subject": "Evaluering af forløb",
+            "groups": [
+                109
+            ]
+        }
+    ],
+    "groups": [
+        {
+            "id": "1",
+            "group": "SPL M1 - E13 A",
+            "programme": "SPL"
+        },
+        {
+            "id": "2",
+            "group": "SPL M1 - E13 B",
+            "programme": "SPL"
+        },
+        {
+            "id": "8",
+            "group": "SPL M 3.1 - F13 B",
+            "programme": "SPL"
+        },
+        {
+            "id": "18",
+            "group": "SPL M6.1 - F12 B",
+            "programme": "SPL"
+        },
+        {
+            "id": "22",
+            "group": "SPL M9 - E11 A",
+            "programme": "SPL"
+        },
+        {
+            "id": "23",
+            "group": "SPL M9 - E11 B",
+            "programme": "SPL"
+        },
+        {
+            "id": "28",
+            "group": "SPL M13 - Akut",
+            "programme": "SPL"
+        },
+        {
+            "id": "29",
+            "group": "SPL M13 - Palliativ",
+            "programme": "SPL"
+        },
+        {
+            "id": "33",
+            "group": "PMU M1 - E13",
+            "programme": "PMU"
+        },
+        {
+            "id": "35",
+            "group": "PMU M3 - F13",
+            "programme": "PMU"
+        },
+        {
+            "id": "39",
+            "group": "PMU M7 - F12",
+            "programme": "PMU"
+        },
+        {
+            "id": "41",
+            "group": "PMU M9 - E11",
+            "programme": "PMU"
+        },
+        {
+            "id": "43",
+            "group": "PMU M11 - F 11",
+            "programme": "PMU"
+        },
+        {
+            "id": "46",
+            "group": "FYS M1 - E13",
+            "programme": "FYS"
+        },
+        {
+            "id": "48",
+            "group": "FYS M3 - F13",
+            "programme": "FYS"
+        },
+        {
+            "id": "50",
+            "group": "FYS M5 - E12",
+            "programme": "FYS"
+        },
+        {
+            "id": "52",
+            "group": "FYS M7 - F12",
+            "programme": "FYS"
+        },
+        {
+            "id": "54",
+            "group": "FYS M9 - E11",
+            "programme": "FYS"
+        },
+        {
+            "id": "56",
+            "group": "FYS M11 - F 11",
+            "programme": "FYS"
+        },
+        {
+            "id": "61",
+            "group": "SOC HS13",
+            "programme": "SOC"
+        },
+        {
+            "id": "62",
+            "group": "PÆD E13.1",
+            "programme": "PÆD"
+        },
+        {
+            "id": "63",
+            "group": "SOC HF13",
+            "programme": "SOC"
+        },
+        {
+            "id": "66",
+            "group": "PÆD E13.2",
+            "programme": "PÆD"
+        },
+        {
+            "id": "67",
+            "group": "SOC HS11",
+            "programme": "SOC"
+        },
+        {
+            "id": "70",
+            "group": "PÆD E13.3",
+            "programme": "PÆD"
+        },
+        {
+            "id": "84",
+            "group": "PÆD F13.1",
+            "programme": "PÆD"
+        },
+        {
+            "id": "85",
+            "group": "PÆD F13.2",
+            "programme": "PÆD"
+        },
+        {
+            "id": "86",
+            "group": "PÆD F13.3",
+            "programme": "PÆD"
+        },
+        {
+            "id": "100",
+            "group": "PÆD F12.1",
+            "programme": "PÆD"
+        },
+        {
+            "id": "101",
+            "group": "PÆD F12.2",
+            "programme": "PÆD"
+        },
+        {
+            "id": "102",
+            "group": "PÆD F12.3",
+            "programme": "PÆD"
+        },
+        {
+            "id": "107",
+            "group": "PÆD E11.1",
+            "programme": "PÆD"
+        },
+        {
+            "id": "108",
+            "group": "PÆD E11.2-3",
+            "programme": "PÆD"
+        },
+        {
+            "id": "109",
+            "group": "PÆD E11.4",
+            "programme": "PÆD"
+        },
+        {
+            "id": "110",
+            "group": "PÆD NE11",
+            "programme": "PÆD"
+        },
+        {
+            "id": "118",
+            "group": "PÆD E10.1-2",
+            "programme": "PÆD"
+        },
+        {
+            "id": "119",
+            "group": "PÆD E10.3-4",
+            "programme": "PÆD"
+        },
+        {
+            "id": "123",
+            "group": "SUND M5",
+            "programme": null
+        }
+    ],
+    "teachers": [
+        {
+            "id": "2",
+            "gender": "m",
+            "programme": "PMU"
+        },
+        {
+            "id": "4",
+            "gender": "f",
+            "programme": "FYS"
+        },
+        {
+            "id": "5",
+            "gender": "f",
+            "programme": "PMU"
+        },
+        {
+            "id": "6",
+            "gender": "f",
+            "programme": "FYS"
+        },
+        {
+            "id": "7",
+            "gender": "m",
+            "programme": "PMU"
+        },
+        {
+            "id": "10",
+            "gender": "m",
+            "programme": "PMU"
+        },
+        {
+            "id": "12",
+            "gender": "f",
+            "programme": "PMU"
+        },
+        {
+            "id": "13",
+            "gender": "f",
+            "programme": "PMU"
+        },
+        {
+            "id": "14",
+            "gender": "f",
+            "programme": "PMU"
+        },
+        {
+            "id": "16",
+            "gender": "f",
+            "programme": "PMU"
+        },
+        {
+            "id": "18",
+            "gender": "f",
+            "programme": "SPL"
+        },
+        {
+            "id": "19",
+            "gender": "f",
+            "programme": "SPL"
+        },
+        {
+            "id": "22",
+            "gender": "f",
+            "programme": "SPL"
+        },
+        {
+            "id": "23",
+            "gender": "m",
+            "programme": "SPL"
+        },
+        {
+            "id": "26",
+            "gender": "f",
+            "programme": "SPL"
+        },
+        {
+            "id": "27",
+            "gender": "m",
+            "programme": "SPL"
+        },
+        {
+            "id": "32",
+            "gender": "f",
+            "programme": "SPL"
+        },
+        {
+            "id": "35",
+            "gender": "f",
+            "programme": "SPL"
+        },
+        {
+            "id": "41",
+            "gender": "f",
+            "programme": "SPL"
+        },
+        {
+            "id": "47",
+            "gender": "f",
+            "programme": "FYS"
+        },
+        {
+            "id": "56",
+            "gender": "f",
+            "programme": "FYS"
+        },
+        {
+            "id": "69",
+            "gender": "m",
+            "programme": "FYS"
+        },
+        {
+            "id": "72",
+            "gender": "m",
+            "programme": "FYS"
+        },
+        {
+            "id": "76",
+            "gender": "f",
+            "programme": "PÆD"
+        },
+        {
+            "id": "82",
+            "gender": "f",
+            "programme": "PÆD"
+        },
+        {
+            "id": "95",
+            "gender": "m",
+            "programme": "PÆD"
+        },
+        {
+            "id": "100",
+            "gender": "m",
+            "programme": "PÆD"
+        },
+        {
+            "id": "103",
+            "gender": "m",
+            "programme": "PÆD"
+        },
+        {
+            "id": "113",
+            "gender": "?"
+        },
+        {
+            "id": "115",
+            "gender": "m",
+            "programme": "PÆD"
+        },
+        {
+            "id": "126",
+            "gender": "f",
+            "programme": "FYS"
+        },
+        {
+            "id": "129",
+            "gender": "m",
+            "programme": "PÆD"
+        },
+        {
+            "id": "131",
+            "gender": "m",
+            "programme": "FYS"
+        }
+    ]
+}

@@ -1,18 +1,23 @@
 {
-  "name": "uccorg-backend",
-  "version": "0.0.0",
-  "author": "Rasmus Erik Voel Jensen",
-  "description": "Backend for the UCC-organism",
-  "dependencies": {
-    "jshint": "*",
-    "request": "*",
-    "faye": "*",
-    "express": "*"
-  },
-  "scripts": {
-    "test": "./node_modules/jshint/bin/jshint uccorg-backend.js && node uccorg-backend.js test"
-  },
-  "engines": {
-    "node": "*"
-  }
+    "name": "uccorg-backend",
+    "version": "0.0.1",
+    "author": "Rasmus Erik Voel Jensen",
+    "description": "Backend for the UCC-organism",
+    "dependencies": {
+        "jshint": "*",
+        "request": "*",
+        "faye": "*",
+        "express": "*",
+        "solapp": "*"
+    },
+    "scripts": {
+        "start": "node ./node_modules/solapp/solapp.js start",
+        "test": "node ./node_modules/solapp/solapp.js test"
+    },
+    "engines": {
+        "node": "*"
+    },
+    "fullname": "UCC Organism Backend",
+    "owner": "rasmuserik",
+    "main": "uccorg-backend.js"
 }
