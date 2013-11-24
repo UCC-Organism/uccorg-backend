@@ -2,13 +2,13 @@
 #
 # {{{1 Tasks
 #
-# {{{2 Features/done
+# {{{2 Status
 #
 # - deprecated webservice + extracted data from webuntis
+# - dummy data-set for automatic test
 #
 # {{{2 Next to do
 #
-# - dummy data-set for automatic test
 # - new server w/push functionality
 # - configuration of server for dmz
 #
@@ -22,3 +22,6 @@
 # - server actually on UCC DMZ, getting nightly data dumps
 #
 # {{{1 Create dummy data set for automatic test
+
+if process.argv[2] == "test"
+  datadump = readFileSync
