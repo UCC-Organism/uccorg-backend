@@ -18,14 +18,21 @@ memoiseAsync = function(fn) {
       args[args.length - 1] = function(err, result) {
         if(!err) {
           cache[argsKey] = result;
-        };
+        }
         callback(err, result);
       };
       fn.apply(this, args);
-    };
+    }
   };
 };
-// `arraycopy`
+// foreach {{{3
+foreach = function(obj, fn) {
+  Object.keys(obj).forEach(function(key) {
+    fn(key, obj[key]);
+  });
+};
+
+// `arraycopy` {{{3
 // Sometimes we need to create a new array, from something arraylike. Especially for turning `arguments` into a real array.
 arraycopy = function(arr) {
 return Array.prototype.slice.call(arr, 0);
@@ -34,6 +41,12 @@ return Array.prototype.slice.call(arr, 0);
 loadfile = function(filename, callback) {
   require("fs").readFile(__dirname + "/" + filename, "utf8", callback);
 };
+
+// savefile {{{3
+savefile = function(filename, content, callback) {
+  require("fs").writeFile(__dirname  + "/" + filename, content, callback);
+};
+
 // loadCacheFile
 loadCacheFile = memoiseAsync(loadfile);
 
@@ -55,9 +68,9 @@ asyncSeqMap = function(arr, fn, cb) {
         } else if(true) {
           i = i + 1;
           handleEntry();
-        };
+        }
       });
-    };
+    }
   };
   handleEntry();
 };
@@ -357,7 +370,9 @@ uccorgDashboard = function(app) {
             return result;
         };
         //{{{4 activities
-        if (app.args[1] === "activities") {
+        if(true) {
+          //do nothing, - we are not in an app environment
+        } else if (app.args[1] === "activities") {
             when = (app.args[2] ? (new Date(app.args[2])) : new Date()).toJSON();
             day = when.slice(0, 10);
             console.log(day, Object.keys(webuntis["lessons"]), webuntis["lessons"][day]);
