@@ -37,37 +37,55 @@ express = require "express"
 http = require "http"
 faye = require "faye"
 
-# {{{1 Utility
-getDate = -> (new Date).toISOString()
+# {{{1 General Utility
+getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
 
-# {{{1 Create dummy data set for automatic test
 
-datadump = JSON.parse fs.readFileSync filename
-console.log datadump
-console.log getDate()
+# {{{1 Load data
+
+data = JSON.parse fs.readFileSync filename
 
 # {{{1 Actual server
 
-#{{{2 Setup/initialisation
+#{{{2 REST server
 
 app = express()
 app.use (req, res, next) ->
   # no caching, if server through cdn
   res.header "Cache-Control", "public, max-age=0"
   # CORS
-  res.headers "Access-Control-Allow-Origin", "*"
+  res.header "Access-Control-Allow-Origin", "*"
   # no need to tell the world what server software we are running, - security best practise
   res.removeHeader "X-Powered-By"
   next()
-server = http.createServer app
 
+#{{{3 /teacher route
+app.all "/teacher/:id", (req, res) ->
+  res.json data.teachers[req.params.id]
+  res.end()
+
+#{{{3 /group route
+app.all "/group/:id", (req, res) ->
+  res.json data.groups[req.params.id]
+  res.end()
+
+#{{{3 /route
+app.all "/group/:id", (req, res) ->
+  res.json data.groups[req.params.id]
+  res.end()
+
+
+#{{{2 Push server
 bayeux = new faye.NodeAdapter
   mount: '/faye'
   timeout: 45
+
+#{{{2 start/bind server
+server = app.listen port
 bayeux.attach server
 
-server.listen port
+
 
 
 #{{{1 Test
@@ -75,19 +93,20 @@ server.listen port
 if process.argv[2] == "test"
 
   testStart = "2013-09-20T06:20:00"
-  testEnd = "2013-09-21T06:20:00"
+  testEnd = "2013-09-20T18:20:00"
+  #testEnd = "2013-09-21T06:20:00"
   # Factor by which the time will run by during the test
   testSpeed = 10000
 
-  #{{{2 Mock getDate, 
+  #{{{2 Mock getISODate, 
   #
   # Date corresponds to the test data set, and a clock that runs very fast
   startTime = Date.now()
   testTime = + (new Date testStart)
-  getDate = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
+  getISODate = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
 
   #{{{2 run the test
   setInterval (->
-    console.log getDate()
-    process.exit 0 if getDate() >= testEnd
-  ), 10
+    #console.log getISODate()
+    process.exit 0 if getISODate() >= testEnd
+  ), 100000 / testSpeed
