@@ -7,13 +7,13 @@ Code transfer in progress, and therefore currently defunct (code for development
 
 # Tasks
 
-## Features/done
+## Status
 
 - deprecated webservice + extracted data from webuntis
+- dummy data-set for automatic test
 
 ## Next to do
 
-- dummy data-set for automatic test
 - new server w/push functionality
 - configuration of server for dmz
 
@@ -26,8 +26,134 @@ Code transfer in progress, and therefore currently defunct (code for development
 - administrative interface
 - server actually on UCC DMZ, getting nightly data dumps
 
-# Create dummy data set for automatic test
+# Configuration
 
+Filename of data dump
+
+    filename = "/location/of/data/dump"
+    filename = "sample-data.json" if process.argv[2] == "test"
+    
+
+Port to listen to
+
+    port = 7890
+    
+
+# Dependencies
+
+    
+    fs = require "fs"
+    express = require "express"
+    http = require "http"
+    faye = require "faye"
+    
+
+# General Utility
+
+    getISODate = -> (new Date).toISOString()
+    sleep = (t, fn) -> setTimeout fn, t
+    
+    
+
+# Load data
+
+    
+    data = JSON.parse fs.readFileSync filename
+    
+
+# Actual server
+
+    
+
+## REST server
+
+    
+    app = express()
+    app.use (req, res, next) ->
+
+no caching, if server through cdn
+
+      res.header "Cache-Control", "public, max-age=0"
+
+CORS
+
+      res.header "Access-Control-Allow-Origin", "*"
+
+no need to tell the world what server software we are running, - security best practise
+
+      res.removeHeader "X-Powered-By"
+      next()
+    
+
+### /teacher route
+
+    app.all "/teacher/:id", (req, res) ->
+      res.json data.teachers[req.params.id]
+      res.end()
+    
+
+### /group route
+
+    app.all "/group/:id", (req, res) ->
+      res.json data.groups[req.params.id]
+      res.end()
+    
+
+### /route
+
+    app.all "/group/:id", (req, res) ->
+      res.json data.groups[req.params.id]
+      res.end()
+    
+    
+
+## Push server
+
+    bayeux = new faye.NodeAdapter
+      mount: '/faye'
+      timeout: 45
+    
+
+## start/bind server
+
+    server = app.listen port
+    bayeux.attach server
+    
+    
+    
+    
+
+# Test
+
+
+    if process.argv[2] == "test"
+    
+      testStart = "2013-09-20T06:20:00"
+      testEnd = "2013-09-20T18:20:00"
+
+testEnd = "2013-09-21T06:20:00"
+Factor by which the time will run by during the test
+
+      testSpeed = 10000
+    
+
+## Mock getISODate,
+
+Date corresponds to the test data set, and a clock that runs very fast
+
+      startTime = Date.now()
+      testTime = + (new Date testStart)
+      getISODate = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
+    
+
+## run the test
+
+      setInterval (->
+
+console.log getISODate()
+
+        process.exit 0 if getISODate() >= testEnd
+      ), 100000 / testSpeed
     
 
 
