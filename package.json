@@ -19,6 +19,6 @@
         "node": "*"
     },
     "fullname": "UCC Organism Backend",
-    "owner": "ucc-organism",
+    "owner": "UCC-Organism",
     "main": "uccorg-backend.js"
 }
