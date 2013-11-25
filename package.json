@@ -19,6 +19,6 @@
         "node": "*"
     },
     "fullname": "UCC Organism Backend",
-    "owner": "rasmuserik",
+    "owner": "ucc-organism",
     "main": "uccorg-backend.js"
 }
