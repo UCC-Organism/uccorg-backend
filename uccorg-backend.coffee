@@ -22,24 +22,53 @@
 # - server actually on UCC DMZ, getting nightly data dumps
 #
 # {{{1 Configuration
+#
+# Filename of data dump
 filename = "/location/of/data/dump"
 filename = "sample-data.json" if process.argv[2] == "test"
+
+# Port to listen to
+port = 7890
 
 # {{{1 Dependencies
 
 fs = require "fs"
+express = require "express"
+http = require "http"
+faye = require "faye"
 
 # {{{1 Utility
 getDate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
-
-    
 
 # {{{1 Create dummy data set for automatic test
 
 datadump = JSON.parse fs.readFileSync filename
 console.log datadump
 console.log getDate()
+
+# {{{1 Actual server
+
+#{{{2 Setup/initialisation
+
+app = express()
+app.use (req, res, next) ->
+  # no caching, if server through cdn
+  res.header "Cache-Control", "public, max-age=0"
+  # CORS
+  res.headers "Access-Control-Allow-Origin", "*"
+  # no need to tell the world what server software we are running, - security best practise
+  res.removeHeader "X-Powered-By"
+  next()
+server = http.createServer app
+
+bayeux = new faye.NodeAdapter
+  mount: '/faye'
+  timeout: 45
+bayeux.attach server
+
+server.listen port
+
 
 #{{{1 Test
 #
@@ -48,6 +77,7 @@ if process.argv[2] == "test"
   testStart = "2013-09-20T06:20:00"
   testEnd = "2013-09-21T06:20:00"
   testSpeed = 1000
+
   #{{{2 Mock getDate, 
   #
   # Date corresponds to the test data set, and a clock that runs very fast

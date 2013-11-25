@@ -13,7 +13,7 @@
     },
     "scripts": {
         "start": "node ./node_modules/solapp/solapp.js start",
-        "test": "./node_modules/coffee-script/bin/coffee uccorg-backend.coffee"
+        "test": "./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test"
     },
     "engines": {
         "node": "*"
