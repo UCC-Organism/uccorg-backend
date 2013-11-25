@@ -76,7 +76,8 @@ if process.argv[2] == "test"
 
   testStart = "2013-09-20T06:20:00"
   testEnd = "2013-09-21T06:20:00"
-  testSpeed = 1000
+  # Factor by which the time will run by during the test
+  testSpeed = 10000
 
   #{{{2 Mock getDate, 
   #
@@ -86,8 +87,7 @@ if process.argv[2] == "test"
   getDate = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
 
   #{{{2 run the test
-  testSample = ->
+  setInterval (->
     console.log getDate()
-    if getDate() < testEnd
-      sleep 100, testSample
-  testSample()
+    process.exit 0 if getDate() >= testEnd
+  ), 10
