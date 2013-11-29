@@ -81,22 +81,26 @@ bayeux = new faye.NodeAdapter
   mount: '/faye'
   timeout: 45
 
+bayeux.on "subscribe", (clientId, channel) ->
+  console.log channel, typeof channel
+
 #{{{2 start/bind server
 server = app.listen port
 bayeux.attach server
-
-
+console.log "starting server on port: #{port}"
 
 
 #{{{1 Test
 #
 if process.argv[2] == "test"
 
+  app.use express.static "#{__dirname}/public"
+
   testStart = "2013-09-20T06:20:00"
   testEnd = "2013-09-20T18:20:00"
   #testEnd = "2013-09-21T06:20:00"
   # Factor by which the time will run by during the test
-  testSpeed = 10000
+  testSpeed = 1000
 
   #{{{2 Mock getISODate, 
   #
@@ -107,6 +111,8 @@ if process.argv[2] == "test"
 
   #{{{2 run the test
   setInterval (->
+    bayeux.getClient().publish "/events", getISODate()
+
     #console.log getISODate()
     process.exit 0 if getISODate() >= testEnd
   ), 100000 / testSpeed

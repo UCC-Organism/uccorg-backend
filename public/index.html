@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>test</title>
+  </head>
+  <body>
+    <script src="/faye/client.js"></script>
+    <script>
+      var client = new Faye.Client("/faye");
+      var subscription = client.subscribe("/events", function(message) {
+        console.log(message);
+      });
+      console.log(subscription);
+    </script>
+  </body>
+</html>
