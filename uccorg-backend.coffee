@@ -46,10 +46,13 @@ sleep = (t, fn) -> setTimeout fn, t
 
 data = JSON.parse fs.readFileSync filename
 
+for key, objs of data
+  data[key] = {}
+  for obj in objs
+    data[key][obj.id] = obj
+
 # {{{1 Actual server
-
 #{{{2 REST server
-
 app = express()
 app.use (req, res, next) ->
   # no caching, if server through cdn
@@ -63,6 +66,11 @@ app.use (req, res, next) ->
 #{{{3 /teacher route
 app.all "/teacher/:id", (req, res) ->
   res.json data.teachers[req.params.id]
+  res.end()
+
+#{{{3 /activity route
+app.all "/activity/:id", (req, res) ->
+  res.json data.activities[req.params.id]
   res.end()
 
 #{{{3 /group route
@@ -89,6 +97,19 @@ server = app.listen port
 bayeux.attach server
 console.log "starting server on port: #{port}"
 
+#{{{1 Events and event emitter
+events = []
+for _,activity of data.activities
+  events.push "#{activity.start} start #{activity.id}"
+  events.push "#{activity.end} end #{activity.id}"
+events.sort()
+eventPos = 0
+
+eventEmitter = ->
+  while eventPos < events.length and events[eventPos] <= getISODate()
+    bayeux.getClient().publish "/events", events[eventPos].split(" ").slice -2
+    ++eventPos
+setInterval eventEmitter, 100
 
 #{{{1 Test
 #
@@ -100,7 +121,7 @@ if process.argv[2] == "test"
   testEnd = "2013-09-20T18:20:00"
   #testEnd = "2013-09-21T06:20:00"
   # Factor by which the time will run by during the test
-  testSpeed = 1000
+  testSpeed = 300
 
   #{{{2 Mock getISODate, 
   #
@@ -111,8 +132,5 @@ if process.argv[2] == "test"
 
   #{{{2 run the test
   setInterval (->
-    bayeux.getClient().publish "/events", getISODate()
-
-    #console.log getISODate()
     process.exit 0 if getISODate() >= testEnd
   ), 100000 / testSpeed
