@@ -1,5 +1,3 @@
-# Code transfer in progress, and therefore currently defunct (code for development prototype is running in another environment and needs some refactoring before coming here).
-#
 # {{{1 Tasks
 #
 # {{{2 Status
@@ -44,9 +42,8 @@ faye = require "faye"
 getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
 
-
-# {{{1 Load data
-
+#{{{1 Data model
+#{{{2 Core data (loaded from file)
 data = JSON.parse fs.readFileSync filename
 
 for key, objs of data
@@ -54,9 +51,19 @@ for key, objs of data
   for obj in objs
     data[key][obj.id] = obj
 
-# {{{1 Actual server
-#{{{2 REST server
+#{{{2 Table with events (activity start/end)
+events = []
+for _,activity of data.activities
+  events.push "#{activity.start} start #{activity.id}"
+  events.push "#{activity.end} end #{activity.id}"
+events.sort()
+eventPos = 0
+
+# {{{1 Server
 app = express()
+server = app.listen port
+console.log "starting server on port: #{port}"
+#{{{2 REST server
 app.use (req, res, next) ->
   # no caching, if server through cdn
   res.header "Cache-Control", "public, max-age=0"
@@ -86,8 +93,8 @@ app.all "/group/:id", (req, res) ->
   res.json data.groups[req.params.id]
   res.end()
 
-
 #{{{2 Push server
+#{{{3 Setup
 bayeux = new faye.NodeAdapter
   mount: '/faye'
   timeout: 45
@@ -95,24 +102,17 @@ bayeux = new faye.NodeAdapter
 bayeux.on "subscribe", (clientId, channel) ->
   console.log channel, typeof channel
 
-#{{{2 start/bind server
-server = app.listen port
 bayeux.attach server
-console.log "starting server on port: #{port}"
 
-#{{{1 Events and event emitter
-events = []
-for _,activity of data.activities
-  events.push "#{activity.start} start #{activity.id}"
-  events.push "#{activity.end} end #{activity.id}"
-events.sort()
-eventPos = 0
-
+#{{{3 Events and event emitter
 eventEmitter = ->
   while eventPos < events.length and events[eventPos] <= getISODate()
-    bayeux.getClient().publish "/events", events[eventPos].split(" ").slice -2
+    event = events[eventPos].split(" ").slice -2
+    event[1] = data.activities[event[1]] || event[1]
+    bayeux.getClient().publish "/events", event
     ++eventPos
 setInterval eventEmitter, 100
+
 
 #{{{1 Test
 #
