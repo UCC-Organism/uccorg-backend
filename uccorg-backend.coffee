@@ -6,10 +6,10 @@
 #
 # - deprecated webservice + extracted data from webuntis
 # - dummy data-set for automatic test
+# - implemented push to client via faye
 #
 # {{{2 Next to do
 #
-# - new server w/push functionality
 # - configuration of server for dmz
 #
 # {{{2 Backlog
@@ -26,6 +26,9 @@
 # Filename of data dump
 filename = "/location/of/data/dump"
 filename = "sample-data.json" if process.argv[2] == "test"
+
+# Ical url 
+icalUrl = "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics"
 
 # Port to listen to
 port = 7890
