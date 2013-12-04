@@ -64,6 +64,7 @@ app = express()
 server = app.listen port
 console.log "starting server on port: #{port}"
 #{{{2 REST server
+app.use express.bodyParser()
 app.use (req, res, next) ->
   # no caching, if server through cdn
   res.header "Cache-Control", "public, max-age=0"
@@ -92,6 +93,13 @@ app.all "/group/:id", (req, res) ->
 app.all "/group/:id", (req, res) ->
   res.json data.groups[req.params.id]
   res.end()
+
+#{{{2 When getting a request to /update, write it to data.json
+# For example upload with: curl -X POST -H "Content-Type: application/json" -d @datafile.json http://serverurl
+app.all "/update", (req, res) ->
+  console.log req.body
+  fs.writeFile "#{__dirname}/data.json", JSON.stringify(req.body), ->
+    res.end()
 
 #{{{2 Push server
 #{{{3 Setup
