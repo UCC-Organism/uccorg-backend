@@ -5,19 +5,18 @@
 # - deprecated webservice + extracted data from webuntis
 # - dummy data-set for automatic test
 # - implemented push to client via faye
+# - configuration/setup of server for dmz
 #
 # {{{2 Next to do
 #
-# - configuration of server for dmz
-#
 # {{{2 Backlog
 #
+# - server actually on UCC DMZ, getting nightly data dumps
 # - ucc-data processing
 # - other data sources
 #   - train schedule/data
 #   - remote calendar
 # - administrative interface
-# - server actually on UCC DMZ, getting nightly data dumps
 #
 # {{{1 Configuration
 #
@@ -43,15 +42,49 @@ getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
 
 #{{{1 Data model
-#{{{2 Core data (loaded from file)
+#{{{2 Getting data
+#
+# Pushed to the server from UCC daily.
+# 
+#{{{3 Getting data from webuntis-api 
+#
+# We do not yet know if we should use the webuntis api, or get a single data dump from ucc
+# If needed extract code from old-backend-code.js
+
+#{{{3 Core data 
+#
+# Cached data loaded at startup time. 
+#
+# The file in the repository contains sample data for test.
+#
+# For each kind of data there is a mapping from id to individual object
+#
+# - activities
+#   - id
+#   - start/end
+#   - teachers - list
+#   - locations - list
+#   - subject
+#   - groups
+# - groups
+#   - id
+#   - group-name
+#   - programme
+#   - TODO: students
+# - teachers
+#   - id
+#   - gender
+#   - programme
+# - students - not there yet
+# 
+#
 data = JSON.parse fs.readFileSync filename
 
-for key, objs of data
-  data[key] = {}
-  for obj in objs
-    data[key][obj.id] = obj
-
-#{{{2 Table with events (activity start/end)
+#{{{2 Data structures
+#
+#{{{3 Table with events (activity start/end)
+# 
+# This is a list of event start/stop, - ordered by time, - used for emitting 
 events = []
 for _,activity of data.activities
   events.push "#{activity.start} start #{activity.id}"
