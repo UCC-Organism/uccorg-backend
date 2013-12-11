@@ -19,10 +19,12 @@
 # - administrative interface
 #
 # {{{1 Configuration
-#
+
+testing = process.argv[2] == "test"
+
 # Filename of data dump
-filename = "/location/of/data/dump"
-filename = "sample-data.json" if process.argv[2] == "test"
+filename = "data.json"
+filename = "sample-data.json" if testing
 
 # Ical url 
 icalUrl = "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics"
@@ -36,13 +38,14 @@ fs = require "fs"
 express = require "express"
 http = require "http"
 faye = require "faye"
+async = require "async"
 
 # {{{1 General Utility
 getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
 
 #{{{1 Data model
-#{{{2 Getting data
+#{{{2 Getting `data`
 #{{{3 Get data from calendar
 #{{{3 Pushed to the server from UCC daily. TODO
 handleUCCData = (data, done) ->
@@ -54,6 +57,49 @@ handleUCCData = (data, done) ->
 #
 # We do not yet know if we should use the webuntis api, or get a single data dump from ucc
 # If needed extract code from old-backend-code.js
+getWebUntisData = ->
+  fs.readFile "apikey.webuntis", "utf8", (err, apikey) ->
+    return webUntisDataDone(err, undefined) if err
+    apikey = apikey.trim()
+    untisCall = 0
+    #{{{4 webuntis - function for calling the webuntis api
+    webuntis = (name, cb) ->
+      console.log "webuntis", name, ++untisCall
+      url = "https://api.webuntis.dk/api/" + name + "?api_key=" + apikey
+      (require 'request') url, (err, result, content) ->
+        return cb err if err
+        console.log url, content
+        cb null, JSON.parse content
+    #{{{4 extract data, download data needed from webuntis
+    extractData = (dataDone) ->
+      startTime = getISODate()
+      result =
+        locations: {}
+        subjects: {}
+        lessons: {}
+        groups: {}
+        teachers: {}
+        departments: {}
+      
+      async.eachSeries (Object.keys result), ((datatype, cb) ->
+        webuntis datatype, (err, data) ->
+          cb err if err
+          console.log err, data[0]["untis_id"]
+          async.eachSeries data, ((obj, cb) ->
+            id = obj.untis_id
+            webuntis "#{datatype}/#{id}", (err, data) ->
+              result[datatype][id] = data
+              cb err
+          ), (err) -> cb err
+      ), (err) ->
+        console.log result
+        dataDone err, result
+
+    extractData (err, data) ->
+      throw err if err
+      fs.writeFile "webuntis.json", (JSON.stringify data, null, 4), -> undefined
+
+getWebUntisData() if !testing
 
 #{{{3 Core data 
 #
@@ -89,7 +135,7 @@ cacheData = (done) ->
 
 #{{{2 Data structures
 #
-#{{{3 Table with events (activity start/end)
+#{{{3 Table with `events` (activity start/end)
 # 
 # activity start/stop - ordered by time, - used for emitting events
 events = []
@@ -104,6 +150,8 @@ updateEvents = ->
   events.sort()
   eventPos = 0
 process.nextTick updateEvents
+
+
 
 # {{{1 Server
 app = express()

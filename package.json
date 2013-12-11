@@ -6,6 +6,7 @@
     "dependencies": {
         "coffee-script": "*",
         "jshint": "*",
+        "async": "*",
         "request": "*",
         "faye": "*",
         "express": "*",
