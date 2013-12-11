@@ -43,9 +43,13 @@ sleep = (t, fn) -> setTimeout fn, t
 
 #{{{1 Data model
 #{{{2 Getting data
-#
-# Pushed to the server from UCC daily.
-# 
+#{{{3 Get data from calendar
+#{{{3 Pushed to the server from UCC daily. TODO
+handleUCCData = (data, done) ->
+  console.log "handle data update from ucc-server", data
+  #... update data-object based on UCC-data, include prune old data
+  cacheData done
+
 #{{{3 Getting data from webuntis-api 
 #
 # We do not yet know if we should use the webuntis api, or get a single data dump from ucc
@@ -79,6 +83,9 @@ sleep = (t, fn) -> setTimeout fn, t
 # 
 #
 data = JSON.parse fs.readFileSync filename
+cacheData = (done) ->
+  fs.writeFile "#{__dirname}/data.json", JSON.stringify(data), done
+
 
 #{{{2 Data structures
 #
@@ -128,11 +135,9 @@ app.all "/group/:id", (req, res) ->
   res.end()
 
 #{{{2 When getting a request to /update, write it to data.json
-# For example upload with: curl -X POST -H "Content-Type: application/json" -d @datafile.json http://serverurl
+# For example upload with: curl -X POST -H "Content-Type: application/json" -d @datafile.json http://localhost:7890/update
 app.all "/update", (req, res) ->
-  console.log req.body
-  fs.writeFile "#{__dirname}/data.json", JSON.stringify(req.body), ->
-    res.end()
+  handleUCCData req.body, -> res.end()
 
 #{{{2 Push server
 #{{{3 Setup
