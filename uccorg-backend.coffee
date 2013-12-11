@@ -161,6 +161,8 @@ if process.argv[2] == "test"
 
   app.use express.static "#{__dirname}/public"
 
+  testOk = true
+
   testStart = "2013-09-20T06:20:00"
   testEnd = "2013-09-20T18:20:00"
   #testEnd = "2013-09-21T06:20:00"
@@ -174,7 +176,14 @@ if process.argv[2] == "test"
   testTime = + (new Date testStart)
   getISODate = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
 
-  #{{{2 run the test
+  #{{{2 start phantomjs
+  require("child_process").exec "./node_modules/.bin/phantomjs test-phantom.coffee"
+
+  #{{{2 run the test - current test client just emits "/events" back as "/test"
+  bayeux.getClient().subscribe "/test", (message) ->
+    if message[0] == "end" and message[1].id == 10587
+      console.log "HERE!!!"
+      process.exit (if testOk then 0 else 1)
   setInterval (->
-    process.exit 0 if getISODate() >= testEnd
+    process.exit 1 if getISODate() >= testEnd
   ), 100000 / testSpeed
