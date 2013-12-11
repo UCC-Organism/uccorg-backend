@@ -91,13 +91,19 @@ cacheData = (done) ->
 #
 #{{{3 Table with events (activity start/end)
 # 
-# This is a list of event start/stop, - ordered by time, - used for emitting 
+# activity start/stop - ordered by time, - used for emitting events
 events = []
-for _,activity of data.activities
-  events.push "#{activity.start} start #{activity.id}"
-  events.push "#{activity.end} end #{activity.id}"
-events.sort()
 eventPos = 0
+updateEvents = ->
+  now = getISODate()
+  eventEmitter()
+  events = []
+  for _,activity of data.activities
+    events.push "#{activity.start} start #{activity.id}" if activity.start > now
+    events.push "#{activity.end} end #{activity.id}" if activity.end > now
+  events.sort()
+  eventPos = 0
+process.nextTick updateEvents
 
 # {{{1 Server
 app = express()
@@ -152,7 +158,8 @@ bayeux.attach server
 
 #{{{3 Events and event emitter
 eventEmitter = ->
-  while eventPos < events.length and events[eventPos] <= getISODate()
+  now = getISODate()
+  while eventPos < events.length and events[eventPos] <= now
     event = events[eventPos].split(" ").slice -2
     event[1] = data.activities[event[1]] || event[1]
     bayeux.getClient().publish "/events", event
