@@ -182,7 +182,6 @@ if process.argv[2] == "test"
   #{{{2 run the test - current test client just emits "/events" back as "/test"
   bayeux.getClient().subscribe "/test", (message) ->
     if message[0] == "end" and message[1].id == 10587
-      console.log "HERE!!!"
       process.exit (if testOk then 0 else 1)
   setInterval (->
     process.exit 1 if getISODate() >= testEnd
