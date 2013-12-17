@@ -30,7 +30,7 @@ filename = "sample-data.json" if testing
 icalUrl = "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics"
 
 # Port to listen to
-port = 7890
+port = 8080
 
 # {{{1 Dependencies
 
@@ -45,7 +45,7 @@ getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
 
 #{{{1 Data model
-#{{{2 Getting `data`
+#{{{2 Getting/creating `data`
 #{{{3 Get data from calendar
 #{{{3 Pushed to the server from UCC daily. TODO
 handleUCCData = (data, done) ->
@@ -125,7 +125,9 @@ getWebUntisData() if !testing
 #   - id
 #   - gender
 #   - programme
-# - students - not there yet
+# - students TODO
+#   - groups
+#   - gender
 # 
 #
 data = JSON.parse fs.readFileSync filename
