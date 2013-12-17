@@ -188,11 +188,13 @@ defRest = (name, member) ->
     res.json data[member][req.params.id]
     res.end()
 
-defRest name, member for name, member of
+endpoints =
   teacher: "teachers"
   activity: "activities"
   group: "groups"
   student: "students"
+
+defRest name, member for name, member of endpoints
 
 #{{{2 When getting a request to /update, write it to data.json
 # For example upload with: curl -X POST -H "Content-Type: application/json" -d @datafile.json http://localhost:7890/update
