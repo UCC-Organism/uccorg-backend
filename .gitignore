@@ -1,3 +1,5 @@
 apikey.webuntis
 node_modules/
 *.swp
+data.json
+webuntis.json

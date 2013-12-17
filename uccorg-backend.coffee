@@ -183,25 +183,16 @@ app.use (req, res, next) ->
   res.removeHeader "X-Powered-By"
   next()
 
-#{{{3 /teacher route
-app.all "/teacher/:id", (req, res) ->
-  res.json data.teachers[req.params.id]
-  res.end()
+defRest = (name, member) ->
+  app.all "/#{name}/:id", (req, res) ->
+    res.json data[member][req.params.id]
+    res.end()
 
-#{{{3 /activity route
-app.all "/activity/:id", (req, res) ->
-  res.json data.activities[req.params.id]
-  res.end()
-
-#{{{3 /group route
-app.all "/group/:id", (req, res) ->
-  res.json data.groups[req.params.id]
-  res.end()
-
-#{{{3 /route
-app.all "/group/:id", (req, res) ->
-  res.json data.groups[req.params.id]
-  res.end()
+defRest name, member for name, member of
+  teacher: "teachers"
+  activity: "activities"
+  group: "groups"
+  student: "students"
 
 #{{{2 When getting a request to /update, write it to data.json
 # For example upload with: curl -X POST -H "Content-Type: application/json" -d @datafile.json http://localhost:7890/update
