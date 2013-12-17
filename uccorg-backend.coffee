@@ -57,7 +57,15 @@ handleUCCData = (data, done) ->
 #
 # We do not yet know if we should use the webuntis api, or get a single data dump from ucc
 # If needed extract code from old-backend-code.js
-getWebUntisData = ->
+getWebUntisData = (callback) ->
+  # DEBUG code, run it on cached data instead of loading all of the webuntis data
+  try
+    result = JSON.parse fs.readFileSync "#{__dirname}/webuntis.json"
+    return callback?(result)
+  catch e
+    console.log e
+    undefined
+
   fs.readFile "apikey.webuntis", "utf8", (err, apikey) ->
     return webUntisDataDone(err, undefined) if err
     apikey = apikey.trim()
@@ -97,9 +105,14 @@ getWebUntisData = ->
 
     extractData (err, data) ->
       throw err if err
+      callback?(data)
+      # DEBUG code, run it on cached data instead of loading all of the webuntis data
       fs.writeFile "webuntis.json", (JSON.stringify data, null, 4), -> undefined
 
-getWebUntisData() if !testing
+if !testing
+  getWebUntisData (data)->
+    console.log Object.keys data
+
 
 #{{{3 Core data 
 #
