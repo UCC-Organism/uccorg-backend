@@ -10,12 +10,11 @@
         "request": "*",
         "faye": "*",
         "express": "*",
-        "phantomjs": "*",
         "solapp": "*"
     },
     "scripts": {
         "start": "coffee ./node_modules/solapp/solapp.coffee start",
-        "test": "./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test"
+        "test": "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
     },
     "engines": {
         "node": "*"
