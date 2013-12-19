@@ -266,7 +266,7 @@ else
   
     testResult = ""
     testLog = (args...)->
-      testResult += JSON.stringify(args...) + "\n"
+      testResult += JSON.stringify([args...]) + "\n"
     testDone = ->
       fs.writeFileSync "test.out", testResult
       process.exit()
