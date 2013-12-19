@@ -1,24 +1,38 @@
-# {{{1 Notes
-# {{{2 Tasks
+# {{{1 Info
 #
-# {{{3 Status
+# This is actually code for two different servers:
 #
-# - deprecated webservice + extracted data from webuntis
+# 1. ssmldata-server, which is responsible for getting the data from ucc/webuntis/calendar/..., anonymising them, and sending them onwards
+# 2. macmini-server, which gets the anonymised data from the ssmldata-server, makes them available via an api, and emits events
+#
+# In addition to this, there is some shared code, and testing.
+#
+# {{{2 Done
+#
+# - getting data from webuntis
+# - got macmini onto UCCs serverpark
+# - live events via faye
+# - get data via api
+# - got access to provisioned ssmldata-server
 # - dummy data-set for automatic test
-# - implemented push to client via faye
-# - configuration/setup of server for dmz
-# - server actually on UCC DMZ, getting nightly data dumps
+# - automatic test on macmini with fast time for development
+# - deprecated webuntis-based webservice for development
 #
-# {{{3 Next to do
+# {{{2 In progress
 #
-# {{{3 Backlog
+# - send data from ssmldata-server to macmini
+# - anonymise/cleanup data from ucc/webuntis
+# - get data from sqlserver
+# - get data from remote-calendar
 #
-# - ucc-data processing
-# - other data sources
-#   - train schedule/data
-#   - remote calendar
-# - administrative interface
+# {{{2 To do
 #
+# - make servers production-ready
+# - test daylight saving handling
+# - dashboard / administrative interface
+# - train schedule
+#
+# {{{1 Common stuff
 # {{{2 Configuration
 
 testing = process.argv[2] == "test"
@@ -42,7 +56,7 @@ http = require "http"
 faye = require "faye"
 async = require "async"
 
-# {{{1 Common Utility
+# {{{2 Utility functions
 getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
 sendUpdate = (host, data, callback) ->
