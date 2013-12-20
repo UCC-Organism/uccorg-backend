@@ -111,7 +111,7 @@ if ssmldata
         result[current] = reqset
         handleNext()
 
-    con = new mssql.Connection config, (err) ->
+    con = new mssql.Connection config.mssql, (err) ->
       throw err if err
       handleNext()
   
