@@ -33,7 +33,17 @@
 # - train schedule
 #
 # {{{1 Common stuff
+# {{{2 Dependencies
+
+fs = require "fs"
+express = require "express"
+http = require "http"
+faye = require "faye"
+async = require "async"
+mssql = require "mssql"
+
 # {{{2 Configuration
+#
 
 testing = process.argv[2] == "test"
 ssmldata = process.argv[2] == "ssmldata"
@@ -48,13 +58,24 @@ icalUrl = "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4e
 # Port to listen to
 port = 8080
 
-# {{{2 Dependencies
+# configuration for access to webuntis/sql, must be a jsonfile with content a la:
+#
+#     {
+#       "webuntis": "...apikey...",
+#       "mssql": {
+#         "server": "...",
+#         "database": "...",
+#         "user": "...",
+#         "password": "..."
+#       }
+#     }
+try
+  config = JSON.parse fs.readFileSync "config.json"
+catch e
+  config = {}
+  console.log e
 
-fs = require "fs"
-express = require "express"
-http = require "http"
-faye = require "faye"
-async = require "async"
+console.log config
 
 # {{{2 Utility functions
 getISODate = -> (new Date).toISOString()
@@ -76,8 +97,23 @@ sendUpdate = (host, data, callback) ->
 if ssmldata
   #{{{2 Calendar data
   #{{{2 SQL Server data source
-  getSqlServerData = (callback) ->
-    callback undefined
+  getSqlServerData = (done) ->
+    entries = ["Hold", "Studerende", "Ansatte", "AnsatteHold", "StuderendeHold"]
+    result = {}
+    return done(result) if not config.mssql
+
+    handleNext = ->
+      return done(result) if entries.length == 0
+      current = entries.pop()
+      req = con.request()
+      req.execute "Get#{current}CampusNord", (err, reqset) ->
+        throw err if err
+        result[current] = reqset
+        handleNext()
+
+    con = new mssql.Connection config, (err) ->
+      throw err if err
+      handleNext()
   
   #{{{2 Webuntis data source
   #
@@ -93,9 +129,8 @@ if ssmldata
       console.log e
       undefined
   
-    fs.readFile "apikey.webuntis", "utf8", (err, apikey) ->
-      return webUntisDataDone(err, undefined) if err
-      apikey = apikey.trim()
+    do ->
+      apikey = config.webuntis
       untisCall = 0
       #webuntis - function for calling the webuntis api
       webuntis = (name, cb) ->
@@ -164,7 +199,7 @@ if ssmldata
   #   - gender
   # 
   processData = (data1, data2, callback) ->
-    callback [data1, data2]
+    callback [(Object.keys data1), (Object.keys data2)]
   
   #{{{2 execute
   getWebUntisData (data1) ->
