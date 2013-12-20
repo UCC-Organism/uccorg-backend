@@ -70,8 +70,7 @@ port = 8080
 #       }
 #     }
 try
-  console.log  fs.readFileSync "config.json"
-  config = JSON.parse fs.readFileSync "config.json"
+  config = JSON.parse fs.readFileSync "config.json", "utf8"
 catch e
   config = {}
   console.log e
