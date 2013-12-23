@@ -289,11 +289,13 @@ else
   app.all "/update", (req, res) ->
     handleUCCData req.body, -> res.end()
   # TODO temporary url while rerouting through ssl.solsort.com
-  app.all "/uccorg-update", (req, res) ->
+  app.use "/uccorg-update", (req, res, next) ->
     result = ""
     req.on "data", (data) ->
+      console.log "data"
       result += data
     req.on "end", ->
+      console.log "done"
       fs.writeFile "debug", result
       handleUCCData req.body, -> res.end()
   
