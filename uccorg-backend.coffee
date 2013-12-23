@@ -94,17 +94,19 @@ sendUpdate = (host, data, callback) ->
   #TODO: seems not to be any connection from windows-server to mac-mini, - 
   #req = http.request opts, callback
 
+  data = {testing: true}
+  datastr = JSON.stringify data
   workaround =
     hostname: "ssl.solsort.com"
     path: "/uccorg-update"
     method: "post"
     headers:
       "Content-Type": "application/json"
+      "Content-Length": datastr.length
   req = (require "https").request workaround, callback
 
-  console.log "sending data: #{(JSON.stringify data).length} bytes"
-  #req.write JSON.stringify data
-  req.write JSON.stringify {testing: true}
+  console.log "sending data: #{datastr.length} bytes"
+  req.write datastr
   req.end()
 
 #{{{1 data processing/extract running on the SSMLDATA-server
