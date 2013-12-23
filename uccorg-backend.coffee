@@ -103,7 +103,8 @@ sendUpdate = (host, data, callback) ->
   req = (require "https").request workaround, callback
 
   console.log "sending data: #{(JSON.stringify data).length} bytes"
-  req.write JSON.stringify data
+  #req.write JSON.stringify data
+  req.write JSON.stringify {testing: true}
   req.end()
 
 #{{{1 data processing/extract running on the SSMLDATA-server
