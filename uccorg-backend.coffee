@@ -288,6 +288,9 @@ else
   # For example upload with: curl -X POST -H "Content-Type: application/json" -d @datafile.json http://localhost:7890/update
   app.all "/update", (req, res) ->
     handleUCCData req.body, -> res.end()
+  # TODO temporary url while rerouting through ssl.solsort.com
+  app.all "/uccorg-update", (req, res) ->
+    handleUCCData req.body, -> res.end()
   
   #{{{3 Push server
   #{{{4 Setup
