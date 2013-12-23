@@ -261,8 +261,10 @@ else
   server = app.listen port
   console.log "starting server on port: #{port}"
   #{{{3 REST server
-  app.use express.bodyParser()
+  #app.use express.bodyParser()
   app.use (req, res, next) ->
+    req.on "data", (d) ->
+      console.log "data #{d.length}"
     # no caching, if server through cdn
     res.header "Cache-Control", "public, max-age=0"
     # CORS
@@ -289,7 +291,8 @@ else
   app.all "/update", (req, res) ->
     handleUCCData req.body, -> res.end()
   # TODO temporary url while rerouting through ssl.solsort.com
-  app.use "/uccorg-update", (req, res, next) ->
+  app.use (req, res, next) ->
+    console.log req
     console.log "uccorg-update"
     result = ""
     req.on "data", (data) ->
