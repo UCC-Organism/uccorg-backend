@@ -13,7 +13,14 @@ This is actually code for two different servers:
 In addition to this, there is some shared code, and testing.
 
 ## Done
+### Milestone 2 - running until Dec. 29
 
+- temporarily forwarding data through ssl.solsort.com, as port 8080 from ssmldata to macmini doesn't seem to be open.
+- send data from ssmldata-server to macmini
+
+### Milestone 1 - running until Dec. 22
+
+- get data from sqlserver
 - getting data from webuntis
 - got macmini onto UCCs serverpark
 - live events via faye
@@ -21,28 +28,40 @@ In addition to this, there is some shared code, and testing.
 - got access to provisioned ssmldata-server
 - dummy data-set for automatic test
 - automatic test on macmini with fast time for development
-- deprecated webuntis-based webservice for development
+- deprecated solsort.com running webuntis-based webservice for development
 
-## In progress
 
-- send data from ssmldata-server to macmini
+## To Do
+
 - anonymise/cleanup data from ucc/webuntis
-- get data from sqlserver
 - get data from remote-calendar
-
-## To do
-
 - make servers production-ready
 - test daylight saving handling
 - dashboard / administrative interface
 - train schedule
 
 # Common stuff
+## Dependencies
+
+    
+    fs = require "fs"
+    express = require "express"
+    http = require "http"
+    faye = require "faye"
+    async = require "async"
+    mssql = require "mssql"
+    
+
 ## Configuration
+
 
     
     testing = process.argv[2] == "test"
     ssmldata = process.argv[2] == "ssmldata"
+
+apihost = "uccorg.solsort.com"
+
+    apihost = "10.251.26.11"
     
 
 Filename of data dump
@@ -61,14 +80,25 @@ Port to listen to
     port = 8080
     
 
-## Dependencies
+configuration for access to webuntis/sql, must be a jsonfile with content a la:
 
+    {
+      "webuntis": "...apikey...",
+      "mssql": {
+        "server": "...",
+        "database": "...",
+        "user": "...",
+        "password": "..."
+      }
+    }
+
+    try
+      config = JSON.parse fs.readFileSync "config.json", "utf8"
+    catch e
+      config = {}
+      console.log e
     
-    fs = require "fs"
-    express = require "express"
-    http = require "http"
-    faye = require "faye"
-    async = require "async"
+    console.log config
     
 
 ## Utility functions
@@ -76,17 +106,34 @@ Port to listen to
     getISODate = -> (new Date).toISOString()
     sleep = (t, fn) -> setTimeout fn, t
     sendUpdate = (host, data, callback) ->
+      datastr = JSON.stringify data
+
+escape unicode as ascii
+
+      datastr = datastr.replace /[^\x00-\x7f]/g, (c) ->
+        "\\u" + (0x10000 + c.charCodeAt(0)).toString(16).slice(1)
+    
+
+Configuration - TODO: drop the solsort-part - currently routing through ssl.solsort.com, as connection to server doesn't seem to be open
+
+
+      
       opts =
-        hostname: host
-        port: port
-        path: "/update"
+    
+
+    hostname: host
+    port: port
+
+        hostname: "ssl.solsort.com"
+        path: "/uccorg-update"
         method: "post"
         headers:
           "Content-Type": "application/json"
-    
-    
-      req = http.request opts, callback
-      req.end JSON.stringify data
+          "Content-Length": datastr.length
+      req = (require "https").request opts, callback
+      console.log "sending data: #{datastr.length} bytes"
+      req.write datastr
+      req.end()
     
 
 # data processing/extract running on the SSMLDATA-server
@@ -96,8 +143,23 @@ Port to listen to
 ## Calendar data
 ## SQL Server data source
 
-      getSqlServerData = (callback) ->
-        callback undefined
+      getSqlServerData = (done) ->
+        entries = ["Hold", "Studerende", "Ansatte", "AnsatteHold", "StuderendeHold"]
+        result = {}
+        return done(result) if not config.mssql
+    
+        handleNext = ->
+          return done(result) if entries.length == 0
+          current = entries.pop()
+          req = con.request()
+          req.execute "Get#{current}CampusNord", (err, reqset) ->
+            throw err if err
+            result[current] = reqset
+            handleNext()
+    
+        con = new mssql.Connection config.mssql, (err) ->
+          throw err if err
+          handleNext()
       
 
 ## Webuntis data source
@@ -117,9 +179,8 @@ DEBUG code, run it on cached data instead of loading all of the webuntis data
           console.log e
           undefined
       
-        fs.readFile "apikey.webuntis", "utf8", (err, apikey) ->
-          return webUntisDataDone(err, undefined) if err
-          apikey = apikey.trim()
+        do ->
+          apikey = config.webuntis
           untisCall = 0
 
 webuntis - function for calling the webuntis api
@@ -196,7 +257,9 @@ For each kind of data there is a mapping from id to individual object
 
 
       processData = (data1, data2, callback) ->
-        callback [data1, data2]
+        callback
+          webuntis: data1
+          sqlserver: data2
       
 
 ## execute
@@ -204,7 +267,8 @@ For each kind of data there is a mapping from id to individual object
       getWebUntisData (data1) ->
         getSqlServerData (data2) ->
           processData data1, data2, (result) ->
-            console.log result
+            sendUpdate apihost, result, () ->
+              console.log "submitted to api-server"
     
 
 # event/api-server
@@ -214,6 +278,7 @@ For each kind of data there is a mapping from id to individual object
 ## Pushed to the server from UCC daily.
 
       handleUCCData = (data, done) ->
+        fs.writeFile "#{__dirname}/dump.json", JSON.stringify data
         console.log "handle data update from ucc-server", data
 
 ... update data-object based on UCC-data, include prune old data
@@ -256,7 +321,6 @@ activity start/stop - ordered by time, - used for emitting events
 
 ### REST server
 
-      app.use express.bodyParser()
       app.use (req, res, next) ->
 
 no caching, if server through cdn
@@ -291,6 +355,16 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 
       app.all "/update", (req, res) ->
         handleUCCData req.body, -> res.end()
+
+TODO temporary url while rerouting through ssl.solsort.com
+
+      app.use "/uccorg-update", (req, res, next) ->
+        result = ""
+        req.on "data", (data) ->
+          result += data
+        req.on "end", ->
+          console.log "getting #{result.length} bytes"
+          handleUCCData (JSON.parse result), -> res.end()
       
 
 ### Push server
@@ -326,7 +400,7 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
       
         testResult = ""
         testLog = (args...)->
-          testResult += JSON.stringify(args...) + "\n"
+          testResult += JSON.stringify([args...]) + "\n"
         testDone = ->
           fs.writeFileSync "test.out", testResult
           process.exit()

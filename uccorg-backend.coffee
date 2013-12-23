@@ -8,7 +8,14 @@
 # In addition to this, there is some shared code, and testing.
 #
 # {{{2 Done
+# {{{3 Milestone 2 - running until Dec. 29
 #
+# - temporarily forwarding data through ssl.solsort.com, as port 8080 from ssmldata to macmini doesn't seem to be open.
+# - send data from ssmldata-server to macmini
+#
+# {{{3 Milestone 1 - running until Dec. 22
+#
+# - get data from sqlserver
 # - getting data from webuntis
 # - got macmini onto UCCs serverpark
 # - live events via faye
@@ -16,17 +23,13 @@
 # - got access to provisioned ssmldata-server
 # - dummy data-set for automatic test
 # - automatic test on macmini with fast time for development
-# - deprecated webuntis-based webservice for development
+# - deprecated solsort.com running webuntis-based webservice for development
 #
-# {{{2 In progress
 #
-# - send data from ssmldata-server to macmini
+# {{{2 To Do
+#
 # - anonymise/cleanup data from ucc/webuntis
-# - get data from sqlserver
 # - get data from remote-calendar
-#
-# {{{2 To do
-#
 # - make servers production-ready
 # - test daylight saving handling
 # - dashboard / administrative interface
