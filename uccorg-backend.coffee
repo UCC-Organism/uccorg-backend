@@ -290,6 +290,7 @@ else
     handleUCCData req.body, -> res.end()
   # TODO temporary url while rerouting through ssl.solsort.com
   app.use "/uccorg-update", (req, res, next) ->
+    console.log "uccorg-update"
     result = ""
     req.on "data", (data) ->
       console.log "data"
