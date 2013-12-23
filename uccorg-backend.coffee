@@ -47,7 +47,8 @@ mssql = require "mssql"
 
 testing = process.argv[2] == "test"
 ssmldata = process.argv[2] == "ssmldata"
-apihost = "uccorg.solsort.com"
+#apihost = "uccorg.solsort.com"
+apihost = "10.251.26.11"
 
 # Filename of data dump
 filename = "data.json"
