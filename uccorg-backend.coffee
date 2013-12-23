@@ -294,7 +294,8 @@ else
     req.on "data", (data) ->
       result += data
     req.on "end", ->
-      handleUCCData JSON.parse result, -> res.end()
+      console.log "getting #{result.length} bytes"
+      handleUCCData (JSON.parse result), -> res.end()
   
   #{{{3 Push server
   #{{{4 Setup
