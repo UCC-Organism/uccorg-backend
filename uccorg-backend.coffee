@@ -264,7 +264,6 @@ else
   server = app.listen port
   console.log "starting server on port: #{port}"
   #{{{3 REST server
-  #app.use express.bodyParser()
   app.use (req, res, next) ->
     req.on "data", (d) ->
       console.log "data #{d.length}"
@@ -294,17 +293,12 @@ else
   app.all "/update", (req, res) ->
     handleUCCData req.body, -> res.end()
   # TODO temporary url while rerouting through ssl.solsort.com
-  app.use (req, res, next) ->
-    console.log req
-    console.log "uccorg-update"
+  app.use "/uccorg-update", (req, res, next) ->
     result = ""
     req.on "data", (data) ->
-      console.log "data"
       result += data
     req.on "end", ->
-      console.log "done"
-      fs.writeFile "debug", result
-      handleUCCData req.body, -> res.end()
+      handleUCCData JSON.parse result, -> res.end()
   
   #{{{3 Push server
   #{{{4 Setup
