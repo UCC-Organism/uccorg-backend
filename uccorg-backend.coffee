@@ -94,7 +94,6 @@ sendUpdate = (host, data, callback) ->
   #TODO: seems not to be any connection from windows-server to mac-mini, - 
   #req = http.request opts, callback
 
-  data = {testing: true}
   datastr = JSON.stringify data
   workaround =
     hostname: "ssl.solsort.com"
