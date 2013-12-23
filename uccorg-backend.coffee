@@ -95,6 +95,7 @@ sendUpdate = (host, data, callback) ->
   #req = http.request opts, callback
 
   datastr = JSON.stringify data
+  datastr = datastr.replace /^\x00-\x7f/g, "."
   workaround =
     hostname: "ssl.solsort.com"
     path: "/uccorg-update"
