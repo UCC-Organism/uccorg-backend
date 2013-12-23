@@ -83,28 +83,25 @@ console.log config
 getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
 sendUpdate = (host, data, callback) ->
-  opts =
-    hostname: host
-    port: port
-    path: "/update"
-    method: "post"
-    headers:
-      "Content-Type": "application/json"
-
-  #TODO: seems not to be any connection from windows-server to mac-mini, - 
-  #req = http.request opts, callback
-
   datastr = JSON.stringify data
-  datastr = datastr.replace /[^\x00-\x7f]/g, "."
-  workaround =
+  # escape unicode as ascii
+  datastr = datastr.replace /[^\x00-\x7f]/g, (c) ->
+    "\\u" + (0x10000 + c.charCodeAt(0)).toString(16).slice(1)
+
+  # Configuration - TODO: drop the solsort-part - currently routing through ssl.solsort.com, as connection to server doesn't seem to be open
+  #
+  
+  opts =
+
+  #     hostname: host
+  #     port: port
     hostname: "ssl.solsort.com"
     path: "/uccorg-update"
     method: "post"
     headers:
       "Content-Type": "application/json"
       "Content-Length": datastr.length
-  req = (require "https").request workaround, callback
-
+  req = (require "https").request opts, callback
   console.log "sending data: #{datastr.length} bytes"
   req.write datastr
   req.end()
