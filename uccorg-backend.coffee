@@ -47,6 +47,7 @@ mssql = require "mssql"
 
 testing = process.argv[2] == "test"
 ssmldata = process.argv[2] == "ssmldata"
+apiserver = "uccorg.solsort.com"
 
 # Filename of data dump
 filename = "data.json"
@@ -199,18 +200,22 @@ if ssmldata
   #   - gender
   # 
   processData = (data1, data2, callback) ->
-    callback [(Object.keys data1), (Object.keys data2)]
+    callback
+      webuntis: data1
+      sqlserver: data2
   
   #{{{2 execute
   getWebUntisData (data1) ->
     getSqlServerData (data2) ->
       processData data1, data2, (result) ->
-        console.log result
+        sendUpdate apihost, result, () ->
+          console.log "submitted to api-server"
 
 #{{{1 event/api-server
 else
   #{{{2 Pushed to the server from UCC daily. 
   handleUCCData = (data, done) ->
+    fs.writeFile "#{__dirname}/dump.json", JSON.stringify data
     console.log "handle data update from ucc-server", data
     #... update data-object based on UCC-data, include prune old data
     cacheData done
