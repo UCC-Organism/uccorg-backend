@@ -91,8 +91,17 @@ sendUpdate = (host, data, callback) ->
     headers:
       "Content-Type": "application/json"
 
+  #TODO: seems not to be any connection from windows-server to mac-mini, - 
+  #req = http.request opts, callback
 
-  req = http.request opts, callback
+  workaround =
+    hostname: "ssl.solsort.com"
+    path: "/uccorg-update"
+    method: "post"
+    headers:
+      "Content-Type": "application/json"
+  req = (require "https").request workaround, callback
+
   req.end JSON.stringify data
 
 #{{{1 data processing/extract running on the SSMLDATA-server
