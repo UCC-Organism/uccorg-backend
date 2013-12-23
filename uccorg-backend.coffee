@@ -95,7 +95,7 @@ sendUpdate = (host, data, callback) ->
   #req = http.request opts, callback
 
   datastr = JSON.stringify data
-  datastr = datastr.replace /^\x00-\x7f/g, "."
+  datastr = datastr.replace /[^\x00-\x7f]/g, "."
   workaround =
     hostname: "ssl.solsort.com"
     path: "/uccorg-update"
@@ -266,8 +266,6 @@ else
   console.log "starting server on port: #{port}"
   #{{{3 REST server
   app.use (req, res, next) ->
-    req.on "data", (d) ->
-      console.log "data #{d.length}"
     # no caching, if server through cdn
     res.header "Cache-Control", "public, max-age=0"
     # CORS
