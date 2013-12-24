@@ -192,7 +192,7 @@ if ssmldata
   # The file in the repository contains sample data for test.
   #
   # For each kind of data there is a mapping from id to individual object
-  #
+  #{{{3 Output
   # - activities
   #   - id
   #   - start/end
@@ -212,19 +212,50 @@ if ssmldata
   # - students
   #   - id
   #   - groups
+  #   - programme/type
   #   - gender
-  # 
-  processData = (data1, data2, callback) ->
+  #{{{3 input
+  #
+  # - webuntis
+  #   - locations: untis_id, capacity, longname
+  #   - subjects: untis_id, name, longname, alias
+  #   - lessons: untis_id, start, end, subjects, teachers, groups, locations, course
+  #   - groups: untis_id, name, alias, schoolyear, longname, department
+  #   - teachers: untis_id, name, forename, longname, departments
+  #   - departments: untis_id, name, longname
+  # - sqlserver
+  #   - StuderendeHold: Holdnavn (lessons.alias), Studienummer
+  #   - AnsatteHold: Holdnavn (lessons.alias), Initialer (teacher.name)
+  #   - Ansatte: Initialer, Afdeling, Køn
+  #   - Studerende: Studienummer, Afdeling, Køn
+  #   - Hold: Afdeling, Holdnavn, Beskrivelse, StartDato, SlutDato
+  #
+  #{{{3 Code
+  #
+  processData = (webuntis, sqlserver, callback) ->
+    for key, val of sqlserver
+      console.log key, val[0][0]
     callback
-      webuntis: data1
-      sqlserver: data2
+      webuntis: webuntis
+      sqlserver: sqlserver
   
   #{{{2 execute
-  getWebUntisData (data1) ->
-    getSqlServerData (data2) ->
-      processData data1, data2, (result) ->
-        sendUpdate apihost, result, () ->
-          console.log "submitted to api-server"
+  if config.mssql
+    getWebUntisData (data1) ->
+      getSqlServerData (data2) ->
+        processData data1, data2, (result) ->
+          sendUpdate apihost, result, () ->
+            console.log "submitted to api-server"
+  else
+    fs.readFile "dump.json", (err, data) ->
+      throw err if err
+      data = JSON.parse data
+      processData data.webuntis, data.sqlserver, (result) ->
+        #console.log result
+        fs.writeFileSync "foo.json", JSON.stringify(result, null, 2)
+        # sendUpdate apihost, result, () ->
+        # console.log "submitted to api-server"
+        undefined
 
 #{{{1 event/api-server
 else
