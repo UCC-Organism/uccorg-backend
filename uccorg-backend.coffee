@@ -7,6 +7,11 @@
 #
 # In addition to this, there is some shared code, and testing.
 #
+# {{{2 Status/issues
+#
+# - cannot access macmini through port 8080, - temporary workaround through ssl.solsort.com, but needs to be fixed.
+# - some teachers on webuntis missing from mssql (thus missing gender)
+#
 # {{{2 Done
 # {{{3 Milestone 2 - running until Dec. 29
 #
@@ -231,6 +236,8 @@ if ssmldata
     startTime = "2014-03-10"
     endTime = "2014-03-20"
 
+
+
     #{{{3 Locations
     for _, location of webuntis.locations
       result.locations[location.untis_id] =
@@ -240,8 +247,20 @@ if ssmldata
         capacity: location.capacity
 
     #{{{3 addTeacher TODO
+    teachers = {}
+    for obj in sqlserver.Ansatte[0]
+      teachers[obj.Initialer] = obj
+
     addTeacher = (obj) ->
-      undefined
+      id = obj.untis_id
+      name = obj.name
+      result.teachers[id] =
+        id: id
+        gender: teachers[name]?["Køn"]
+        programme: teachers[name]?["Afdeling"]
+        programmes2: obj.departments.map (id) ->
+          dept = webuntis.departments[id]
+          "#{dept.name} - #{dept.longname}"
 
     #{{{3 addGroup TODO
     addGroup = (obj) ->
@@ -262,7 +281,7 @@ if ssmldata
           end: activity.end
           teachers: activity.teachers.map (untis_id) ->
             addTeacher(webuntis.teachers[untis_id])
-            anonId(webuntis.teachers[untis_id].name)
+            untis_id
           locations: activity.locations
           subject: if activity.subjects.length == 1
               webuntis.subjects[activity.subjects[0]].longname
