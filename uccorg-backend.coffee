@@ -188,56 +188,92 @@ if ssmldata
   
   
   #{{{2 Transform data for the event/api-server
+
+  processData = (webuntis, sqlserver, callback) ->
+
   #
   # The file in the repository contains sample data for test.
   #
   # For each kind of data there is a mapping from id to individual object
-  #{{{3 Output
-  # - activities
-  #   - id
-  #   - start/end
-  #   - teachers - list
-  #   - locations - list
-  #   - subject
-  #   - groups
-  # - groups
-  #   - id
-  #   - group-name
-  #   - programme
-  #   - students
-  # - teachers
-  #   - id
-  #   - gender
-  #   - programme
-  # - students
-  #   - id
-  #   - groups
-  #   - programme/type
-  #   - gender
-  #{{{3 input
-  #
-  # - webuntis
-  #   - locations: untis_id, capacity, longname
-  #   - subjects: untis_id, name, longname, alias
-  #   - lessons: untis_id, start, end, subjects, teachers, groups, locations, course
-  #   - groups: untis_id, name, alias, schoolyear, longname, department
-  #   - teachers: untis_id, name, forename, longname, departments
-  #   - departments: untis_id, name, longname
-  # - sqlserver
-  #   - StuderendeHold: Holdnavn (lessons.alias), Studienummer
-  #   - AnsatteHold: Holdnavn (lessons.alias), Initialer (teacher.name)
-  #   - Ansatte: Initialer, Afdeling, Køn
-  #   - Studerende: Studienummer, Afdeling, Køn
-  #   - Hold: Afdeling, Holdnavn, Beskrivelse, StartDato, SlutDato
-  #
-  #{{{3 Code
-  #
   processData = (webuntis, sqlserver, callback) ->
-    for key, val of sqlserver
-      console.log key, val[0][0]
-    callback
-      webuntis: webuntis
-      sqlserver: sqlserver
+  
+    #{{{3 Output description
+    #
+    # - activities: id, start/end, teachers, locations, subject, groups
+    # - groups: id, group-name, programme, students
+    # - teachers: id, gender, programme
+    # - locations: id, name, longname, capacity
+    # - students, id, groups, programme/type, gender
+   
+    #{{{3 input description
+    #
+    # - webuntis
+    #   - locations: untis_id, capacity, longname
+    #   - subjects: untis_id, name, longname, alias
+    #   - lessons: untis_id, start, end, subjects, teachers, groups, locations, course
+    #   - groups: untis_id, name, alias, schoolyear, longname, department
+    #   - teachers: untis_id, name, forename, longname, departments
+    #   - departments: untis_id, name, longname
+    # - sqlserver
+    #   - StuderendeHold: Holdnavn (lessons.alias), Studienummer
+    #   - AnsatteHold: Holdnavn (lessons.alias), Initialer (teacher.name)
+    #   - Ansatte: Initialer, Afdeling, Køn
+    #   - Studerende: Studienummer, Afdeling, Køn
+    #   - Hold: Afdeling, Holdnavn, Beskrivelse, StartDato, SlutDato
+  
+    #{{{3 Initialisation
+    result =
+      locations: {}
+      activities: {}
+      groups: {}
+      teachers: {}
+      students: {}
+    startTime = "2014-03-10"
+    endTime = "2014-03-20"
+
+    #{{{3 Locations
+    for _, location of webuntis.locations
+      result.locations[location.untis_id] =
+        id: location.untis_id
+        name: location.name
+        longname: location.longname
+        capacity: location.capacity
+
+    #{{{3 addTeacher TODO
+    addTeacher = (obj) ->
+      undefined
+
+    #{{{3 addGroup TODO
+    addGroup = (obj) ->
+      undefined
+
+    #{{{3 Utility for anonymising ids
+    idCounter = 0
+    idAnonTable = {}
+    anonIdTable = {}
+    anonId = (id) -> idAnonTable[id] || (anonIdTable[++idCounter] = id) && (idAnonTable[id] = idCounter)
+        
+    #{{{3 Handle Activities
+    for _, activity of webuntis.lessons
+      if startTime < activity.end && activity.start < endTime && activity.end
+        result.activities[activity.untis_id] =
+          id: activity.untis_id
+          start: activity.start
+          end: activity.end
+          teachers: activity.teachers.map (untis_id) ->
+            addTeacher(webuntis.teachers[untis_id])
+            anonId(webuntis.teachers[untis_id].name)
+          locations: activity.locations
+          subject: if activity.subjects.length == 1
+              webuntis.subjects[activity.subjects[0]].longname
+            else
+              throw "error not single subject: #{JSON.stringify activity}" if activity.subjects.length
+              undefined
+          groups: activity.groups.map (untis_id) ->
+            addGroup(untis_id)
+            untis_id
+    #{{{3 done
+    callback result
   
   #{{{2 execute
   if config.mssql
