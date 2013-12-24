@@ -85,8 +85,6 @@ catch e
   config = {}
   console.log e
 
-console.log config
-
 # {{{2 Utility functions
 getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t
@@ -246,7 +244,7 @@ if ssmldata
         longname: location.longname
         capacity: location.capacity
 
-    #{{{3 addTeacher TODO
+    #{{{3 addTeacher
     teachers = {}
     for obj in sqlserver.Ansatte[0]
       teachers[obj.Initialer] = obj
@@ -262,7 +260,7 @@ if ssmldata
           dept = webuntis.departments[id]
           "#{dept.name} - #{dept.longname}"
 
-    #{{{3 addGroup TODO
+    #{{{3 addGroup (and students) TODO
     addGroup = (obj) ->
       undefined
 
