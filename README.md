@@ -12,6 +12,11 @@ This is actually code for two different servers:
 
 In addition to this, there is some shared code, and testing.
 
+## Status/issues
+
+- cannot access macmini through port 8080, - temporary workaround through ssl.solsort.com, but needs to be fixed.
+- some teachers on webuntis missing from mssql (thus missing gender)
+
 ## Done
 ### Milestone 2 - running until Dec. 29
 
@@ -97,8 +102,6 @@ configuration for access to webuntis/sql, must be a jsonfile with content a la:
     catch e
       config = {}
       console.log e
-    
-    console.log config
     
 
 ## Utility functions
@@ -230,45 +233,150 @@ DEBUG code, run it on cached data instead of loading all of the webuntis data
 
 ## Transform data for the event/api-server
 
+    
+      processData = (webuntis, sqlserver, callback) ->
+    
+
+
 The file in the repository contains sample data for test.
 
 For each kind of data there is a mapping from id to individual object
 
-- activities
-  - id
-  - start/end
-  - teachers - list
-  - locations - list
-  - subject
-  - groups
-- groups
-  - id
-  - group-name
-  - programme
-  - students
-- teachers
-  - id
-  - gender
-  - programme
-- students
-  - id
-  - groups
-  - gender
+      processData = (webuntis, sqlserver, callback) ->
+      
 
+### Output description
 
-      processData = (data1, data2, callback) ->
-        callback
-          webuntis: data1
-          sqlserver: data2
+- activities: id, start/end, teachers, locations, subject, groups
+- groups: id, group-name, programme, students
+- teachers: id, gender, programme
+- locations: id, name, longname, capacity
+- students, id, groups, programme/type, gender
+
+       
+
+### input description
+
+- webuntis
+  - locations: untis_id, capacity, longname
+  - subjects: untis_id, name, longname, alias
+  - lessons: untis_id, start, end, subjects, teachers, groups, locations, course
+  - groups: untis_id, name, alias, schoolyear, longname, department
+  - teachers: untis_id, name, forename, longname, departments
+  - departments: untis_id, name, longname
+- sqlserver
+  - StuderendeHold: Holdnavn (lessons.alias), Studienummer
+  - AnsatteHold: Holdnavn (lessons.alias), Initialer (teacher.name)
+  - Ansatte: Initialer, Afdeling, Køn
+  - Studerende: Studienummer, Afdeling, Køn
+  - Hold: Afdeling, Holdnavn, Beskrivelse, StartDato, SlutDato
+
+      
+
+### Initialisation
+
+        result =
+          locations: {}
+          activities: {}
+          groups: {}
+          teachers: {}
+          students: {}
+        startTime = "2014-03-10"
+        endTime = "2014-03-20"
+    
+    
+    
+
+### Locations
+
+        for _, location of webuntis.locations
+          result.locations[location.untis_id] =
+            id: location.untis_id
+            name: location.name
+            longname: location.longname
+            capacity: location.capacity
+    
+
+### addTeacher
+
+        teachers = {}
+        for obj in sqlserver.Ansatte[0]
+          teachers[obj.Initialer] = obj
+    
+        addTeacher = (obj) ->
+          id = obj.untis_id
+          name = obj.name
+          result.teachers[id] =
+            id: id
+            gender: teachers[name]?["Køn"]
+            programme: teachers[name]?["Afdeling"]
+            programmes2: obj.departments.map (id) ->
+              dept = webuntis.departments[id]
+              "#{dept.name} - #{dept.longname}"
+    
+
+### addGroup (and students) TODO
+
+        addGroup = (obj) ->
+          undefined
+    
+
+### Utility for anonymising ids
+
+        idCounter = 0
+        idAnonTable = {}
+        anonIdTable = {}
+        anonId = (id) -> idAnonTable[id] || (anonIdTable[++idCounter] = id) && (idAnonTable[id] = idCounter)
+            
+
+### Handle Activities
+
+        for _, activity of webuntis.lessons
+          if startTime < activity.end && activity.start < endTime && activity.end
+            result.activities[activity.untis_id] =
+              id: activity.untis_id
+              start: activity.start
+              end: activity.end
+              teachers: activity.teachers.map (untis_id) ->
+                addTeacher(webuntis.teachers[untis_id])
+                untis_id
+              locations: activity.locations
+              subject: if activity.subjects.length == 1
+                  webuntis.subjects[activity.subjects[0]].longname
+                else
+                  throw "error not single subject: #{JSON.stringify activity}" if activity.subjects.length
+                  undefined
+              groups: activity.groups.map (untis_id) ->
+                addGroup(untis_id)
+                untis_id
+
+### done
+
+        callback result
       
 
 ## execute
 
-      getWebUntisData (data1) ->
-        getSqlServerData (data2) ->
-          processData data1, data2, (result) ->
-            sendUpdate apihost, result, () ->
-              console.log "submitted to api-server"
+      if config.mssql
+        getWebUntisData (data1) ->
+          getSqlServerData (data2) ->
+            processData data1, data2, (result) ->
+              sendUpdate apihost, result, () ->
+                console.log "submitted to api-server"
+      else
+        fs.readFile "dump.json", (err, data) ->
+          throw err if err
+          data = JSON.parse data
+          processData data.webuntis, data.sqlserver, (result) ->
+
+console.log result
+
+            fs.writeFileSync "foo.json", JSON.stringify(result, null, 2)
+
+sendUpdate apihost, result, () ->
+console.log "submitted to api-server"
+
+            undefined
     
 
 # event/api-server
