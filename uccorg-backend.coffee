@@ -10,7 +10,9 @@
 # {{{2 Status/issues
 #
 # - cannot access macmini through port 8080, - temporary workaround through ssl.solsort.com, but needs to be fixed.
-# - some teachers on webuntis missing from mssql (thus missing gender)
+# - some teachers on webuntis missing from mssql (thus missing gender non-critical)
+# - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
+# - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
 #
 # {{{2 Done
 # {{{3 Milestone 2 - running until Dec. 29
@@ -194,19 +196,19 @@ if ssmldata
 
   processData = (webuntis, sqlserver, callback) ->
 
-  #
-  # The file in the repository contains sample data for test.
-  #
-  # For each kind of data there is a mapping from id to individual object
-  processData = (webuntis, sqlserver, callback) ->
+    startTime = "2014-03-13"
+    endTime = "2014-03-14"
   
+    # The file in the repository contains sample data for test.
+    #
+    # For each kind of data there is a mapping from id to individual object
+    
     #{{{3 Output description
     #
     # - activities: id, start/end, teachers, locations, subject, groups
-    # - groups: id, group-name, programme, students
+    # - groups: id, group-name, programme, students(id,gender)
     # - teachers: id, gender, programme
     # - locations: id, name, longname, capacity
-    # - students, id, groups, programme/type, gender
    
     #{{{3 input description
     #
@@ -230,11 +232,6 @@ if ssmldata
       activities: {}
       groups: {}
       teachers: {}
-      students: {}
-    startTime = "2014-03-10"
-    endTime = "2014-03-20"
-
-
 
     #{{{3 Locations
     for _, location of webuntis.locations
@@ -256,20 +253,39 @@ if ssmldata
         id: id
         gender: teachers[name]?["Køn"]
         programme: teachers[name]?["Afdeling"]
-        programmes2: obj.departments.map (id) ->
+        programmeDesc: do ->
+          id = obj.departments[0]
           dept = webuntis.departments[id]
-          "#{dept.name} - #{dept.longname}"
+          "#{dept?.name} - #{dept?.longname}"
 
     #{{{3 addGroup (and students) TODO
-    addGroup = (obj) ->
-      undefined
+    students = {}
+    studentId = 0
+    studentIds = {}
+    getStudentId = (studienummer) -> studentIds[studienummer]
 
-    #{{{3 Utility for anonymising ids
-    idCounter = 0
-    idAnonTable = {}
-    anonIdTable = {}
-    anonId = (id) -> idAnonTable[id] || (anonIdTable[++idCounter] = id) && (idAnonTable[id] = idCounter)
-        
+    for obj in sqlserver.Studerende[0]
+      studentIds[obj.Studienummer] = ++studentId
+      students[getStudentId obj.Studienummer] =
+        id: getStudentId obj.Studienummer
+        gender: obj["Køn"]
+
+    groups = {}
+    for obj in sqlserver.Hold[0]
+      groups[obj.Holdnavn] =
+        id: obj.Holdnavn
+        department: obj.Afdeling
+        start: obj.StartDato
+        end: obj.SlutDato
+        students: []
+    for obj in sqlserver.StuderendeHold[0]
+      groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
+
+    addGroup = (obj) ->
+      return if result.groups[obj.alias]
+      grp = result.groups[obj.alias] = groups[obj.alias] || {}
+      grp.id = obj.alias
+
     #{{{3 Handle Activities
     for _, activity of webuntis.lessons
       if startTime < activity.end && activity.start < endTime && activity.end
@@ -287,7 +303,7 @@ if ssmldata
               throw "error not single subject: #{JSON.stringify activity}" if activity.subjects.length
               undefined
           groups: activity.groups.map (untis_id) ->
-            addGroup(untis_id)
+            addGroup webuntis.groups[untis_id]
             untis_id
     #{{{3 done
     callback result
