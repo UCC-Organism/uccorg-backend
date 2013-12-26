@@ -59,83 +59,46 @@ In addition to this, there is some shared code, and testing.
     mssql = require "mssql"
     
 
-## Configuration
+## Load config file
+
+See sample file in `config.json-sample`, and `test.json`.
 
 
     
-    testing = process.argv[2] == "test"
-    ssmldata = process.argv[2] == "ssmldata"
-
-apihost = "uccorg.solsort.com"
-
-    apihost = "10.251.26.11"
-    
-
-Filename of data dump
-
-    filename = "data.json"
-    filename = "sample-data.json" if testing
-    
-
-Ical url 
-
-    icalUrl = "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics"
-    
-
-Port to listen to
-
-    port = 8080
-    
-
-configuration for access to webuntis/sql, must be a jsonfile with content a la:
-
-    {
-      "webuntis": "...apikey...",
-      "mssql": {
-        "server": "...",
-        "database": "...",
-        "user": "...",
-        "password": "..."
-      }
-    }
-
     try
-      config = JSON.parse fs.readFileSync "config.json", "utf8"
+      configfile = process.argv[2]
+      configfile = "config" if !configfile
+      configfile += ".json" if configfile.slice(-5, 0) != ".json"
+      console.log configfile
+      config = JSON.parse fs.readFileSync configfile, "utf8"
     catch e
-      config = {}
       console.log e
+      console.log "could not read configfile #{configfile}"
+      process.exit 1
     
 
 ## Utility functions
 
     getISODate = -> (new Date).toISOString()
     sleep = (t, fn) -> setTimeout fn, t
-    sendUpdate = (host, data, callback) ->
+    sendUpdate = (data, callback) ->
       datastr = JSON.stringify data
 
 escape unicode as ascii
 
       datastr = datastr.replace /[^\x00-\x7f]/g, (c) ->
         "\\u" + (0x10000 + c.charCodeAt(0)).toString(16).slice(1)
-    
-
-Configuration - TODO: drop the solsort-part - currently routing through ssl.solsort.com, as connection to server doesn't seem to be open
-
-
-      
       opts =
-    
-
-    hostname: host
-    port: port
-
-        hostname: "ssl.solsort.com"
-        path: "/uccorg-update"
+        hostname: config.prepare.dest.host
+        path: config.prepare.dest.path || "/uccorg-update"
+        port: config.prepare.dest.port || undefined
         method: "post"
         headers:
           "Content-Type": "application/json"
           "Content-Length": datastr.length
-      req = (require "https").request opts, callback
+      if !(config.prepare.dest.protocol in ["http", "https"])
+        throw "config error: prepare.dest.protocol neither 'http' nor 'https'" 
+      req = (require config.prepare.dest.protocol).request opts, callback
       console.log "sending data: #{datastr.length} bytes"
       req.write datastr
       req.end()
@@ -143,7 +106,7 @@ Configuration - TODO: drop the solsort-part - currently routing through ssl.sols
 
 # data processing/extract running on the SSMLDATA-server
 
-    if ssmldata
+    if config.prepare
 
 ## Calendar data
 ## SQL Server data source
@@ -151,7 +114,7 @@ Configuration - TODO: drop the solsort-part - currently routing through ssl.sols
       getSqlServerData = (done) ->
         entries = ["Hold", "Studerende", "Ansatte", "AnsatteHold", "StuderendeHold"]
         result = {}
-        return done(result) if not config.mssql
+        return done(result) if not config.prepare.mssql
     
         handleNext = ->
           return done(result) if entries.length == 0
@@ -162,7 +125,7 @@ Configuration - TODO: drop the solsort-part - currently routing through ssl.sols
             result[current] = reqset
             handleNext()
     
-        con = new mssql.Connection config.mssql, (err) ->
+        con = new mssql.Connection config.prepare.mssql, (err) ->
           throw err if err
           handleNext()
       
@@ -185,7 +148,7 @@ DEBUG code, run it on cached data instead of loading all of the webuntis data
           undefined
       
         do ->
-          apikey = config.webuntis
+          apikey = config.prepare.webuntis
           untisCall = 0
 
 webuntis - function for calling the webuntis api
@@ -369,25 +332,20 @@ For each kind of data there is a mapping from id to individual object
 
 ## execute
 
-      if config.mssql
+      if config.prepare.mssql
         getWebUntisData (data1) ->
           getSqlServerData (data2) ->
             processData data1, data2, (result) ->
-              sendUpdate apihost, result, () ->
+              sendUpdate result, () ->
                 console.log "submitted to api-server"
       else
         fs.readFile "dump.json", (err, data) ->
           throw err if err
           data = JSON.parse data
           processData data.webuntis, data.sqlserver, (result) ->
-
-console.log result
-
             fs.writeFileSync "foo.json", JSON.stringify(result, null, 4)
-
-sendUpdate apihost, result, () ->
-console.log "submitted to api-server"
-
+            sendUpdate result, () ->
+              console.log "submitted to api-server"
             undefined
     
 
@@ -405,7 +363,7 @@ console.log "submitted to api-server"
 
         cacheData done
       
-      data = JSON.parse fs.readFileSync filename
+      data = JSON.parse fs.readFileSync config.apiserver.cachefile
       cacheData = (done) ->
         fs.writeFile "#{__dirname}/data.json", JSON.stringify(data), done
       
@@ -436,8 +394,8 @@ activity start/stop - ordered by time, - used for emitting events
 ## Server
 
       app = express()
-      server = app.listen port
-      console.log "starting server on port: #{port}"
+      server = app.listen config.apiserver.port
+      console.log "starting server on port: #{config.apiserver.port}"
 
 ### REST server
 
@@ -516,7 +474,7 @@ TODO temporary url while rerouting through ssl.solsort.com
 ## Test
 
 
-      if process.argv[2] == "test"
+      if config.runTest
       
         testResult = ""
         testLog = (args...)->
@@ -559,7 +517,7 @@ Date corresponds to the test data set, and a clock that runs very fast
             testLog "date > testend"
             testDone()
         ), 100000 / testSpeed
-        sendUpdate "localhost", data, -> undefined
+        sendUpdate data, -> undefined
     
 
 
