@@ -196,8 +196,8 @@ if ssmldata
 
   processData = (webuntis, sqlserver, callback) ->
 
-    startTime = "2014-03-13"
-    endTime = "2014-03-14"
+    startTime = "2013-09-20"
+    endTime = "2013-09-21"
   
     # The file in the repository contains sample data for test.
     #
@@ -235,10 +235,9 @@ if ssmldata
 
     #{{{3 Locations
     for _, location of webuntis.locations
-      result.locations[location.untis_id] =
-        id: location.untis_id
-        name: location.name
-        longname: location.longname
+      result.locations[location.name] =
+        id: location.name
+        name: location.longname
         capacity: location.capacity
 
     #{{{3 addTeacher
@@ -258,7 +257,7 @@ if ssmldata
           dept = webuntis.departments[id]
           "#{dept?.name} - #{dept?.longname}"
 
-    #{{{3 addGroup (and students) TODO
+    #{{{3 addGroup (and students)
     students = {}
     studentId = 0
     studentIds = {}
@@ -282,9 +281,13 @@ if ssmldata
       groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
 
     addGroup = (obj) ->
-      return if result.groups[obj.alias]
+      return obj.alias if result.groups[obj.alias]
       grp = result.groups[obj.alias] = groups[obj.alias] || {}
       grp.id = obj.alias
+      grp.group = obj.name
+      dept = webuntis.departments[obj.department]
+      grp.programme = "#{dept?.name} - #{dept?.longname}"
+      obj.alias
 
     #{{{3 Handle Activities
     for _, activity of webuntis.lessons
@@ -296,15 +299,10 @@ if ssmldata
           teachers: activity.teachers.map (untis_id) ->
             addTeacher(webuntis.teachers[untis_id])
             untis_id
-          locations: activity.locations
-          subject: if activity.subjects.length == 1
-              webuntis.subjects[activity.subjects[0]].longname
-            else
-              throw "error not single subject: #{JSON.stringify activity}" if activity.subjects.length
-              undefined
+          locations: activity.locations.map (loc) -> webuntis.locations[loc].name
+          subject: activity.subjects.map((subj) -> webuntis.subjects[subj].longname).join(" ")
           groups: activity.groups.map (untis_id) ->
             addGroup webuntis.groups[untis_id]
-            untis_id
     #{{{3 done
     callback result
   
@@ -321,7 +319,7 @@ if ssmldata
       data = JSON.parse data
       processData data.webuntis, data.sqlserver, (result) ->
         #console.log result
-        fs.writeFileSync "foo.json", JSON.stringify(result, null, 2)
+        fs.writeFileSync "foo.json", JSON.stringify(result, null, 4)
         # sendUpdate apihost, result, () ->
         # console.log "submitted to api-server"
         undefined
