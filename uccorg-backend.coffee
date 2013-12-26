@@ -435,4 +435,4 @@ else
         testLog "date > testend"
         testDone()
     ), 100000 / testSpeed
-    sendUpdate data, -> undefined
+    #sendUpdate data, -> undefined
