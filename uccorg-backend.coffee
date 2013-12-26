@@ -272,7 +272,7 @@ if ssmldata
     groups = {}
     for obj in sqlserver.Hold[0]
       groups[obj.Holdnavn] =
-        id: obj.Holdnavn
+        name: obj.Holdnavn
         department: obj.Afdeling
         start: obj.StartDato
         end: obj.SlutDato
@@ -281,13 +281,13 @@ if ssmldata
       groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
 
     addGroup = (obj) ->
-      return obj.alias if result.groups[obj.alias]
-      grp = result.groups[obj.alias] = groups[obj.alias] || {}
-      grp.id = obj.alias
+      return obj.untis_id if result.groups[obj.untis_id]
+      grp = result.groups[obj.untis_id] = groups[obj.alias] || {}
+      grp.id = obj.untis_id
       grp.group = obj.name
       dept = webuntis.departments[obj.department]
       grp.programme = "#{dept?.name} - #{dept?.longname}"
-      obj.alias
+      grp.id
 
     #{{{3 Handle Activities
     for _, activity of webuntis.lessons
