@@ -1,4 +1,211 @@
 {
+    "locations": {
+        "Auditorium": {
+            "id": "Auditorium",
+            "name": "Auditorium C.028",
+            "capacity": 148
+        },
+        "C.108": {
+            "id": "C.108",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.107": {
+            "id": "C.107",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.106": {
+            "id": "C.106",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.101": {
+            "id": "C.101",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.116": {
+            "id": "C.116",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.117": {
+            "id": "C.117",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.208": {
+            "id": "C.208",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.206": {
+            "id": "C.206",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.201": {
+            "id": "C.201",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.226": {
+            "id": "C.226",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "C.230": {
+            "id": "C.230",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "B.101": {
+            "id": "B.101",
+            "name": "Teori",
+            "capacity": 32
+        },
+        "A.101": {
+            "id": "A.101",
+            "name": "Teori",
+            "capacity": 100
+        },
+        "A.102": {
+            "id": "A.102",
+            "name": "Teori",
+            "capacity": 36
+        },
+        "A.103": {
+            "id": "A.103",
+            "name": "Teori",
+            "capacity": 60
+        },
+        "A.124": {
+            "id": "A.124",
+            "name": "Teori",
+            "capacity": 40
+        },
+        "Bevægelse 1": {
+            "id": "Bevægelse 1",
+            "name": "Bevægelsessal 1 (L)",
+            "capacity": 30
+        },
+        "Bevægelse 2": {
+            "id": "Bevægelse 2",
+            "name": "Bevægelsessal 2 (S)",
+            "capacity": 40
+        },
+        "Brikserum C.125": {
+            "id": "Brikserum C.125",
+            "name": "Brikserum (L)",
+            "capacity": 40
+        },
+        "Brikserum C.129": {
+            "id": "Brikserum C.129",
+            "name": "Brikserum (S)",
+            "capacity": 44
+        },
+        "Behandlingsrum C.033": {
+            "id": "Behandlingsrum C.033",
+            "name": "Behandlingsrum C.033",
+            "capacity": 20
+        },
+        "Bevægelse B001": {
+            "id": "Bevægelse B001",
+            "name": "Bevægelsessal B001",
+            "capacity": 40
+        },
+        "Teatersal": {
+            "id": "Teatersal",
+            "name": "Teatersal",
+            "capacity": 40
+        },
+        "A.004": {
+            "id": "A.004",
+            "name": "VNT - Teori",
+            "capacity": 40
+        },
+        "C.123": {
+            "id": "C.123",
+            "name": "Naturvidensk. Café C.123",
+            "capacity": 40
+        },
+        "C.224": {
+            "id": "C.224",
+            "name": "Mikrobiologi",
+            "capacity": 40
+        },
+        "SIM Lab C.220": {
+            "id": "SIM Lab C.220",
+            "name": "SIM Lab (H-L-R)",
+            "capacity": 6
+        },
+        "Learning Lab C.216": {
+            "id": "Learning Lab C.216",
+            "name": "Learning Lab",
+            "capacity": 4
+        },
+        "FrederiksborgCentret": {
+            "id": "FrederiksborgCentret",
+            "name": "Frederiksborg Centret",
+            "capacity": 60
+        },
+        "Ude af huset": {
+            "id": "Ude af huset",
+            "name": "Ude af huset",
+            "capacity": null
+        },
+        "Grupperum C113": {
+            "id": "Grupperum C113",
+            "name": "Grupperum 1. sal",
+            "capacity": 10
+        },
+        "Grupperum C213": {
+            "id": "Grupperum C213",
+            "name": "Grupperum 2. sal",
+            "capacity": 10
+        },
+        "Atrium": {
+            "id": "Atrium",
+            "name": "Atrium",
+            "capacity": 300
+        },
+        "Kantine": {
+            "id": "Kantine",
+            "name": "Kantine",
+            "capacity": 150
+        },
+        "Bevægelse B.001": {
+            "id": "Bevægelse B.001",
+            "name": "Bevægelsessal B.001",
+            "capacity": 40
+        },
+        "Grupperum C.113": {
+            "id": "Grupperum C.113",
+            "name": "Grupperum 1. sal",
+            "capacity": 10
+        },
+        "Grupperum C.213": {
+            "id": "Grupperum C.213",
+            "name": "Grupperum 2. sal",
+            "capacity": 10
+        },
+        "Konference B.105": {
+            "id": "Konference B.105",
+            "name": "Konference B.105",
+            "capacity": 15
+        },
+        "Reservér selv flexru": {
+            "id": "Reservér selv flexru",
+            "name": "Flexrum",
+            "capacity": null
+        },
+        "Studieadministration": {
+            "id": "Studieadministration",
+            "name": "Studieadministrationen",
+            "capacity": null
+        }
+    },
     "activities": {
         "191": {
             "id": 191,
@@ -40,7 +247,7 @@
             "locations": [
                 "C.224"
             ],
-            "subject": "Ana/fys og biokemi",
+            "subject": "Anatomi, fysiologi og biokemi",
             "groups": [
                 2
             ]
@@ -55,7 +262,7 @@
             "locations": [
                 "C.224"
             ],
-            "subject": "Ana/fys og biokemi",
+            "subject": "Anatomi, fysiologi og biokemi",
             "groups": [
                 2
             ]
@@ -70,7 +277,7 @@
             "locations": [
                 "C.224"
             ],
-            "subject": "Ana/fys og biokemi",
+            "subject": "Anatomi, fysiologi og biokemi",
             "groups": [
                 2
             ]
@@ -85,7 +292,7 @@
             "locations": [
                 "C.206"
             ],
-            "subject": "Ana/fys og genetik",
+            "subject": "Anatomi, fysiologi og Genetik",
             "groups": [
                 8
             ]
@@ -100,7 +307,7 @@
             "locations": [
                 "C.206"
             ],
-            "subject": "Ana/fys og genetik",
+            "subject": "Anatomi, fysiologi og Genetik",
             "groups": [
                 8
             ]
@@ -115,7 +322,7 @@
             "locations": [
                 "C.206"
             ],
-            "subject": "Ana/fys og genetik",
+            "subject": "Anatomi, fysiologi og Genetik",
             "groups": [
                 8
             ]
@@ -330,7 +537,7 @@
             "locations": [
                 "C.201"
             ],
-            "subject": "Guided egen beslutn.",
+            "subject": "Guided egen beslutning",
             "groups": [
                 28
             ]
@@ -345,7 +552,7 @@
             "locations": [
                 "C.201"
             ],
-            "subject": "Guided egen beslutn.",
+            "subject": "Guided egen beslutning",
             "groups": [
                 28
             ]
@@ -360,7 +567,7 @@
             "locations": [
                 "C.201"
             ],
-            "subject": "Guided egen beslutn.",
+            "subject": "Guided egen beslutning",
             "groups": [
                 28
             ]
@@ -375,7 +582,7 @@
             "locations": [
                 "C.201"
             ],
-            "subject": "Guided egen beslutn.",
+            "subject": "Guided egen beslutning",
             "groups": [
                 28
             ]
@@ -500,7 +707,7 @@
             "locations": [
                 "Bevægelse B.001"
             ],
-            "subject": "Samundervisning M1 &",
+            "subject": "Gruppe uv - M1 & M9 kombo",
             "groups": [
                 33,
                 41
@@ -516,7 +723,7 @@
             "locations": [
                 "Bevægelse B.001"
             ],
-            "subject": "Samundervisning M1 &",
+            "subject": "Gruppe uv - M1 & M9 kombo",
             "groups": [
                 33,
                 41
@@ -532,7 +739,7 @@
             "locations": [
                 "Bevægelse B.001"
             ],
-            "subject": "Samundervisning M1 &",
+            "subject": "Gruppe uv - M1 & M9 kombo",
             "groups": [
                 33,
                 41
@@ -593,7 +800,7 @@
             "locations": [
                 "Behandlingsrum C.033"
             ],
-            "subject": "Samundervisning M1 &",
+            "subject": "Gruppe uv - M1 & M9 kombo",
             "groups": [
                 41
             ]
@@ -608,7 +815,7 @@
             "locations": [
                 "Behandlingsrum C.033"
             ],
-            "subject": "Samundervisning M1 &",
+            "subject": "Gruppe uv - M1 & M9 kombo",
             "groups": [
                 41
             ]
@@ -623,7 +830,7 @@
             "locations": [
                 "Behandlingsrum C.033"
             ],
-            "subject": "Samundervisning M1 &",
+            "subject": "Gruppe uv - M1 & M9 kombo",
             "groups": [
                 41
             ]
@@ -773,7 +980,7 @@
             "locations": [
                 "B.101"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -788,7 +995,7 @@
             "locations": [
                 "B.101"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -803,7 +1010,7 @@
             "locations": [
                 "B.101"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -818,7 +1025,7 @@
             "locations": [
                 "B.101"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -833,7 +1040,7 @@
             "locations": [
                 "A.103"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -848,7 +1055,7 @@
             "locations": [
                 "A.103"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -863,7 +1070,7 @@
             "locations": [
                 "A.103"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -878,7 +1085,7 @@
             "locations": [
                 "A.103"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -893,7 +1100,7 @@
             "locations": [
                 "C.226"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -908,7 +1115,7 @@
             "locations": [
                 "C.226"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -923,7 +1130,7 @@
             "locations": [
                 "C.226"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -938,7 +1145,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 62
             ]
@@ -953,7 +1160,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 62
             ]
@@ -968,7 +1175,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 62
             ]
@@ -983,7 +1190,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 62
             ]
@@ -998,7 +1205,7 @@
             "locations": [
                 "C.106"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 66
             ]
@@ -1013,7 +1220,7 @@
             "locations": [
                 "C.106"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 66
             ]
@@ -1028,7 +1235,7 @@
             "locations": [
                 "C.106"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 66
             ]
@@ -1043,7 +1250,7 @@
             "locations": [
                 "C.106"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 66
             ]
@@ -1058,7 +1265,7 @@
             "locations": [
                 "C.107"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 70
             ]
@@ -1073,7 +1280,7 @@
             "locations": [
                 "C.107"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 70
             ]
@@ -1088,7 +1295,7 @@
             "locations": [
                 "C.107"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 70
             ]
@@ -1103,7 +1310,7 @@
             "locations": [
                 "C.107"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 70
             ]
@@ -1118,7 +1325,7 @@
             "locations": [
                 "C.230"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 84
             ]
@@ -1133,7 +1340,7 @@
             "locations": [
                 "C.230"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 84
             ]
@@ -1148,7 +1355,7 @@
             "locations": [
                 "C.230"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 84
             ]
@@ -1163,7 +1370,7 @@
             "locations": [
                 "C.230"
             ],
-            "subject": "PÆD",
+            "subject": "Pædagogik",
             "groups": [
                 84
             ]
@@ -1178,7 +1385,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 85
             ]
@@ -1193,7 +1400,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 85
             ]
@@ -1208,7 +1415,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 85
             ]
@@ -1223,7 +1430,7 @@
             "locations": [
                 "C.101"
             ],
-            "subject": "IIS",
+            "subject": "Inst/individ/samfund",
             "groups": [
                 85
             ]
@@ -1234,7 +1441,7 @@
             "end": "2013-09-20T07:25:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1247,7 +1454,7 @@
             "end": "2013-09-20T08:20:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1260,7 +1467,7 @@
             "end": "2013-09-20T09:15:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1273,7 +1480,7 @@
             "end": "2013-09-20T10:10:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1286,7 +1493,7 @@
             "end": "2013-09-20T11:05:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1299,7 +1506,7 @@
             "end": "2013-09-20T12:00:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1312,7 +1519,7 @@
             "end": "2013-09-20T12:55:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1325,7 +1532,7 @@
             "end": "2013-09-20T13:50:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1338,7 +1545,7 @@
             "end": "2013-09-20T14:45:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1351,7 +1558,7 @@
             "end": "2013-09-20T15:30:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1364,7 +1571,7 @@
             "end": "2013-09-20T18:15:00",
             "teachers": [],
             "locations": [],
-            "subject": "Opgaveskriv. og vejl",
+            "subject": "Opgaveskrivning og vejledning",
             "groups": [
                 100,
                 101,
@@ -1445,7 +1652,7 @@
             "locations": [
                 "Auditorium"
             ],
-            "subject": "S-Forældresamtaler o",
+            "subject": "S-Forældresamtalen",
             "groups": [
                 63,
                 86
@@ -1461,7 +1668,7 @@
             "locations": [
                 "Auditorium"
             ],
-            "subject": "S-Forældresamtaler o",
+            "subject": "S-Forældresamtalen",
             "groups": [
                 63,
                 86
@@ -1477,7 +1684,7 @@
             "locations": [
                 "Auditorium"
             ],
-            "subject": "S-Forældresamtaler o",
+            "subject": "S-Forældresamtalen",
             "groups": [
                 63,
                 86
@@ -1493,7 +1700,7 @@
             "locations": [
                 "Auditorium"
             ],
-            "subject": "S-Forældresamtaler o",
+            "subject": "S-Forældresamtalen",
             "groups": [
                 63,
                 86
@@ -1808,7 +2015,7 @@
             "locations": [
                 "A.124"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -1823,7 +2030,7 @@
             "locations": [
                 "A.124"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -1838,7 +2045,7 @@
             "locations": [
                 "A.124"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -1853,7 +2060,7 @@
             "locations": [
                 "C.226"
             ],
-            "subject": "Interventionsstudie",
+            "subject": "Sundhedsvidenskabelig metode/interventionsstudier",
             "groups": [
                 22
             ]
@@ -1868,7 +2075,7 @@
             "locations": [
                 "C.226"
             ],
-            "subject": "Interventionsstudie",
+            "subject": "Sundhedsvidenskabelig metode/interventionsstudier",
             "groups": [
                 22
             ]
@@ -1883,7 +2090,7 @@
             "locations": [
                 "C.226"
             ],
-            "subject": "Interventionsstudie",
+            "subject": "Sundhedsvidenskabelig metode/interventionsstudier",
             "groups": [
                 22
             ]
@@ -2263,7 +2470,7 @@
             "locations": [
                 "C.108"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -2278,7 +2485,7 @@
             "locations": [
                 "C.108"
             ],
-            "subject": "Modul 5 undervisning",
+            "subject": "Modul 5 undervisning jf. særskilt skema",
             "groups": [
                 123
             ]
@@ -2383,7 +2590,7 @@
             "locations": [
                 "A.004"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 109
             ]
@@ -2398,7 +2605,7 @@
             "locations": [
                 "A.004"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 109
             ]
@@ -2413,7 +2620,7 @@
             "locations": [
                 "A.004"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 109
             ]
@@ -2428,7 +2635,7 @@
             "locations": [
                 "A.004"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 109
             ]
@@ -2443,7 +2650,7 @@
             "locations": [
                 "A.004"
             ],
-            "subject": "DKK",
+            "subject": "Dansk/kultur/kommunik.",
             "groups": [
                 109
             ]
@@ -2718,360 +2925,4722 @@
     },
     "groups": {
         "1": {
-            "id": "1",
+            "name": "splE13A",
+            "department": "219405",
+            "start": "25-08-2013",
+            "end": "31-01-2017",
+            "students": [
+                {
+                    "id": 2799,
+                    "gender": 0
+                },
+                {
+                    "id": 2826,
+                    "gender": 0
+                },
+                {
+                    "id": 2592,
+                    "gender": 0
+                },
+                {
+                    "id": 2593,
+                    "gender": 0
+                },
+                {
+                    "id": 2601,
+                    "gender": 0
+                },
+                {
+                    "id": 2602,
+                    "gender": 0
+                },
+                {
+                    "id": 2839,
+                    "gender": 0
+                },
+                {
+                    "id": 2842,
+                    "gender": 0
+                },
+                {
+                    "id": 2843,
+                    "gender": 0
+                },
+                {
+                    "id": 2844,
+                    "gender": 0
+                },
+                {
+                    "id": 2603,
+                    "gender": 0
+                },
+                {
+                    "id": 2850,
+                    "gender": 0
+                },
+                {
+                    "id": 2608,
+                    "gender": 0
+                },
+                {
+                    "id": 2824,
+                    "gender": 0
+                },
+                {
+                    "id": 2587,
+                    "gender": 0
+                },
+                {
+                    "id": 2829,
+                    "gender": 0
+                },
+                {
+                    "id": 2830,
+                    "gender": 0
+                },
+                {
+                    "id": 2590,
+                    "gender": 0
+                },
+                {
+                    "id": 2832,
+                    "gender": 0
+                },
+                {
+                    "id": 2597,
+                    "gender": 0
+                },
+                {
+                    "id": 2598,
+                    "gender": 0
+                },
+                {
+                    "id": 2841,
+                    "gender": 0
+                },
+                {
+                    "id": 2846,
+                    "gender": 0
+                },
+                {
+                    "id": 2604,
+                    "gender": 0
+                },
+                {
+                    "id": 2605,
+                    "gender": 0
+                },
+                {
+                    "id": 2606,
+                    "gender": 0
+                },
+                {
+                    "id": 2607,
+                    "gender": 0
+                },
+                {
+                    "id": 2868,
+                    "gender": 0
+                }
+            ],
+            "id": 1,
             "group": "SPL M1 - E13 A",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "2": {
-            "id": "2",
+            "name": "splE13B",
+            "department": "219405",
+            "start": "25-08-2013",
+            "end": "31-01-2017",
+            "students": [
+                {
+                    "id": 2548,
+                    "gender": 0
+                },
+                {
+                    "id": 2583,
+                    "gender": 1
+                },
+                {
+                    "id": 2825,
+                    "gender": 0
+                },
+                {
+                    "id": 2585,
+                    "gender": 0
+                },
+                {
+                    "id": 2827,
+                    "gender": 0
+                },
+                {
+                    "id": 2589,
+                    "gender": 1
+                },
+                {
+                    "id": 2831,
+                    "gender": 0
+                },
+                {
+                    "id": 2591,
+                    "gender": 0
+                },
+                {
+                    "id": 2833,
+                    "gender": 0
+                },
+                {
+                    "id": 2837,
+                    "gender": 0
+                },
+                {
+                    "id": 2838,
+                    "gender": 1
+                },
+                {
+                    "id": 2600,
+                    "gender": 0
+                },
+                {
+                    "id": 2840,
+                    "gender": 1
+                },
+                {
+                    "id": 2845,
+                    "gender": 0
+                },
+                {
+                    "id": 2849,
+                    "gender": 0
+                },
+                {
+                    "id": 583,
+                    "gender": 0
+                },
+                {
+                    "id": 2797,
+                    "gender": 0
+                },
+                {
+                    "id": 2584,
+                    "gender": 0
+                },
+                {
+                    "id": 2828,
+                    "gender": 0
+                },
+                {
+                    "id": 2586,
+                    "gender": 1
+                },
+                {
+                    "id": 2588,
+                    "gender": 1
+                },
+                {
+                    "id": 2834,
+                    "gender": 1
+                },
+                {
+                    "id": 2594,
+                    "gender": 1
+                },
+                {
+                    "id": 2835,
+                    "gender": 0
+                },
+                {
+                    "id": 2595,
+                    "gender": 1
+                },
+                {
+                    "id": 2836,
+                    "gender": 0
+                },
+                {
+                    "id": 2596,
+                    "gender": 0
+                },
+                {
+                    "id": 2599,
+                    "gender": 0
+                },
+                {
+                    "id": 2847,
+                    "gender": 0
+                },
+                {
+                    "id": 2848,
+                    "gender": 0
+                }
+            ],
+            "id": 2,
             "group": "SPL M1 - E13 B",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "8": {
-            "id": "8",
+            "name": "splF13B",
+            "department": "219405",
+            "start": "01-02-2013",
+            "end": "30-06-2016",
+            "students": [
+                {
+                    "id": 32,
+                    "gender": 0
+                },
+                {
+                    "id": 2515,
+                    "gender": 0
+                },
+                {
+                    "id": 2767,
+                    "gender": 0
+                },
+                {
+                    "id": 2543,
+                    "gender": 0
+                },
+                {
+                    "id": 2789,
+                    "gender": 0
+                },
+                {
+                    "id": 2790,
+                    "gender": 0
+                },
+                {
+                    "id": 2545,
+                    "gender": 0
+                },
+                {
+                    "id": 2546,
+                    "gender": 0
+                },
+                {
+                    "id": 2798,
+                    "gender": 0
+                },
+                {
+                    "id": 2799,
+                    "gender": 0
+                },
+                {
+                    "id": 2801,
+                    "gender": 0
+                },
+                {
+                    "id": 2803,
+                    "gender": 0
+                },
+                {
+                    "id": 2804,
+                    "gender": 0
+                },
+                {
+                    "id": 2564,
+                    "gender": 0
+                },
+                {
+                    "id": 2809,
+                    "gender": 0
+                },
+                {
+                    "id": 2567,
+                    "gender": 0
+                },
+                {
+                    "id": 2570,
+                    "gender": 0
+                },
+                {
+                    "id": 2810,
+                    "gender": 0
+                },
+                {
+                    "id": 2571,
+                    "gender": 0
+                },
+                {
+                    "id": 2573,
+                    "gender": 0
+                },
+                {
+                    "id": 2574,
+                    "gender": 0
+                },
+                {
+                    "id": 2575,
+                    "gender": 0
+                },
+                {
+                    "id": 2817,
+                    "gender": 0
+                },
+                {
+                    "id": 2818,
+                    "gender": 1
+                },
+                {
+                    "id": 2822,
+                    "gender": 1
+                },
+                {
+                    "id": 161,
+                    "gender": 0
+                },
+                {
+                    "id": 188,
+                    "gender": 0
+                },
+                {
+                    "id": 2758,
+                    "gender": 0
+                },
+                {
+                    "id": 2788,
+                    "gender": 0
+                },
+                {
+                    "id": 2794,
+                    "gender": 0
+                },
+                {
+                    "id": 2551,
+                    "gender": 0
+                },
+                {
+                    "id": 2552,
+                    "gender": 0
+                },
+                {
+                    "id": 2556,
+                    "gender": 0
+                },
+                {
+                    "id": 2557,
+                    "gender": 0
+                },
+                {
+                    "id": 2807,
+                    "gender": 0
+                },
+                {
+                    "id": 2561,
+                    "gender": 0
+                },
+                {
+                    "id": 2562,
+                    "gender": 0
+                },
+                {
+                    "id": 2565,
+                    "gender": 0
+                },
+                {
+                    "id": 2566,
+                    "gender": 0
+                },
+                {
+                    "id": 2569,
+                    "gender": 0
+                },
+                {
+                    "id": 2572,
+                    "gender": 0
+                },
+                {
+                    "id": 2576,
+                    "gender": 0
+                },
+                {
+                    "id": 2578,
+                    "gender": 0
+                },
+                {
+                    "id": 2580,
+                    "gender": 0
+                },
+                {
+                    "id": 2816,
+                    "gender": 0
+                },
+                {
+                    "id": 2582,
+                    "gender": 0
+                },
+                {
+                    "id": 2820,
+                    "gender": 0
+                }
+            ],
+            "id": 8,
             "group": "SPL M 3.1 - F13 B",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "18": {
-            "id": "18",
+            "id": 18,
             "group": "SPL M6.1 - F12 B",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "22": {
-            "id": "22",
+            "id": 22,
             "group": "SPL M9 - E11 A",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "23": {
-            "id": "23",
+            "id": 23,
             "group": "SPL M9 - E11 B",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "28": {
-            "id": "28",
+            "id": 28,
             "group": "SPL M13 - Akut",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "29": {
-            "id": "29",
+            "id": 29,
             "group": "SPL M13 - Palliativ",
-            "programme": "SPL"
+            "programme": "SPL - Sygeplejerskeuddannelsen"
         },
         "33": {
-            "id": "33",
+            "name": "pmuE13",
+            "department": "173409",
+            "start": "01-09-2013",
+            "end": "31-01-2017",
+            "students": [
+                {
+                    "id": 2260,
+                    "gender": 0
+                },
+                {
+                    "id": 2290,
+                    "gender": 0
+                },
+                {
+                    "id": 2030,
+                    "gender": 0
+                },
+                {
+                    "id": 2328,
+                    "gender": 0
+                },
+                {
+                    "id": 2031,
+                    "gender": 0
+                },
+                {
+                    "id": 2329,
+                    "gender": 1
+                },
+                {
+                    "id": 2033,
+                    "gender": 0
+                },
+                {
+                    "id": 2335,
+                    "gender": 0
+                },
+                {
+                    "id": 2034,
+                    "gender": 0
+                },
+                {
+                    "id": 2336,
+                    "gender": 0
+                },
+                {
+                    "id": 2337,
+                    "gender": 1
+                },
+                {
+                    "id": 2035,
+                    "gender": 0
+                },
+                {
+                    "id": 2036,
+                    "gender": 1
+                },
+                {
+                    "id": 2037,
+                    "gender": 0
+                },
+                {
+                    "id": 2038,
+                    "gender": 1
+                },
+                {
+                    "id": 2039,
+                    "gender": 0
+                },
+                {
+                    "id": 2041,
+                    "gender": 0
+                },
+                {
+                    "id": 2340,
+                    "gender": 0
+                },
+                {
+                    "id": 2341,
+                    "gender": 0
+                },
+                {
+                    "id": 2046,
+                    "gender": 0
+                },
+                {
+                    "id": 2345,
+                    "gender": 0
+                },
+                {
+                    "id": 2050,
+                    "gender": 0
+                },
+                {
+                    "id": 2346,
+                    "gender": 0
+                },
+                {
+                    "id": 1982,
+                    "gender": 0
+                },
+                {
+                    "id": 2287,
+                    "gender": 0
+                },
+                {
+                    "id": 2004,
+                    "gender": 0
+                },
+                {
+                    "id": 2014,
+                    "gender": 0
+                },
+                {
+                    "id": 2330,
+                    "gender": 0
+                },
+                {
+                    "id": 2331,
+                    "gender": 0
+                },
+                {
+                    "id": 2332,
+                    "gender": 0
+                },
+                {
+                    "id": 2032,
+                    "gender": 0
+                },
+                {
+                    "id": 2333,
+                    "gender": 0
+                },
+                {
+                    "id": 2334,
+                    "gender": 0
+                },
+                {
+                    "id": 2338,
+                    "gender": 1
+                },
+                {
+                    "id": 2040,
+                    "gender": 0
+                },
+                {
+                    "id": 2339,
+                    "gender": 0
+                },
+                {
+                    "id": 2042,
+                    "gender": 0
+                },
+                {
+                    "id": 2043,
+                    "gender": 0
+                },
+                {
+                    "id": 2044,
+                    "gender": 0
+                },
+                {
+                    "id": 2342,
+                    "gender": 0
+                },
+                {
+                    "id": 2343,
+                    "gender": 0
+                },
+                {
+                    "id": 2045,
+                    "gender": 1
+                },
+                {
+                    "id": 2344,
+                    "gender": 0
+                },
+                {
+                    "id": 2047,
+                    "gender": 0
+                },
+                {
+                    "id": 2048,
+                    "gender": 0
+                },
+                {
+                    "id": 2049,
+                    "gender": 0
+                }
+            ],
+            "id": 33,
             "group": "PMU M1 - E13",
-            "programme": "PMU"
+            "programme": "PMU - Psykomotorikuddannelsen"
         },
         "35": {
-            "id": "35",
+            "name": "pmuF13",
+            "department": "173409",
+            "start": "04-02-2013",
+            "end": "30-06-2016",
+            "students": [
+                {
+                    "id": 1958,
+                    "gender": 0
+                },
+                {
+                    "id": 2264,
+                    "gender": 0
+                },
+                {
+                    "id": 2004,
+                    "gender": 0
+                },
+                {
+                    "id": 2008,
+                    "gender": 0
+                },
+                {
+                    "id": 2310,
+                    "gender": 0
+                },
+                {
+                    "id": 2013,
+                    "gender": 0
+                },
+                {
+                    "id": 2014,
+                    "gender": 0
+                },
+                {
+                    "id": 2312,
+                    "gender": 0
+                },
+                {
+                    "id": 2314,
+                    "gender": 0
+                },
+                {
+                    "id": 2019,
+                    "gender": 0
+                },
+                {
+                    "id": 2315,
+                    "gender": 0
+                },
+                {
+                    "id": 2319,
+                    "gender": 0
+                },
+                {
+                    "id": 2320,
+                    "gender": 0
+                },
+                {
+                    "id": 2023,
+                    "gender": 0
+                },
+                {
+                    "id": 2024,
+                    "gender": 0
+                },
+                {
+                    "id": 2025,
+                    "gender": 0
+                },
+                {
+                    "id": 2324,
+                    "gender": 0
+                },
+                {
+                    "id": 2325,
+                    "gender": 0
+                },
+                {
+                    "id": 2326,
+                    "gender": 0
+                },
+                {
+                    "id": 2026,
+                    "gender": 0
+                },
+                {
+                    "id": 2027,
+                    "gender": 0
+                },
+                {
+                    "id": 2388,
+                    "gender": 0
+                },
+                {
+                    "id": 2271,
+                    "gender": 0
+                },
+                {
+                    "id": 1979,
+                    "gender": 0
+                },
+                {
+                    "id": 1982,
+                    "gender": 0
+                },
+                {
+                    "id": 2290,
+                    "gender": 0
+                },
+                {
+                    "id": 2302,
+                    "gender": 0
+                },
+                {
+                    "id": 2308,
+                    "gender": 0
+                },
+                {
+                    "id": 2011,
+                    "gender": 0
+                },
+                {
+                    "id": 2309,
+                    "gender": 0
+                },
+                {
+                    "id": 2015,
+                    "gender": 0
+                },
+                {
+                    "id": 2016,
+                    "gender": 0
+                },
+                {
+                    "id": 2017,
+                    "gender": 0
+                },
+                {
+                    "id": 2313,
+                    "gender": 0
+                },
+                {
+                    "id": 2316,
+                    "gender": 0
+                },
+                {
+                    "id": 2317,
+                    "gender": 1
+                },
+                {
+                    "id": 2020,
+                    "gender": 0
+                },
+                {
+                    "id": 2022,
+                    "gender": 0
+                },
+                {
+                    "id": 2323,
+                    "gender": 0
+                },
+                {
+                    "id": 2327,
+                    "gender": 0
+                },
+                {
+                    "id": 2029,
+                    "gender": 0
+                },
+                {
+                    "id": 2077,
+                    "gender": 1
+                }
+            ],
+            "id": 35,
             "group": "PMU M3 - F13",
-            "programme": "PMU"
+            "programme": "PMU - Psykomotorikuddannelsen"
         },
         "39": {
-            "id": "39",
+            "name": "pmuF12",
+            "department": "173409",
+            "start": "01-02-2012",
+            "end": "30-06-2015",
+            "students": [
+                {
+                    "id": 2251,
+                    "gender": 0
+                },
+                {
+                    "id": 2252,
+                    "gender": 0
+                },
+                {
+                    "id": 2255,
+                    "gender": 0
+                },
+                {
+                    "id": 1949,
+                    "gender": 0
+                },
+                {
+                    "id": 1952,
+                    "gender": 0
+                },
+                {
+                    "id": 2262,
+                    "gender": 0
+                },
+                {
+                    "id": 2264,
+                    "gender": 0
+                },
+                {
+                    "id": 1960,
+                    "gender": 0
+                },
+                {
+                    "id": 1965,
+                    "gender": 0
+                },
+                {
+                    "id": 1973,
+                    "gender": 0
+                },
+                {
+                    "id": 1974,
+                    "gender": 0
+                },
+                {
+                    "id": 1975,
+                    "gender": 0
+                },
+                {
+                    "id": 1980,
+                    "gender": 0
+                },
+                {
+                    "id": 2285,
+                    "gender": 0
+                },
+                {
+                    "id": 1988,
+                    "gender": 1
+                },
+                {
+                    "id": 1990,
+                    "gender": 0
+                },
+                {
+                    "id": 1992,
+                    "gender": 0
+                },
+                {
+                    "id": 1994,
+                    "gender": 1
+                },
+                {
+                    "id": 2266,
+                    "gender": 0
+                },
+                {
+                    "id": 2270,
+                    "gender": 0
+                },
+                {
+                    "id": 1976,
+                    "gender": 0
+                },
+                {
+                    "id": 1977,
+                    "gender": 0
+                },
+                {
+                    "id": 2276,
+                    "gender": 0
+                },
+                {
+                    "id": 2277,
+                    "gender": 0
+                },
+                {
+                    "id": 2278,
+                    "gender": 0
+                },
+                {
+                    "id": 2279,
+                    "gender": 0
+                },
+                {
+                    "id": 1981,
+                    "gender": 0
+                },
+                {
+                    "id": 2282,
+                    "gender": 0
+                },
+                {
+                    "id": 1983,
+                    "gender": 0
+                },
+                {
+                    "id": 2283,
+                    "gender": 0
+                },
+                {
+                    "id": 1984,
+                    "gender": 0
+                },
+                {
+                    "id": 1986,
+                    "gender": 1
+                },
+                {
+                    "id": 2286,
+                    "gender": 0
+                },
+                {
+                    "id": 2288,
+                    "gender": 0
+                },
+                {
+                    "id": 1993,
+                    "gender": 0
+                },
+                {
+                    "id": 2076,
+                    "gender": 0
+                }
+            ],
+            "id": 39,
             "group": "PMU M7 - F12",
-            "programme": "PMU"
+            "programme": "PMU - Psykomotorikuddannelsen"
         },
         "41": {
-            "id": "41",
+            "name": "pmuE11",
+            "department": "173409",
+            "start": "29-08-2011",
+            "end": "31-01-2015",
+            "students": [
+                {
+                    "id": 2236,
+                    "gender": 0
+                },
+                {
+                    "id": 2239,
+                    "gender": 0
+                },
+                {
+                    "id": 2240,
+                    "gender": 0
+                },
+                {
+                    "id": 2245,
+                    "gender": 0
+                },
+                {
+                    "id": 2254,
+                    "gender": 0
+                },
+                {
+                    "id": 2255,
+                    "gender": 0
+                },
+                {
+                    "id": 1948,
+                    "gender": 0
+                },
+                {
+                    "id": 1951,
+                    "gender": 0
+                },
+                {
+                    "id": 1955,
+                    "gender": 1
+                },
+                {
+                    "id": 1959,
+                    "gender": 0
+                },
+                {
+                    "id": 2263,
+                    "gender": 1
+                },
+                {
+                    "id": 2265,
+                    "gender": 0
+                },
+                {
+                    "id": 1961,
+                    "gender": 1
+                },
+                {
+                    "id": 1962,
+                    "gender": 0
+                },
+                {
+                    "id": 1963,
+                    "gender": 0
+                },
+                {
+                    "id": 2266,
+                    "gender": 0
+                },
+                {
+                    "id": 2268,
+                    "gender": 0
+                },
+                {
+                    "id": 1969,
+                    "gender": 0
+                },
+                {
+                    "id": 2272,
+                    "gender": 0
+                },
+                {
+                    "id": 2273,
+                    "gender": 0
+                },
+                {
+                    "id": 2274,
+                    "gender": 0
+                },
+                {
+                    "id": 2379,
+                    "gender": 0
+                },
+                {
+                    "id": 2383,
+                    "gender": 0
+                },
+                {
+                    "id": 2233,
+                    "gender": 0
+                },
+                {
+                    "id": 2253,
+                    "gender": 0
+                },
+                {
+                    "id": 2259,
+                    "gender": 0
+                },
+                {
+                    "id": 1957,
+                    "gender": 0
+                },
+                {
+                    "id": 1964,
+                    "gender": 0
+                },
+                {
+                    "id": 1966,
+                    "gender": 0
+                },
+                {
+                    "id": 1967,
+                    "gender": 0
+                },
+                {
+                    "id": 2267,
+                    "gender": 0
+                },
+                {
+                    "id": 2269,
+                    "gender": 0
+                },
+                {
+                    "id": 1968,
+                    "gender": 1
+                },
+                {
+                    "id": 1970,
+                    "gender": 0
+                },
+                {
+                    "id": 1972,
+                    "gender": 0
+                },
+                {
+                    "id": 2275,
+                    "gender": 0
+                },
+                {
+                    "id": 2382,
+                    "gender": 0
+                }
+            ],
+            "id": 41,
             "group": "PMU M9 - E11",
-            "programme": "PMU"
+            "programme": "PMU - Psykomotorikuddannelsen"
         },
         "43": {
-            "id": "43",
+            "name": "pmuF11",
+            "department": "173409",
+            "start": "01-02-2011",
+            "end": "30-06-2014",
+            "students": [
+                {
+                    "id": 2232,
+                    "gender": 0
+                },
+                {
+                    "id": 2237,
+                    "gender": 0
+                },
+                {
+                    "id": 1939,
+                    "gender": 0
+                },
+                {
+                    "id": 2240,
+                    "gender": 0
+                },
+                {
+                    "id": 2244,
+                    "gender": 0
+                },
+                {
+                    "id": 1943,
+                    "gender": 0
+                },
+                {
+                    "id": 2250,
+                    "gender": 0
+                },
+                {
+                    "id": 1953,
+                    "gender": 0
+                },
+                {
+                    "id": 2374,
+                    "gender": 0
+                },
+                {
+                    "id": 2078,
+                    "gender": 0
+                },
+                {
+                    "id": 2081,
+                    "gender": 0
+                },
+                {
+                    "id": 2387,
+                    "gender": 1
+                },
+                {
+                    "id": 2084,
+                    "gender": 0
+                },
+                {
+                    "id": 2085,
+                    "gender": 0
+                },
+                {
+                    "id": 1936,
+                    "gender": 0
+                },
+                {
+                    "id": 2235,
+                    "gender": 0
+                },
+                {
+                    "id": 1938,
+                    "gender": 0
+                },
+                {
+                    "id": 2238,
+                    "gender": 0
+                },
+                {
+                    "id": 1940,
+                    "gender": 0
+                },
+                {
+                    "id": 2246,
+                    "gender": 0
+                },
+                {
+                    "id": 2247,
+                    "gender": 0
+                },
+                {
+                    "id": 2248,
+                    "gender": 0
+                },
+                {
+                    "id": 2249,
+                    "gender": 0
+                },
+                {
+                    "id": 1944,
+                    "gender": 0
+                },
+                {
+                    "id": 1945,
+                    "gender": 0
+                },
+                {
+                    "id": 1947,
+                    "gender": 0
+                },
+                {
+                    "id": 2254,
+                    "gender": 0
+                },
+                {
+                    "id": 1948,
+                    "gender": 0
+                },
+                {
+                    "id": 2256,
+                    "gender": 0
+                },
+                {
+                    "id": 2257,
+                    "gender": 0
+                },
+                {
+                    "id": 1951,
+                    "gender": 0
+                },
+                {
+                    "id": 1954,
+                    "gender": 0
+                },
+                {
+                    "id": 2258,
+                    "gender": 0
+                },
+                {
+                    "id": 2259,
+                    "gender": 0
+                },
+                {
+                    "id": 2261,
+                    "gender": 0
+                },
+                {
+                    "id": 2368,
+                    "gender": 0
+                },
+                {
+                    "id": 2072,
+                    "gender": 0
+                },
+                {
+                    "id": 2371,
+                    "gender": 0
+                },
+                {
+                    "id": 2379,
+                    "gender": 0
+                },
+                {
+                    "id": 2382,
+                    "gender": 0
+                },
+                {
+                    "id": 2080,
+                    "gender": 0
+                },
+                {
+                    "id": 2393,
+                    "gender": 0
+                },
+                {
+                    "id": 2089,
+                    "gender": 0
+                }
+            ],
+            "id": 43,
             "group": "PMU M11 - F 11",
-            "programme": "PMU"
+            "programme": "PMU - Psykomotorikuddannelsen"
         },
         "46": {
-            "id": "46",
+            "name": "fysE13",
+            "department": "181402",
+            "start": "01-09-2013",
+            "end": "31-01-2017",
+            "students": [
+                {
+                    "id": 363,
+                    "gender": 0
+                },
+                {
+                    "id": 709,
+                    "gender": 0
+                },
+                {
+                    "id": 710,
+                    "gender": 1
+                },
+                {
+                    "id": 366,
+                    "gender": 1
+                },
+                {
+                    "id": 368,
+                    "gender": 1
+                },
+                {
+                    "id": 712,
+                    "gender": 0
+                },
+                {
+                    "id": 713,
+                    "gender": 0
+                },
+                {
+                    "id": 714,
+                    "gender": 1
+                },
+                {
+                    "id": 715,
+                    "gender": 0
+                },
+                {
+                    "id": 718,
+                    "gender": 0
+                },
+                {
+                    "id": 370,
+                    "gender": 0
+                },
+                {
+                    "id": 720,
+                    "gender": 1
+                },
+                {
+                    "id": 721,
+                    "gender": 1
+                },
+                {
+                    "id": 372,
+                    "gender": 0
+                },
+                {
+                    "id": 374,
+                    "gender": 1
+                },
+                {
+                    "id": 375,
+                    "gender": 1
+                },
+                {
+                    "id": 725,
+                    "gender": 0
+                },
+                {
+                    "id": 726,
+                    "gender": 0
+                },
+                {
+                    "id": 376,
+                    "gender": 0
+                },
+                {
+                    "id": 377,
+                    "gender": 1
+                },
+                {
+                    "id": 730,
+                    "gender": 1
+                },
+                {
+                    "id": 711,
+                    "gender": 1
+                },
+                {
+                    "id": 364,
+                    "gender": 0
+                },
+                {
+                    "id": 365,
+                    "gender": 1
+                },
+                {
+                    "id": 367,
+                    "gender": 1
+                },
+                {
+                    "id": 716,
+                    "gender": 1
+                },
+                {
+                    "id": 717,
+                    "gender": 1
+                },
+                {
+                    "id": 369,
+                    "gender": 1
+                },
+                {
+                    "id": 719,
+                    "gender": 1
+                },
+                {
+                    "id": 371,
+                    "gender": 0
+                },
+                {
+                    "id": 722,
+                    "gender": 0
+                },
+                {
+                    "id": 373,
+                    "gender": 1
+                },
+                {
+                    "id": 723,
+                    "gender": 1
+                },
+                {
+                    "id": 724,
+                    "gender": 1
+                },
+                {
+                    "id": 727,
+                    "gender": 1
+                },
+                {
+                    "id": 728,
+                    "gender": 1
+                },
+                {
+                    "id": 378,
+                    "gender": 0
+                },
+                {
+                    "id": 729,
+                    "gender": 0
+                },
+                {
+                    "id": 731,
+                    "gender": 1
+                },
+                {
+                    "id": 379,
+                    "gender": 1
+                }
+            ],
+            "id": 46,
             "group": "FYS M1 - E13",
-            "programme": "FYS"
+            "programme": "FYS - Fysioterapeutuddannelsen"
         },
         "48": {
-            "id": "48",
+            "name": "fysF13",
+            "department": "181402",
+            "start": "04-02-2013",
+            "end": "30-06-2016",
+            "students": [
+                {
+                    "id": 299,
+                    "gender": 1
+                },
+                {
+                    "id": 305,
+                    "gender": 0
+                },
+                {
+                    "id": 663,
+                    "gender": 0
+                },
+                {
+                    "id": 313,
+                    "gender": 1
+                },
+                {
+                    "id": 328,
+                    "gender": 0
+                },
+                {
+                    "id": 332,
+                    "gender": 1
+                },
+                {
+                    "id": 343,
+                    "gender": 1
+                },
+                {
+                    "id": 689,
+                    "gender": 0
+                },
+                {
+                    "id": 690,
+                    "gender": 1
+                },
+                {
+                    "id": 691,
+                    "gender": 0
+                },
+                {
+                    "id": 349,
+                    "gender": 1
+                },
+                {
+                    "id": 693,
+                    "gender": 1
+                },
+                {
+                    "id": 351,
+                    "gender": 0
+                },
+                {
+                    "id": 695,
+                    "gender": 1
+                },
+                {
+                    "id": 696,
+                    "gender": 1
+                },
+                {
+                    "id": 697,
+                    "gender": 1
+                },
+                {
+                    "id": 698,
+                    "gender": 0
+                },
+                {
+                    "id": 358,
+                    "gender": 1
+                },
+                {
+                    "id": 700,
+                    "gender": 0
+                },
+                {
+                    "id": 704,
+                    "gender": 1
+                },
+                {
+                    "id": 359,
+                    "gender": 0
+                },
+                {
+                    "id": 705,
+                    "gender": 0
+                },
+                {
+                    "id": 361,
+                    "gender": 0
+                },
+                {
+                    "id": 706,
+                    "gender": 0
+                },
+                {
+                    "id": 707,
+                    "gender": 1
+                },
+                {
+                    "id": 708,
+                    "gender": 0
+                },
+                {
+                    "id": 308,
+                    "gender": 1
+                },
+                {
+                    "id": 344,
+                    "gender": 0
+                },
+                {
+                    "id": 345,
+                    "gender": 0
+                },
+                {
+                    "id": 346,
+                    "gender": 0
+                },
+                {
+                    "id": 347,
+                    "gender": 1
+                },
+                {
+                    "id": 348,
+                    "gender": 1
+                },
+                {
+                    "id": 692,
+                    "gender": 1
+                },
+                {
+                    "id": 350,
+                    "gender": 0
+                },
+                {
+                    "id": 352,
+                    "gender": 1
+                },
+                {
+                    "id": 694,
+                    "gender": 0
+                },
+                {
+                    "id": 353,
+                    "gender": 1
+                },
+                {
+                    "id": 354,
+                    "gender": 0
+                },
+                {
+                    "id": 355,
+                    "gender": 1
+                },
+                {
+                    "id": 356,
+                    "gender": 0
+                },
+                {
+                    "id": 699,
+                    "gender": 1
+                },
+                {
+                    "id": 357,
+                    "gender": 0
+                },
+                {
+                    "id": 701,
+                    "gender": 1
+                },
+                {
+                    "id": 702,
+                    "gender": 1
+                },
+                {
+                    "id": 703,
+                    "gender": 0
+                },
+                {
+                    "id": 360,
+                    "gender": 1
+                },
+                {
+                    "id": 362,
+                    "gender": 0
+                }
+            ],
+            "id": 48,
             "group": "FYS M3 - F13",
-            "programme": "FYS"
+            "programme": "FYS - Fysioterapeutuddannelsen"
         },
         "50": {
-            "id": "50",
+            "name": "fysE12",
+            "department": "181402",
+            "start": "27-08-2012",
+            "end": "31-01-2016",
+            "students": [
+                {
+                    "id": 299,
+                    "gender": 1
+                },
+                {
+                    "id": 652,
+                    "gender": 1
+                },
+                {
+                    "id": 659,
+                    "gender": 0
+                },
+                {
+                    "id": 322,
+                    "gender": 0
+                },
+                {
+                    "id": 669,
+                    "gender": 1
+                },
+                {
+                    "id": 325,
+                    "gender": 1
+                },
+                {
+                    "id": 671,
+                    "gender": 0
+                },
+                {
+                    "id": 672,
+                    "gender": 1
+                },
+                {
+                    "id": 326,
+                    "gender": 1
+                },
+                {
+                    "id": 673,
+                    "gender": 1
+                },
+                {
+                    "id": 329,
+                    "gender": 1
+                },
+                {
+                    "id": 674,
+                    "gender": 0
+                },
+                {
+                    "id": 330,
+                    "gender": 0
+                },
+                {
+                    "id": 331,
+                    "gender": 1
+                },
+                {
+                    "id": 333,
+                    "gender": 0
+                },
+                {
+                    "id": 676,
+                    "gender": 0
+                },
+                {
+                    "id": 334,
+                    "gender": 1
+                },
+                {
+                    "id": 677,
+                    "gender": 0
+                },
+                {
+                    "id": 335,
+                    "gender": 0
+                },
+                {
+                    "id": 684,
+                    "gender": 1
+                },
+                {
+                    "id": 755,
+                    "gender": 0
+                },
+                {
+                    "id": 320,
+                    "gender": 0
+                },
+                {
+                    "id": 321,
+                    "gender": 1
+                },
+                {
+                    "id": 323,
+                    "gender": 0
+                },
+                {
+                    "id": 324,
+                    "gender": 0
+                },
+                {
+                    "id": 675,
+                    "gender": 0
+                },
+                {
+                    "id": 679,
+                    "gender": 0
+                },
+                {
+                    "id": 336,
+                    "gender": 0
+                },
+                {
+                    "id": 680,
+                    "gender": 1
+                },
+                {
+                    "id": 337,
+                    "gender": 1
+                },
+                {
+                    "id": 338,
+                    "gender": 0
+                },
+                {
+                    "id": 339,
+                    "gender": 0
+                },
+                {
+                    "id": 681,
+                    "gender": 1
+                },
+                {
+                    "id": 682,
+                    "gender": 1
+                },
+                {
+                    "id": 683,
+                    "gender": 0
+                },
+                {
+                    "id": 340,
+                    "gender": 1
+                },
+                {
+                    "id": 341,
+                    "gender": 1
+                }
+            ],
+            "id": 50,
             "group": "FYS M5 - E12",
-            "programme": "FYS"
+            "programme": "FYS - Fysioterapeutuddannelsen"
         },
         "52": {
-            "id": "52",
+            "name": "fysF12",
+            "department": "181402",
+            "start": "01-02-2012",
+            "end": "30-06-2015",
+            "students": [
+                {
+                    "id": 291,
+                    "gender": 0
+                },
+                {
+                    "id": 300,
+                    "gender": 1
+                },
+                {
+                    "id": 301,
+                    "gender": 0
+                },
+                {
+                    "id": 303,
+                    "gender": 1
+                },
+                {
+                    "id": 650,
+                    "gender": 0
+                },
+                {
+                    "id": 304,
+                    "gender": 0
+                },
+                {
+                    "id": 651,
+                    "gender": 0
+                },
+                {
+                    "id": 307,
+                    "gender": 0
+                },
+                {
+                    "id": 653,
+                    "gender": 0
+                },
+                {
+                    "id": 654,
+                    "gender": 0
+                },
+                {
+                    "id": 655,
+                    "gender": 1
+                },
+                {
+                    "id": 309,
+                    "gender": 0
+                },
+                {
+                    "id": 657,
+                    "gender": 0
+                },
+                {
+                    "id": 662,
+                    "gender": 1
+                },
+                {
+                    "id": 315,
+                    "gender": 1
+                },
+                {
+                    "id": 316,
+                    "gender": 1
+                },
+                {
+                    "id": 318,
+                    "gender": 1
+                },
+                {
+                    "id": 319,
+                    "gender": 1
+                },
+                {
+                    "id": 668,
+                    "gender": 1
+                },
+                {
+                    "id": 342,
+                    "gender": 0
+                },
+                {
+                    "id": 685,
+                    "gender": 1
+                },
+                {
+                    "id": 686,
+                    "gender": 0
+                },
+                {
+                    "id": 688,
+                    "gender": 0
+                },
+                {
+                    "id": 282,
+                    "gender": 1
+                },
+                {
+                    "id": 299,
+                    "gender": 1
+                },
+                {
+                    "id": 302,
+                    "gender": 0
+                },
+                {
+                    "id": 306,
+                    "gender": 0
+                },
+                {
+                    "id": 656,
+                    "gender": 0
+                },
+                {
+                    "id": 310,
+                    "gender": 0
+                },
+                {
+                    "id": 658,
+                    "gender": 0
+                },
+                {
+                    "id": 660,
+                    "gender": 1
+                },
+                {
+                    "id": 311,
+                    "gender": 1
+                },
+                {
+                    "id": 661,
+                    "gender": 0
+                },
+                {
+                    "id": 312,
+                    "gender": 0
+                },
+                {
+                    "id": 664,
+                    "gender": 0
+                },
+                {
+                    "id": 665,
+                    "gender": 0
+                },
+                {
+                    "id": 666,
+                    "gender": 0
+                },
+                {
+                    "id": 667,
+                    "gender": 0
+                },
+                {
+                    "id": 314,
+                    "gender": 1
+                },
+                {
+                    "id": 317,
+                    "gender": 1
+                },
+                {
+                    "id": 687,
+                    "gender": 0
+                }
+            ],
+            "id": 52,
             "group": "FYS M7 - F12",
-            "programme": "FYS"
+            "programme": "FYS - Fysioterapeutuddannelsen"
         },
         "54": {
-            "id": "54",
+            "name": "fysE11",
+            "department": "181402",
+            "start": "29-08-2011",
+            "end": "31-01-2015",
+            "students": [
+                {
+                    "id": 608,
+                    "gender": 0
+                },
+                {
+                    "id": 266,
+                    "gender": 1
+                },
+                {
+                    "id": 279,
+                    "gender": 0
+                },
+                {
+                    "id": 284,
+                    "gender": 0
+                },
+                {
+                    "id": 639,
+                    "gender": 0
+                },
+                {
+                    "id": 640,
+                    "gender": 0
+                },
+                {
+                    "id": 641,
+                    "gender": 0
+                },
+                {
+                    "id": 642,
+                    "gender": 0
+                },
+                {
+                    "id": 643,
+                    "gender": 0
+                },
+                {
+                    "id": 644,
+                    "gender": 0
+                },
+                {
+                    "id": 289,
+                    "gender": 0
+                },
+                {
+                    "id": 646,
+                    "gender": 1
+                },
+                {
+                    "id": 293,
+                    "gender": 0
+                },
+                {
+                    "id": 294,
+                    "gender": 0
+                },
+                {
+                    "id": 295,
+                    "gender": 1
+                },
+                {
+                    "id": 297,
+                    "gender": 1
+                },
+                {
+                    "id": 298,
+                    "gender": 0
+                },
+                {
+                    "id": 278,
+                    "gender": 0
+                },
+                {
+                    "id": 634,
+                    "gender": 0
+                },
+                {
+                    "id": 635,
+                    "gender": 0
+                },
+                {
+                    "id": 280,
+                    "gender": 0
+                },
+                {
+                    "id": 281,
+                    "gender": 1
+                },
+                {
+                    "id": 636,
+                    "gender": 0
+                },
+                {
+                    "id": 637,
+                    "gender": 1
+                },
+                {
+                    "id": 283,
+                    "gender": 0
+                },
+                {
+                    "id": 638,
+                    "gender": 0
+                },
+                {
+                    "id": 285,
+                    "gender": 0
+                },
+                {
+                    "id": 286,
+                    "gender": 1
+                },
+                {
+                    "id": 287,
+                    "gender": 1
+                },
+                {
+                    "id": 645,
+                    "gender": 1
+                },
+                {
+                    "id": 290,
+                    "gender": 1
+                },
+                {
+                    "id": 292,
+                    "gender": 0
+                },
+                {
+                    "id": 647,
+                    "gender": 0
+                },
+                {
+                    "id": 648,
+                    "gender": 0
+                },
+                {
+                    "id": 296,
+                    "gender": 1
+                }
+            ],
+            "id": 54,
             "group": "FYS M9 - E11",
-            "programme": "FYS"
+            "programme": "FYS - Fysioterapeutuddannelsen"
         },
         "56": {
-            "id": "56",
+            "name": "fysF11",
+            "department": "173409",
+            "start": "01-02-2011",
+            "end": "30-06-2014",
+            "students": [
+                {
+                    "id": 266,
+                    "gender": 1
+                },
+                {
+                    "id": 268,
+                    "gender": 0
+                },
+                {
+                    "id": 623,
+                    "gender": 0
+                },
+                {
+                    "id": 269,
+                    "gender": 0
+                },
+                {
+                    "id": 625,
+                    "gender": 0
+                },
+                {
+                    "id": 271,
+                    "gender": 0
+                },
+                {
+                    "id": 272,
+                    "gender": 1
+                },
+                {
+                    "id": 626,
+                    "gender": 0
+                },
+                {
+                    "id": 627,
+                    "gender": 1
+                },
+                {
+                    "id": 273,
+                    "gender": 1
+                },
+                {
+                    "id": 629,
+                    "gender": 1
+                },
+                {
+                    "id": 274,
+                    "gender": 1
+                },
+                {
+                    "id": 275,
+                    "gender": 1
+                },
+                {
+                    "id": 632,
+                    "gender": 0
+                },
+                {
+                    "id": 277,
+                    "gender": 1
+                },
+                {
+                    "id": 2398,
+                    "gender": 0
+                },
+                {
+                    "id": 2399,
+                    "gender": 0
+                },
+                {
+                    "id": 255,
+                    "gender": 1
+                },
+                {
+                    "id": 267,
+                    "gender": 1
+                },
+                {
+                    "id": 624,
+                    "gender": 0
+                },
+                {
+                    "id": 270,
+                    "gender": 1
+                },
+                {
+                    "id": 628,
+                    "gender": 0
+                },
+                {
+                    "id": 630,
+                    "gender": 0
+                },
+                {
+                    "id": 631,
+                    "gender": 0
+                },
+                {
+                    "id": 276,
+                    "gender": 0
+                }
+            ],
+            "id": 56,
             "group": "FYS M11 - F 11",
-            "programme": "FYS"
+            "programme": "FYS - Fysioterapeutuddannelsen"
         },
         "61": {
-            "id": "61",
+            "id": 61,
             "group": "SOC HS13",
-            "programme": "SOC"
+            "programme": "SOC - Socialrådgiveruddannelsen"
         },
         "62": {
-            "id": "62",
+            "name": "norE13.1",
+            "department": "219403",
+            "start": "30-08-2013",
+            "end": "31-01-2017",
+            "students": [
+                {
+                    "id": 1197,
+                    "gender": 0
+                },
+                {
+                    "id": 1607,
+                    "gender": 0
+                },
+                {
+                    "id": 1608,
+                    "gender": 0
+                },
+                {
+                    "id": 1617,
+                    "gender": 0
+                },
+                {
+                    "id": 1281,
+                    "gender": 0
+                },
+                {
+                    "id": 1671,
+                    "gender": 1
+                },
+                {
+                    "id": 1282,
+                    "gender": 0
+                },
+                {
+                    "id": 1673,
+                    "gender": 0
+                },
+                {
+                    "id": 1285,
+                    "gender": 0
+                },
+                {
+                    "id": 1297,
+                    "gender": 0
+                },
+                {
+                    "id": 1681,
+                    "gender": 1
+                },
+                {
+                    "id": 1686,
+                    "gender": 0
+                },
+                {
+                    "id": 1688,
+                    "gender": 1
+                },
+                {
+                    "id": 1302,
+                    "gender": 0
+                },
+                {
+                    "id": 1693,
+                    "gender": 0
+                },
+                {
+                    "id": 1628,
+                    "gender": 0
+                },
+                {
+                    "id": 1629,
+                    "gender": 0
+                },
+                {
+                    "id": 1632,
+                    "gender": 1
+                },
+                {
+                    "id": 1700,
+                    "gender": 0
+                },
+                {
+                    "id": 1714,
+                    "gender": 0
+                },
+                {
+                    "id": 1646,
+                    "gender": 0
+                },
+                {
+                    "id": 1719,
+                    "gender": 0
+                },
+                {
+                    "id": 1654,
+                    "gender": 0
+                },
+                {
+                    "id": 1655,
+                    "gender": 1
+                },
+                {
+                    "id": 1257,
+                    "gender": 0
+                },
+                {
+                    "id": 1609,
+                    "gender": 1
+                },
+                {
+                    "id": 1264,
+                    "gender": 0
+                },
+                {
+                    "id": 1266,
+                    "gender": 0
+                },
+                {
+                    "id": 1267,
+                    "gender": 0
+                },
+                {
+                    "id": 1269,
+                    "gender": 0
+                },
+                {
+                    "id": 1614,
+                    "gender": 0
+                },
+                {
+                    "id": 1618,
+                    "gender": 0
+                },
+                {
+                    "id": 1623,
+                    "gender": 1
+                },
+                {
+                    "id": 1277,
+                    "gender": 0
+                },
+                {
+                    "id": 1279,
+                    "gender": 1
+                },
+                {
+                    "id": 1678,
+                    "gender": 0
+                },
+                {
+                    "id": 1291,
+                    "gender": 0
+                },
+                {
+                    "id": 1292,
+                    "gender": 0
+                },
+                {
+                    "id": 1296,
+                    "gender": 0
+                },
+                {
+                    "id": 1683,
+                    "gender": 1
+                },
+                {
+                    "id": 1685,
+                    "gender": 0
+                },
+                {
+                    "id": 1696,
+                    "gender": 0
+                },
+                {
+                    "id": 1698,
+                    "gender": 1
+                },
+                {
+                    "id": 1637,
+                    "gender": 0
+                },
+                {
+                    "id": 1712,
+                    "gender": 1
+                },
+                {
+                    "id": 1645,
+                    "gender": 0
+                },
+                {
+                    "id": 1666,
+                    "gender": 0
+                }
+            ],
+            "id": 62,
             "group": "PÆD E13.1",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "63": {
-            "id": "63",
+            "id": 63,
             "group": "SOC HF13",
-            "programme": "SOC"
+            "programme": "SOC - Socialrådgiveruddannelsen"
         },
         "66": {
-            "id": "66",
+            "name": "norE13.2",
+            "department": "219403",
+            "start": "30-08-2013",
+            "end": "31-01-2017",
+            "students": [
+                {
+                    "id": 1065,
+                    "gender": 0
+                },
+                {
+                    "id": 1122,
+                    "gender": 0
+                },
+                {
+                    "id": 1541,
+                    "gender": 1
+                },
+                {
+                    "id": 1255,
+                    "gender": 1
+                },
+                {
+                    "id": 1256,
+                    "gender": 0
+                },
+                {
+                    "id": 1263,
+                    "gender": 0
+                },
+                {
+                    "id": 1613,
+                    "gender": 0
+                },
+                {
+                    "id": 1670,
+                    "gender": 1
+                },
+                {
+                    "id": 1283,
+                    "gender": 0
+                },
+                {
+                    "id": 1286,
+                    "gender": 0
+                },
+                {
+                    "id": 1676,
+                    "gender": 0
+                },
+                {
+                    "id": 1290,
+                    "gender": 1
+                },
+                {
+                    "id": 1295,
+                    "gender": 0
+                },
+                {
+                    "id": 1689,
+                    "gender": 1
+                },
+                {
+                    "id": 1690,
+                    "gender": 0
+                },
+                {
+                    "id": 1694,
+                    "gender": 1
+                },
+                {
+                    "id": 1630,
+                    "gender": 0
+                },
+                {
+                    "id": 1713,
+                    "gender": 0
+                },
+                {
+                    "id": 1651,
+                    "gender": 1
+                },
+                {
+                    "id": 1720,
+                    "gender": 0
+                },
+                {
+                    "id": 1721,
+                    "gender": 0
+                },
+                {
+                    "id": 1722,
+                    "gender": 0
+                },
+                {
+                    "id": 1911,
+                    "gender": 1
+                },
+                {
+                    "id": 1912,
+                    "gender": 0
+                },
+                {
+                    "id": 2219,
+                    "gender": 0
+                },
+                {
+                    "id": 2229,
+                    "gender": 0
+                },
+                {
+                    "id": 1261,
+                    "gender": 0
+                },
+                {
+                    "id": 1619,
+                    "gender": 1
+                },
+                {
+                    "id": 1621,
+                    "gender": 0
+                },
+                {
+                    "id": 1276,
+                    "gender": 0
+                },
+                {
+                    "id": 1284,
+                    "gender": 0
+                },
+                {
+                    "id": 1672,
+                    "gender": 0
+                },
+                {
+                    "id": 1289,
+                    "gender": 0
+                },
+                {
+                    "id": 1300,
+                    "gender": 0
+                },
+                {
+                    "id": 1301,
+                    "gender": 0
+                },
+                {
+                    "id": 1633,
+                    "gender": 1
+                },
+                {
+                    "id": 1634,
+                    "gender": 1
+                },
+                {
+                    "id": 1636,
+                    "gender": 1
+                },
+                {
+                    "id": 1711,
+                    "gender": 0
+                },
+                {
+                    "id": 1647,
+                    "gender": 0
+                },
+                {
+                    "id": 1650,
+                    "gender": 0
+                },
+                {
+                    "id": 1652,
+                    "gender": 0
+                },
+                {
+                    "id": 1723,
+                    "gender": 0
+                },
+                {
+                    "id": 2215,
+                    "gender": 1
+                },
+                {
+                    "id": 1915,
+                    "gender": 1
+                },
+                {
+                    "id": 2220,
+                    "gender": 0
+                },
+                {
+                    "id": 1917,
+                    "gender": 0
+                }
+            ],
+            "id": 66,
             "group": "PÆD E13.2",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "67": {
-            "id": "67",
+            "id": 67,
             "group": "SOC HS11",
-            "programme": "SOC"
+            "programme": "SOC - Socialrådgiveruddannelsen"
         },
         "70": {
-            "id": "70",
+            "name": "norE13.3",
+            "department": "219403",
+            "start": "30-08-2013",
+            "end": "31-01-2017",
+            "students": [
+                {
+                    "id": 423,
+                    "gender": 1
+                },
+                {
+                    "id": 1451,
+                    "gender": 0
+                },
+                {
+                    "id": 1540,
+                    "gender": 0
+                },
+                {
+                    "id": 1605,
+                    "gender": 0
+                },
+                {
+                    "id": 1615,
+                    "gender": 0
+                },
+                {
+                    "id": 1274,
+                    "gender": 0
+                },
+                {
+                    "id": 1625,
+                    "gender": 1
+                },
+                {
+                    "id": 1293,
+                    "gender": 1
+                },
+                {
+                    "id": 1682,
+                    "gender": 0
+                },
+                {
+                    "id": 1303,
+                    "gender": 0
+                },
+                {
+                    "id": 1695,
+                    "gender": 1
+                },
+                {
+                    "id": 1702,
+                    "gender": 1
+                },
+                {
+                    "id": 1638,
+                    "gender": 0
+                },
+                {
+                    "id": 1708,
+                    "gender": 1
+                },
+                {
+                    "id": 1709,
+                    "gender": 1
+                },
+                {
+                    "id": 1715,
+                    "gender": 0
+                },
+                {
+                    "id": 1913,
+                    "gender": 1
+                },
+                {
+                    "id": 2216,
+                    "gender": 1
+                },
+                {
+                    "id": 2218,
+                    "gender": 0
+                },
+                {
+                    "id": 1916,
+                    "gender": 1
+                },
+                {
+                    "id": 1606,
+                    "gender": 0
+                },
+                {
+                    "id": 1258,
+                    "gender": 1
+                },
+                {
+                    "id": 1262,
+                    "gender": 0
+                },
+                {
+                    "id": 1611,
+                    "gender": 1
+                },
+                {
+                    "id": 1612,
+                    "gender": 0
+                },
+                {
+                    "id": 1265,
+                    "gender": 0
+                },
+                {
+                    "id": 1616,
+                    "gender": 0
+                },
+                {
+                    "id": 1273,
+                    "gender": 0
+                },
+                {
+                    "id": 1626,
+                    "gender": 0
+                },
+                {
+                    "id": 1280,
+                    "gender": 0
+                },
+                {
+                    "id": 1674,
+                    "gender": 0
+                },
+                {
+                    "id": 1675,
+                    "gender": 0
+                },
+                {
+                    "id": 1298,
+                    "gender": 0
+                },
+                {
+                    "id": 1684,
+                    "gender": 0
+                },
+                {
+                    "id": 1687,
+                    "gender": 0
+                },
+                {
+                    "id": 1692,
+                    "gender": 0
+                },
+                {
+                    "id": 1704,
+                    "gender": 1
+                },
+                {
+                    "id": 1639,
+                    "gender": 0
+                },
+                {
+                    "id": 1641,
+                    "gender": 0
+                },
+                {
+                    "id": 1642,
+                    "gender": 0
+                },
+                {
+                    "id": 1644,
+                    "gender": 1
+                },
+                {
+                    "id": 1717,
+                    "gender": 1
+                },
+                {
+                    "id": 1718,
+                    "gender": 0
+                },
+                {
+                    "id": 1653,
+                    "gender": 0
+                },
+                {
+                    "id": 1656,
+                    "gender": 0
+                },
+                {
+                    "id": 1910,
+                    "gender": 1
+                },
+                {
+                    "id": 2217,
+                    "gender": 1
+                },
+                {
+                    "id": 2221,
+                    "gender": 1
+                }
+            ],
+            "id": 70,
             "group": "PÆD E13.3",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "84": {
-            "id": "84",
+            "name": "norF13.1",
+            "department": "219403",
+            "start": "01-02-2013",
+            "end": "30-06-2016",
+            "students": [
+                {
+                    "id": 929,
+                    "gender": 0
+                },
+                {
+                    "id": 1355,
+                    "gender": 1
+                },
+                {
+                    "id": 1387,
+                    "gender": 0
+                },
+                {
+                    "id": 1469,
+                    "gender": 0
+                },
+                {
+                    "id": 1546,
+                    "gender": 0
+                },
+                {
+                    "id": 1550,
+                    "gender": 0
+                },
+                {
+                    "id": 1184,
+                    "gender": 0
+                },
+                {
+                    "id": 1189,
+                    "gender": 0
+                },
+                {
+                    "id": 1190,
+                    "gender": 0
+                },
+                {
+                    "id": 1191,
+                    "gender": 0
+                },
+                {
+                    "id": 1194,
+                    "gender": 0
+                },
+                {
+                    "id": 1195,
+                    "gender": 0
+                },
+                {
+                    "id": 1561,
+                    "gender": 0
+                },
+                {
+                    "id": 1563,
+                    "gender": 0
+                },
+                {
+                    "id": 1564,
+                    "gender": 1
+                },
+                {
+                    "id": 1208,
+                    "gender": 0
+                },
+                {
+                    "id": 1215,
+                    "gender": 0
+                },
+                {
+                    "id": 1229,
+                    "gender": 1
+                },
+                {
+                    "id": 1241,
+                    "gender": 0
+                },
+                {
+                    "id": 939,
+                    "gender": 1
+                },
+                {
+                    "id": 1381,
+                    "gender": 0
+                },
+                {
+                    "id": 1180,
+                    "gender": 0
+                },
+                {
+                    "id": 1545,
+                    "gender": 1
+                },
+                {
+                    "id": 1551,
+                    "gender": 0
+                },
+                {
+                    "id": 1553,
+                    "gender": 0
+                },
+                {
+                    "id": 1554,
+                    "gender": 0
+                },
+                {
+                    "id": 1555,
+                    "gender": 0
+                },
+                {
+                    "id": 1186,
+                    "gender": 0
+                },
+                {
+                    "id": 1188,
+                    "gender": 0
+                },
+                {
+                    "id": 1557,
+                    "gender": 0
+                },
+                {
+                    "id": 1559,
+                    "gender": 0
+                },
+                {
+                    "id": 1560,
+                    "gender": 1
+                },
+                {
+                    "id": 1196,
+                    "gender": 1
+                },
+                {
+                    "id": 1565,
+                    "gender": 1
+                },
+                {
+                    "id": 1200,
+                    "gender": 0
+                },
+                {
+                    "id": 1202,
+                    "gender": 0
+                },
+                {
+                    "id": 1238,
+                    "gender": 0
+                },
+                {
+                    "id": 1239,
+                    "gender": 0
+                },
+                {
+                    "id": 1240,
+                    "gender": 0
+                },
+                {
+                    "id": 1242,
+                    "gender": 1
+                },
+                {
+                    "id": 2097,
+                    "gender": 0
+                }
+            ],
+            "id": 84,
             "group": "PÆD F13.1",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "85": {
-            "id": "85",
+            "name": "norF13.2",
+            "department": "219403",
+            "start": "01-02-2013",
+            "end": "30-06-2016",
+            "students": [
+                {
+                    "id": 1396,
+                    "gender": 0
+                },
+                {
+                    "id": 1543,
+                    "gender": 0
+                },
+                {
+                    "id": 1204,
+                    "gender": 0
+                },
+                {
+                    "id": 1205,
+                    "gender": 1
+                },
+                {
+                    "id": 1570,
+                    "gender": 0
+                },
+                {
+                    "id": 1207,
+                    "gender": 1
+                },
+                {
+                    "id": 1209,
+                    "gender": 0
+                },
+                {
+                    "id": 1210,
+                    "gender": 0
+                },
+                {
+                    "id": 1212,
+                    "gender": 0
+                },
+                {
+                    "id": 1213,
+                    "gender": 0
+                },
+                {
+                    "id": 1216,
+                    "gender": 0
+                },
+                {
+                    "id": 1580,
+                    "gender": 0
+                },
+                {
+                    "id": 1222,
+                    "gender": 0
+                },
+                {
+                    "id": 1582,
+                    "gender": 0
+                },
+                {
+                    "id": 1225,
+                    "gender": 0
+                },
+                {
+                    "id": 1227,
+                    "gender": 0
+                },
+                {
+                    "id": 1234,
+                    "gender": 0
+                },
+                {
+                    "id": 1590,
+                    "gender": 0
+                },
+                {
+                    "id": 1250,
+                    "gender": 1
+                },
+                {
+                    "id": 2095,
+                    "gender": 0
+                },
+                {
+                    "id": 989,
+                    "gender": 0
+                },
+                {
+                    "id": 1492,
+                    "gender": 1
+                },
+                {
+                    "id": 1535,
+                    "gender": 0
+                },
+                {
+                    "id": 1542,
+                    "gender": 1
+                },
+                {
+                    "id": 1179,
+                    "gender": 0
+                },
+                {
+                    "id": 1203,
+                    "gender": 0
+                },
+                {
+                    "id": 1206,
+                    "gender": 0
+                },
+                {
+                    "id": 1211,
+                    "gender": 1
+                },
+                {
+                    "id": 1217,
+                    "gender": 0
+                },
+                {
+                    "id": 1218,
+                    "gender": 1
+                },
+                {
+                    "id": 1219,
+                    "gender": 0
+                },
+                {
+                    "id": 1581,
+                    "gender": 1
+                },
+                {
+                    "id": 1583,
+                    "gender": 1
+                },
+                {
+                    "id": 1224,
+                    "gender": 0
+                },
+                {
+                    "id": 1226,
+                    "gender": 0
+                },
+                {
+                    "id": 1230,
+                    "gender": 0
+                },
+                {
+                    "id": 1587,
+                    "gender": 1
+                },
+                {
+                    "id": 1232,
+                    "gender": 0
+                },
+                {
+                    "id": 1591,
+                    "gender": 0
+                },
+                {
+                    "id": 1237,
+                    "gender": 0
+                }
+            ],
+            "id": 85,
             "group": "PÆD F13.2",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "86": {
-            "id": "86",
+            "name": "norF13.3",
+            "department": "219403",
+            "start": "01-02-2013",
+            "end": "30-06-2016",
+            "students": [
+                {
+                    "id": 823,
+                    "gender": 0
+                },
+                {
+                    "id": 1547,
+                    "gender": 1
+                },
+                {
+                    "id": 1549,
+                    "gender": 0
+                },
+                {
+                    "id": 1183,
+                    "gender": 0
+                },
+                {
+                    "id": 1552,
+                    "gender": 0
+                },
+                {
+                    "id": 1556,
+                    "gender": 0
+                },
+                {
+                    "id": 1187,
+                    "gender": 0
+                },
+                {
+                    "id": 1558,
+                    "gender": 0
+                },
+                {
+                    "id": 1566,
+                    "gender": 0
+                },
+                {
+                    "id": 1199,
+                    "gender": 1
+                },
+                {
+                    "id": 1569,
+                    "gender": 0
+                },
+                {
+                    "id": 1571,
+                    "gender": 0
+                },
+                {
+                    "id": 1572,
+                    "gender": 0
+                },
+                {
+                    "id": 1573,
+                    "gender": 0
+                },
+                {
+                    "id": 1574,
+                    "gender": 0
+                },
+                {
+                    "id": 1575,
+                    "gender": 0
+                },
+                {
+                    "id": 1576,
+                    "gender": 0
+                },
+                {
+                    "id": 1577,
+                    "gender": 0
+                },
+                {
+                    "id": 1220,
+                    "gender": 1
+                },
+                {
+                    "id": 1239,
+                    "gender": 0
+                },
+                {
+                    "id": 1181,
+                    "gender": 0
+                },
+                {
+                    "id": 1548,
+                    "gender": 0
+                },
+                {
+                    "id": 1182,
+                    "gender": 0
+                },
+                {
+                    "id": 1185,
+                    "gender": 0
+                },
+                {
+                    "id": 1192,
+                    "gender": 0
+                },
+                {
+                    "id": 1201,
+                    "gender": 0
+                },
+                {
+                    "id": 1567,
+                    "gender": 0
+                },
+                {
+                    "id": 1568,
+                    "gender": 0
+                },
+                {
+                    "id": 1214,
+                    "gender": 1
+                },
+                {
+                    "id": 1578,
+                    "gender": 0
+                },
+                {
+                    "id": 1579,
+                    "gender": 0
+                },
+                {
+                    "id": 1221,
+                    "gender": 1
+                },
+                {
+                    "id": 1223,
+                    "gender": 1
+                },
+                {
+                    "id": 1228,
+                    "gender": 0
+                },
+                {
+                    "id": 1231,
+                    "gender": 0
+                },
+                {
+                    "id": 1588,
+                    "gender": 0
+                },
+                {
+                    "id": 1244,
+                    "gender": 0
+                }
+            ],
+            "id": 86,
             "group": "PÆD F13.3",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "100": {
-            "id": "100",
+            "name": "norF12.1",
+            "department": "219403",
+            "start": "01-02-2012",
+            "end": "30-06-2015",
+            "students": [
+                {
+                    "id": 908,
+                    "gender": 0
+                },
+                {
+                    "id": 909,
+                    "gender": 0
+                },
+                {
+                    "id": 1008,
+                    "gender": 0
+                },
+                {
+                    "id": 1379,
+                    "gender": 1
+                },
+                {
+                    "id": 1015,
+                    "gender": 0
+                },
+                {
+                    "id": 1388,
+                    "gender": 0
+                },
+                {
+                    "id": 1023,
+                    "gender": 0
+                },
+                {
+                    "id": 1393,
+                    "gender": 1
+                },
+                {
+                    "id": 1035,
+                    "gender": 0
+                },
+                {
+                    "id": 1037,
+                    "gender": 1
+                },
+                {
+                    "id": 1043,
+                    "gender": 0
+                },
+                {
+                    "id": 2099,
+                    "gender": 0
+                },
+                {
+                    "id": 400,
+                    "gender": 0
+                },
+                {
+                    "id": 816,
+                    "gender": 0
+                },
+                {
+                    "id": 967,
+                    "gender": 0
+                },
+                {
+                    "id": 916,
+                    "gender": 0
+                },
+                {
+                    "id": 998,
+                    "gender": 0
+                },
+                {
+                    "id": 1005,
+                    "gender": 0
+                },
+                {
+                    "id": 1018,
+                    "gender": 0
+                },
+                {
+                    "id": 1019,
+                    "gender": 0
+                },
+                {
+                    "id": 1026,
+                    "gender": 1
+                }
+            ],
+            "id": 100,
             "group": "PÆD F12.1",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "101": {
-            "id": "101",
+            "name": "norF12.2",
+            "department": "219403",
+            "start": "01-02-2012",
+            "end": "30-06-2015",
+            "students": [
+                {
+                    "id": 826,
+                    "gender": 0
+                },
+                {
+                    "id": 996,
+                    "gender": 0
+                },
+                {
+                    "id": 1376,
+                    "gender": 1
+                },
+                {
+                    "id": 1377,
+                    "gender": 1
+                },
+                {
+                    "id": 1000,
+                    "gender": 0
+                },
+                {
+                    "id": 1002,
+                    "gender": 1
+                },
+                {
+                    "id": 1015,
+                    "gender": 0
+                },
+                {
+                    "id": 1016,
+                    "gender": 0
+                },
+                {
+                    "id": 1017,
+                    "gender": 0
+                },
+                {
+                    "id": 1020,
+                    "gender": 1
+                },
+                {
+                    "id": 1024,
+                    "gender": 0
+                },
+                {
+                    "id": 1392,
+                    "gender": 0
+                },
+                {
+                    "id": 1397,
+                    "gender": 0
+                },
+                {
+                    "id": 1044,
+                    "gender": 0
+                },
+                {
+                    "id": 833,
+                    "gender": 0
+                },
+                {
+                    "id": 981,
+                    "gender": 0
+                },
+                {
+                    "id": 999,
+                    "gender": 0
+                },
+                {
+                    "id": 1378,
+                    "gender": 0
+                },
+                {
+                    "id": 1013,
+                    "gender": 0
+                },
+                {
+                    "id": 1394,
+                    "gender": 0
+                },
+                {
+                    "id": 1398,
+                    "gender": 0
+                },
+                {
+                    "id": 1030,
+                    "gender": 1
+                },
+                {
+                    "id": 1034,
+                    "gender": 0
+                },
+                {
+                    "id": 1405,
+                    "gender": 0
+                },
+                {
+                    "id": 1042,
+                    "gender": 1
+                },
+                {
+                    "id": 1419,
+                    "gender": 0
+                },
+                {
+                    "id": 1562,
+                    "gender": 0
+                }
+            ],
+            "id": 101,
             "group": "PÆD F12.2",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "102": {
-            "id": "102",
+            "name": "norF12.3",
+            "department": "219403",
+            "start": "01-02-2012",
+            "end": "30-06-2015",
+            "students": [
+                {
+                    "id": 3,
+                    "gender": 0
+                },
+                {
+                    "id": 816,
+                    "gender": 0
+                },
+                {
+                    "id": 841,
+                    "gender": 0
+                },
+                {
+                    "id": 1001,
+                    "gender": 0
+                },
+                {
+                    "id": 1003,
+                    "gender": 0
+                },
+                {
+                    "id": 1007,
+                    "gender": 0
+                },
+                {
+                    "id": 1380,
+                    "gender": 1
+                },
+                {
+                    "id": 1014,
+                    "gender": 1
+                },
+                {
+                    "id": 1383,
+                    "gender": 0
+                },
+                {
+                    "id": 1021,
+                    "gender": 0
+                },
+                {
+                    "id": 1391,
+                    "gender": 0
+                },
+                {
+                    "id": 1395,
+                    "gender": 0
+                },
+                {
+                    "id": 1402,
+                    "gender": 0
+                },
+                {
+                    "id": 1031,
+                    "gender": 1
+                },
+                {
+                    "id": 1403,
+                    "gender": 0
+                },
+                {
+                    "id": 1036,
+                    "gender": 1
+                },
+                {
+                    "id": 1902,
+                    "gender": 0
+                },
+                {
+                    "id": 1366,
+                    "gender": 0
+                },
+                {
+                    "id": 1375,
+                    "gender": 1
+                },
+                {
+                    "id": 1004,
+                    "gender": 0
+                },
+                {
+                    "id": 1012,
+                    "gender": 0
+                },
+                {
+                    "id": 1382,
+                    "gender": 1
+                },
+                {
+                    "id": 1390,
+                    "gender": 1
+                },
+                {
+                    "id": 1032,
+                    "gender": 0
+                },
+                {
+                    "id": 1033,
+                    "gender": 0
+                },
+                {
+                    "id": 1407,
+                    "gender": 0
+                },
+                {
+                    "id": 1408,
+                    "gender": 1
+                }
+            ],
+            "id": 102,
             "group": "PÆD F12.3",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "107": {
-            "id": "107",
+            "name": "norE11.1",
+            "department": "219403",
+            "start": "29-08-2011",
+            "end": "31-01-2015",
+            "students": [
+                {
+                    "id": 419,
+                    "gender": 0
+                },
+                {
+                    "id": 962,
+                    "gender": 0
+                },
+                {
+                    "id": 1333,
+                    "gender": 0
+                },
+                {
+                    "id": 908,
+                    "gender": 0
+                },
+                {
+                    "id": 1339,
+                    "gender": 1
+                },
+                {
+                    "id": 920,
+                    "gender": 0
+                },
+                {
+                    "id": 1348,
+                    "gender": 1
+                },
+                {
+                    "id": 925,
+                    "gender": 1
+                },
+                {
+                    "id": 926,
+                    "gender": 0
+                },
+                {
+                    "id": 928,
+                    "gender": 1
+                },
+                {
+                    "id": 935,
+                    "gender": 0
+                },
+                {
+                    "id": 938,
+                    "gender": 1
+                },
+                {
+                    "id": 1359,
+                    "gender": 1
+                },
+                {
+                    "id": 1367,
+                    "gender": 0
+                },
+                {
+                    "id": 1369,
+                    "gender": 1
+                },
+                {
+                    "id": 992,
+                    "gender": 0
+                },
+                {
+                    "id": 994,
+                    "gender": 0
+                },
+                {
+                    "id": 995,
+                    "gender": 0
+                },
+                {
+                    "id": 397,
+                    "gender": 0
+                },
+                {
+                    "id": 782,
+                    "gender": 0
+                },
+                {
+                    "id": 431,
+                    "gender": 1
+                },
+                {
+                    "id": 915,
+                    "gender": 0
+                },
+                {
+                    "id": 1343,
+                    "gender": 0
+                },
+                {
+                    "id": 923,
+                    "gender": 0
+                },
+                {
+                    "id": 931,
+                    "gender": 0
+                },
+                {
+                    "id": 932,
+                    "gender": 0
+                },
+                {
+                    "id": 1357,
+                    "gender": 1
+                },
+                {
+                    "id": 984,
+                    "gender": 1
+                },
+                {
+                    "id": 986,
+                    "gender": 0
+                },
+                {
+                    "id": 988,
+                    "gender": 1
+                },
+                {
+                    "id": 1901,
+                    "gender": 0
+                }
+            ],
+            "id": 107,
             "group": "PÆD E11.1",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "108": {
-            "id": "108",
+            "name": "norE11.2_3",
+            "department": "219403",
+            "start": "01-08-2012",
+            "end": "31-01-2015",
+            "students": [
+                {
+                    "id": 1332,
+                    "gender": 0
+                },
+                {
+                    "id": 1336,
+                    "gender": 1
+                },
+                {
+                    "id": 1337,
+                    "gender": 1
+                },
+                {
+                    "id": 913,
+                    "gender": 1
+                },
+                {
+                    "id": 1342,
+                    "gender": 0
+                },
+                {
+                    "id": 918,
+                    "gender": 0
+                },
+                {
+                    "id": 921,
+                    "gender": 0
+                },
+                {
+                    "id": 1345,
+                    "gender": 1
+                },
+                {
+                    "id": 1346,
+                    "gender": 0
+                },
+                {
+                    "id": 1350,
+                    "gender": 0
+                },
+                {
+                    "id": 933,
+                    "gender": 0
+                },
+                {
+                    "id": 934,
+                    "gender": 0
+                },
+                {
+                    "id": 936,
+                    "gender": 0
+                },
+                {
+                    "id": 1362,
+                    "gender": 0
+                },
+                {
+                    "id": 1363,
+                    "gender": 1
+                },
+                {
+                    "id": 987,
+                    "gender": 0
+                },
+                {
+                    "id": 1368,
+                    "gender": 0
+                },
+                {
+                    "id": 1371,
+                    "gender": 0
+                },
+                {
+                    "id": 993,
+                    "gender": 0
+                },
+                {
+                    "id": 1372,
+                    "gender": 1
+                },
+                {
+                    "id": 962,
+                    "gender": 0
+                },
+                {
+                    "id": 1335,
+                    "gender": 1
+                },
+                {
+                    "id": 910,
+                    "gender": 0
+                },
+                {
+                    "id": 1338,
+                    "gender": 0
+                },
+                {
+                    "id": 917,
+                    "gender": 0
+                },
+                {
+                    "id": 922,
+                    "gender": 1
+                },
+                {
+                    "id": 1347,
+                    "gender": 0
+                },
+                {
+                    "id": 927,
+                    "gender": 0
+                },
+                {
+                    "id": 1351,
+                    "gender": 0
+                },
+                {
+                    "id": 937,
+                    "gender": 1
+                },
+                {
+                    "id": 940,
+                    "gender": 0
+                },
+                {
+                    "id": 1365,
+                    "gender": 0
+                },
+                {
+                    "id": 991,
+                    "gender": 1
+                }
+            ],
+            "id": 108,
             "group": "PÆD E11.2-3",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "109": {
-            "id": "109",
+            "name": "norE11.4",
+            "department": "219403",
+            "start": "29-08-2011",
+            "end": "31-01-2015",
+            "students": [
+                {
+                    "id": 766,
+                    "gender": 0
+                },
+                {
+                    "id": 448,
+                    "gender": 1
+                },
+                {
+                    "id": 870,
+                    "gender": 0
+                },
+                {
+                    "id": 977,
+                    "gender": 1
+                },
+                {
+                    "id": 859,
+                    "gender": 0
+                },
+                {
+                    "id": 1334,
+                    "gender": 0
+                },
+                {
+                    "id": 1358,
+                    "gender": 0
+                },
+                {
+                    "id": 985,
+                    "gender": 0
+                },
+                {
+                    "id": 1364,
+                    "gender": 0
+                },
+                {
+                    "id": 1370,
+                    "gender": 0
+                },
+                {
+                    "id": 808,
+                    "gender": 0
+                },
+                {
+                    "id": 876,
+                    "gender": 0
+                },
+                {
+                    "id": 906,
+                    "gender": 1
+                },
+                {
+                    "id": 907,
+                    "gender": 0
+                },
+                {
+                    "id": 912,
+                    "gender": 0
+                },
+                {
+                    "id": 1340,
+                    "gender": 0
+                },
+                {
+                    "id": 1341,
+                    "gender": 1
+                },
+                {
+                    "id": 914,
+                    "gender": 0
+                },
+                {
+                    "id": 919,
+                    "gender": 0
+                },
+                {
+                    "id": 1344,
+                    "gender": 0
+                },
+                {
+                    "id": 924,
+                    "gender": 0
+                },
+                {
+                    "id": 1349,
+                    "gender": 0
+                },
+                {
+                    "id": 1352,
+                    "gender": 0
+                },
+                {
+                    "id": 1353,
+                    "gender": 0
+                },
+                {
+                    "id": 983,
+                    "gender": 1
+                },
+                {
+                    "id": 1361,
+                    "gender": 0
+                },
+                {
+                    "id": 990,
+                    "gender": 0
+                }
+            ],
+            "id": 109,
             "group": "PÆD E11.4",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "110": {
-            "id": "110",
+            "name": "nornE11",
+            "department": "219403",
+            "start": "29-08-2011",
+            "end": "31-01-2015",
+            "students": [
+                {
+                    "id": 760,
+                    "gender": 0
+                },
+                {
+                    "id": 1354,
+                    "gender": 0
+                },
+                {
+                    "id": 403,
+                    "gender": 0
+                },
+                {
+                    "id": 454,
+                    "gender": 0
+                },
+                {
+                    "id": 851,
+                    "gender": 0
+                },
+                {
+                    "id": 852,
+                    "gender": 1
+                },
+                {
+                    "id": 1360,
+                    "gender": 0
+                },
+                {
+                    "id": 1373,
+                    "gender": 1
+                }
+            ],
+            "id": 110,
             "group": "PÆD NE11",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "118": {
-            "id": "118",
+            "name": "norE10.1_2",
+            "department": "219403",
+            "start": "01-08-2012",
+            "end": "31-01-2014",
+            "students": [
+                {
+                    "id": 398,
+                    "gender": 0
+                },
+                {
+                    "id": 762,
+                    "gender": 1
+                },
+                {
+                    "id": 791,
+                    "gender": 0
+                },
+                {
+                    "id": 431,
+                    "gender": 1
+                },
+                {
+                    "id": 432,
+                    "gender": 1
+                },
+                {
+                    "id": 806,
+                    "gender": 0
+                },
+                {
+                    "id": 434,
+                    "gender": 0
+                },
+                {
+                    "id": 807,
+                    "gender": 0
+                },
+                {
+                    "id": 440,
+                    "gender": 1
+                },
+                {
+                    "id": 445,
+                    "gender": 1
+                },
+                {
+                    "id": 447,
+                    "gender": 1
+                },
+                {
+                    "id": 866,
+                    "gender": 1
+                },
+                {
+                    "id": 868,
+                    "gender": 0
+                },
+                {
+                    "id": 873,
+                    "gender": 0
+                },
+                {
+                    "id": 874,
+                    "gender": 0
+                },
+                {
+                    "id": 456,
+                    "gender": 0
+                },
+                {
+                    "id": 461,
+                    "gender": 0
+                },
+                {
+                    "id": 464,
+                    "gender": 0
+                },
+                {
+                    "id": 469,
+                    "gender": 1
+                },
+                {
+                    "id": 471,
+                    "gender": 0
+                },
+                {
+                    "id": 1908,
+                    "gender": 0
+                },
+                {
+                    "id": 781,
+                    "gender": 1
+                },
+                {
+                    "id": 427,
+                    "gender": 1
+                },
+                {
+                    "id": 436,
+                    "gender": 1
+                },
+                {
+                    "id": 444,
+                    "gender": 0
+                },
+                {
+                    "id": 861,
+                    "gender": 0
+                },
+                {
+                    "id": 863,
+                    "gender": 0
+                },
+                {
+                    "id": 867,
+                    "gender": 0
+                },
+                {
+                    "id": 451,
+                    "gender": 0
+                },
+                {
+                    "id": 871,
+                    "gender": 1
+                },
+                {
+                    "id": 457,
+                    "gender": 1
+                },
+                {
+                    "id": 878,
+                    "gender": 0
+                },
+                {
+                    "id": 879,
+                    "gender": 0
+                },
+                {
+                    "id": 462,
+                    "gender": 0
+                },
+                {
+                    "id": 466,
+                    "gender": 0
+                },
+                {
+                    "id": 1902,
+                    "gender": 0
+                },
+                {
+                    "id": 1905,
+                    "gender": 0
+                }
+            ],
+            "id": 118,
             "group": "PÆD E10.1-2",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "119": {
-            "id": "119",
+            "name": "norE10.3_4",
+            "department": "219403",
+            "start": "01-08-2012",
+            "end": "31-01-2014",
+            "students": [
+                {
+                    "id": 435,
+                    "gender": 1
+                },
+                {
+                    "id": 809,
+                    "gender": 1
+                },
+                {
+                    "id": 810,
+                    "gender": 0
+                },
+                {
+                    "id": 811,
+                    "gender": 0
+                },
+                {
+                    "id": 812,
+                    "gender": 1
+                },
+                {
+                    "id": 815,
+                    "gender": 0
+                },
+                {
+                    "id": 817,
+                    "gender": 0
+                },
+                {
+                    "id": 446,
+                    "gender": 0
+                },
+                {
+                    "id": 450,
+                    "gender": 0
+                },
+                {
+                    "id": 453,
+                    "gender": 0
+                },
+                {
+                    "id": 460,
+                    "gender": 1
+                },
+                {
+                    "id": 880,
+                    "gender": 1
+                },
+                {
+                    "id": 465,
+                    "gender": 0
+                },
+                {
+                    "id": 468,
+                    "gender": 0
+                },
+                {
+                    "id": 761,
+                    "gender": 0
+                },
+                {
+                    "id": 433,
+                    "gender": 0
+                },
+                {
+                    "id": 441,
+                    "gender": 0
+                },
+                {
+                    "id": 442,
+                    "gender": 1
+                },
+                {
+                    "id": 443,
+                    "gender": 0
+                },
+                {
+                    "id": 813,
+                    "gender": 1
+                },
+                {
+                    "id": 814,
+                    "gender": 0
+                },
+                {
+                    "id": 862,
+                    "gender": 0
+                },
+                {
+                    "id": 449,
+                    "gender": 0
+                },
+                {
+                    "id": 869,
+                    "gender": 0
+                },
+                {
+                    "id": 452,
+                    "gender": 0
+                },
+                {
+                    "id": 872,
+                    "gender": 0
+                },
+                {
+                    "id": 455,
+                    "gender": 0
+                },
+                {
+                    "id": 458,
+                    "gender": 0
+                },
+                {
+                    "id": 875,
+                    "gender": 0
+                },
+                {
+                    "id": 877,
+                    "gender": 0
+                },
+                {
+                    "id": 459,
+                    "gender": 0
+                },
+                {
+                    "id": 463,
+                    "gender": 0
+                },
+                {
+                    "id": 467,
+                    "gender": 0
+                },
+                {
+                    "id": 470,
+                    "gender": 0
+                },
+                {
+                    "id": 896,
+                    "gender": 0
+                },
+                {
+                    "id": 1903,
+                    "gender": 0
+                }
+            ],
+            "id": 119,
             "group": "PÆD E10.3-4",
-            "programme": "PÆD"
+            "programme": "PÆD - Pædagoguddannelsen"
         },
         "123": {
-            "id": "123",
+            "id": 123,
             "group": "SUND M5",
-            "programme": null
+            "programme": "undefined - undefined"
         }
     },
     "teachers": {
         "2": {
-            "id": "2",
-            "gender": "m",
-            "programme": "PMU"
+            "id": 2,
+            "gender": 1,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "4": {
-            "id": "4",
-            "gender": "f",
-            "programme": "FYS"
+            "id": 4,
+            "gender": 0,
+            "programme": "181402",
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         },
         "5": {
-            "id": "5",
-            "gender": "f",
-            "programme": "PMU"
+            "id": 5,
+            "gender": 0,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "6": {
-            "id": "6",
-            "gender": "f",
-            "programme": "FYS"
+            "id": 6,
+            "gender": 0,
+            "programme": "181402",
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         },
         "7": {
-            "id": "7",
-            "gender": "m",
-            "programme": "PMU"
+            "id": 7,
+            "gender": 1,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "10": {
-            "id": "10",
-            "gender": "m",
-            "programme": "PMU"
+            "id": 10,
+            "gender": 1,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "12": {
-            "id": "12",
-            "gender": "f",
-            "programme": "PMU"
+            "id": 12,
+            "gender": 0,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "13": {
-            "id": "13",
-            "gender": "f",
-            "programme": "PMU"
+            "id": 13,
+            "gender": 0,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "14": {
-            "id": "14",
-            "gender": "f",
-            "programme": "PMU"
+            "id": 14,
+            "gender": 0,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "16": {
-            "id": "16",
-            "gender": "f",
-            "programme": "PMU"
+            "id": 16,
+            "gender": 0,
+            "programme": "173409",
+            "programmeDesc": "PMU - Psykomotorikuddannelsen"
         },
         "18": {
-            "id": "18",
-            "gender": "f",
-            "programme": "SPL"
+            "id": 18,
+            "gender": 0,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "19": {
-            "id": "19",
-            "gender": "f",
-            "programme": "SPL"
+            "id": 19,
+            "gender": 0,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "22": {
-            "id": "22",
-            "gender": "f",
-            "programme": "SPL"
+            "id": 22,
+            "gender": 0,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "23": {
-            "id": "23",
-            "gender": "m",
-            "programme": "SPL"
+            "id": 23,
+            "gender": 1,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "26": {
-            "id": "26",
-            "gender": "f",
-            "programme": "SPL"
+            "id": 26,
+            "gender": 0,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "27": {
-            "id": "27",
-            "gender": "m",
-            "programme": "SPL"
+            "id": 27,
+            "gender": 1,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "32": {
-            "id": "32",
-            "gender": "f",
-            "programme": "SPL"
+            "id": 32,
+            "gender": 0,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "35": {
-            "id": "35",
-            "gender": "f",
-            "programme": "SPL"
+            "id": 35,
+            "gender": 0,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "41": {
-            "id": "41",
-            "gender": "f",
-            "programme": "SPL"
+            "id": 41,
+            "gender": 0,
+            "programme": "219405",
+            "programmeDesc": "SPL - Sygeplejerskeuddannelsen"
         },
         "47": {
-            "id": "47",
-            "gender": "f",
-            "programme": "FYS"
+            "id": 47,
+            "gender": 0,
+            "programme": "181402",
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         },
         "56": {
-            "id": "56",
-            "gender": "f",
-            "programme": "FYS"
+            "id": 56,
+            "gender": 0,
+            "programme": "181402",
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         },
         "69": {
-            "id": "69",
-            "gender": "m",
-            "programme": "FYS"
+            "id": 69,
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         },
         "72": {
-            "id": "72",
-            "gender": "m",
-            "programme": "FYS"
+            "id": 72,
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         },
         "76": {
-            "id": "76",
-            "gender": "f",
-            "programme": "PÆD"
+            "id": 76,
+            "gender": 0,
+            "programme": "219403",
+            "programmeDesc": "PÆD - Pædagoguddannelsen"
         },
         "82": {
-            "id": "82",
-            "gender": "f",
-            "programme": "PÆD"
+            "id": 82,
+            "gender": 0,
+            "programme": "219403",
+            "programmeDesc": "PÆD - Pædagoguddannelsen"
         },
         "95": {
-            "id": "95",
-            "gender": "m",
-            "programme": "PÆD"
+            "id": 95,
+            "gender": 1,
+            "programme": "219403",
+            "programmeDesc": "PÆD - Pædagoguddannelsen"
         },
         "100": {
-            "id": "100",
-            "gender": "m",
-            "programme": "PÆD"
+            "id": 100,
+            "gender": 1,
+            "programme": "219403",
+            "programmeDesc": "PÆD - Pædagoguddannelsen"
         },
         "103": {
-            "id": "103",
-            "gender": "m",
-            "programme": "PÆD"
+            "id": 103,
+            "gender": 0,
+            "programme": "219403",
+            "programmeDesc": "PÆD - Pædagoguddannelsen"
         },
         "113": {
-            "id": "113",
-            "gender": "?"
+            "id": 113,
+            "programmeDesc": "undefined - undefined"
         },
         "115": {
-            "id": "115",
-            "gender": "m",
-            "programme": "PÆD"
+            "id": 115,
+            "gender": 1,
+            "programme": "219403",
+            "programmeDesc": "PÆD - Pædagoguddannelsen"
         },
         "126": {
-            "id": "126",
-            "gender": "f",
-            "programme": "FYS"
+            "id": 126,
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         },
         "129": {
-            "id": "129",
-            "gender": "m",
-            "programme": "PÆD"
+            "id": 129,
+            "gender": 1,
+            "programme": "219403",
+            "programmeDesc": "PÆD - Pædagoguddannelsen"
         },
         "131": {
-            "id": "131",
-            "gender": "m",
-            "programme": "FYS"
+            "id": 131,
+            "programmeDesc": "FYS - Fysioterapeutuddannelsen"
         }
     }
 }
