@@ -1,0 +1,24 @@
+{
+  "prepare": {
+    "webuntis": "..api-key..",
+    "mssql": {
+      "server": "...",
+      "database": "...",
+      "user": "...",
+      "password": "..."
+    },
+    "icalUrl": "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics",
+    "dest": {
+      "protocol": "http",
+      "host": "10.251.26.11",
+      "path": "/uccorg-update",
+      "port": 8080
+    },
+  },
+  "apiserver": {
+    "protocol": "https",
+    "port": 8080,
+    "cachefile": "data.json"
+  },
+  "runTest": true
+}

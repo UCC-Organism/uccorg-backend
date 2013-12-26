@@ -1,0 +1,7 @@
+{
+  "apiserver": {
+    "protocol": "http",
+    "port": 8080,
+    "cachefile": "data.json"
+  }
+}
