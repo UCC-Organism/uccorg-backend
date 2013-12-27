@@ -388,3 +388,4 @@
 ["event",["end",{"id":689,"start":"2013-09-20T14:45:00","end":"2013-09-20T15:30:00","teachers":[],"locations":[],"subject":"Klinisk undervisning","groups":[18]}]]
 ["event",["start",{"id":10587,"start":"2013-09-20T15:30:00","end":"2013-09-20T18:15:00","teachers":[],"locations":[],"subject":"Opgaveskrivning og vejledning","groups":[100,101,102]}]]
 ["event",["end",{"id":10587,"start":"2013-09-20T15:30:00","end":"2013-09-20T18:15:00","teachers":[],"locations":[],"subject":"Opgaveskrivning og vejledning","groups":[100,101,102]}]]
+["testDone"]

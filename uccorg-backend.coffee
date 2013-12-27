@@ -398,23 +398,23 @@ else
   
   #{{{2 Test
   #
-  if config.runTest
+  if config.test
   
     testResult = ""
     testLog = (args...)->
       testResult += JSON.stringify([args...]) + "\n"
     testDone = ->
-      fs.writeFileSync "test.out", testResult
+      fs.writeFileSync config.test.outfile, testResult if config.test.outfile
       process.exit()
   
     app.use express.static "#{__dirname}/public"
   
   
-    testStart = "2013-09-20T06:20:00"
-    testEnd = "2013-09-20T18:20:00"
+    testStart = config.test.startDate
+    testEnd = config.test.endDate
     #testEnd = "2013-09-21T06:20:00"
     # Factor by which the time will run by during the test
-    testSpeed = 3000
+    testSpeed = config.test.xTime
 
   
     #{{{3 Mock getISODate, 
@@ -428,11 +428,9 @@ else
     #{{{3 run the test - current test client just emits "/events" back as "/test"
     bayeux.getClient().subscribe "/events", (message) ->
       testLog "event", message
-      if message[0] == "end" and message[1].id == 10587
-        testDone()
     setInterval (->
       if getISODate() >= testEnd
-        testLog "date > testend"
+        testLog "testDone"
         testDone()
     ), 100000 / testSpeed
     #sendUpdate data, -> undefined
