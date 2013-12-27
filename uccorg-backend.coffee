@@ -65,8 +65,7 @@ try
   configfile += ".json" if configfile.slice(-5, 0) != ".json"
   config = JSON.parse fs.readFileSync configfile, "utf8"
 catch e
-  console.log e
-  console.log "could not read configfile #{configfile}"
+  console.log "reading config #{configfile}:", e
   process.exit 1
 
 # {{{2 Utility functions
@@ -102,7 +101,7 @@ if config.prepare
         result = JSON.parse fs.readFileSync config.prepare.mssqlDump
         return done? result
       catch e
-        console.log e
+        console.log "Loading mssql dump:",  e
 
     entries = ["Hold", "Studerende", "Ansatte", "AnsatteHold", "StuderendeHold"]
     result = {}
@@ -136,7 +135,7 @@ if config.prepare
         result = JSON.parse fs.readFileSync config.prepare.webuntisDump
         return callback?(result)
       catch e
-        console.log e
+        console.log "Loading webuntis dump:", e
   
     do ->
       apikey = config.prepare.webuntis
