@@ -48,6 +48,7 @@
 # {{{1 Common stuff
 # {{{2 Dependencies
 
+assert = require "assert"
 fs = require "fs"
 express = require "express"
 http = require "http"
@@ -73,6 +74,25 @@ catch e
 # {{{2 Utility functions
 getISODate = -> (new Date).toISOString()
 sleep = (t, fn) -> setTimeout fn, t*1000
+#{{{3 binarySearchFn
+binSearchFn = (arr, fn) ->
+  start = 0
+  end = arr.length
+  while start < end
+    mid = start + end >> 1
+    if fn(arr[mid]) < 0
+      start = mid + 1
+    else
+      end = mid
+  return start
+
+if config.test then do ->
+  arr = [0,1,2,3,4,5]
+  assert.equal 2, binSearchFn arr, (a) -> a - 2
+  assert.equal 3, binSearchFn arr, (a) -> a - 2.1
+
+
+#{{{3 sendUpdate
 sendUpdate = (data, callback) ->
   datastr = JSON.stringify data
   # escape unicode as ascii
@@ -310,7 +330,8 @@ if config.prepare
 
 #{{{1 event/api-server
 else
-  #{{{2 Pushed to the server from UCC daily. 
+  #{{{2
+  #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
     console.log "handling data update from ucc-server"
     fs.writeFile config.apiserver.cachefile, JSON.stringify(input), ->
@@ -337,7 +358,7 @@ else
           collection[elem].push activity
     for _, collection of activitiesBy
       for _, arr of collection
-        arr.sort (a, b) -> a.start.localeCompare b.start
+        arr.sort (a, b) -> a.end.localeCompare b.end
 
     #{{{4 Table with `events` (activity start/end)
     # 
@@ -350,12 +371,6 @@ else
       events.push "#{activity.start} start #{activity.id}" if activity.start > now
       events.push "#{activity.end} end #{activity.id}" if activity.end > now
     events.sort()
-
-    #{{{4 activities by group/location/teacher
-    #
-    #TODO
-  
-  
   
   #{{{3 read cached data
   try
@@ -390,7 +405,7 @@ else
     activity: "activities"
     group: "groups"
     location: "locations"
-  
+
   defRest name, member for name, member of endpoints
   
   #{{{3 When getting a request to /update, write it to data.json
@@ -431,7 +446,6 @@ else
   #{{{2 Test
   #
   if config.test
-  
     testResult = ""
     testLog = (args...)->
       testResult += JSON.stringify([args...]) + "\n"
