@@ -16,6 +16,8 @@
       "path": "/uccorg-update",
       "port": 8080
     },
+    "startDate": "either number of days relative to now, or a fixed ISO date/time",
+    "timespan": "number of days"
   },
   "apiserver": {
     "port": 8080,

@@ -183,8 +183,13 @@ if config.prepare
 
   processData = (webuntis, sqlserver, callback) ->
 
-    startTime = "2013-09-20"
-    endTime = "2013-09-21"
+    startTime = config.prepare.startDate || 0
+    if typeof startTime == "number"
+      startTime = (new Date(+(new Date()) + startTime * 24*60*60*1000)).toISOString()
+    else
+      startTime = (new Date(startTime)).toISOString()
+    endTime = (new Date(+(new Date(startTime)) + (config.prepare.timespan || 1) * 24*60*60*1000)).toISOString()
+    console.log "Extracting data from #{startTime} to #{endTime}"
   
     # The file in the repository contains sample data for test.
     #
