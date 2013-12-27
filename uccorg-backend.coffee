@@ -362,7 +362,7 @@ else
     teacher: "teachers"
     activity: "activities"
     group: "groups"
-    student: "students"
+    location: "locations"
   
   defRest name, member for name, member of endpoints
   
