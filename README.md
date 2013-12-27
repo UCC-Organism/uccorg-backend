@@ -22,6 +22,9 @@ In addition to this, there is some shared code, and testing.
 ## Done
 ### Milestone 2 - running until Dec. 29
 
+- moving configuration into config-file
+- generate datafile for apiserver from ucc/webuntis-data
+- anonymising students
 - temporarily forwarding data through ssl.solsort.com, as port 8080 from ssmldata to macmini doesn't seem to be open.
 - send data from ssmldata-server to macmini
 
@@ -40,7 +43,6 @@ In addition to this, there is some shared code, and testing.
 
 ## To Do
 
-- anonymise/cleanup data from ucc/webuntis
 - get data from remote-calendar
 - make servers production-ready
 - test daylight saving handling
@@ -517,7 +519,9 @@ Date corresponds to the test data set, and a clock that runs very fast
             testLog "date > testend"
             testDone()
         ), 100000 / testSpeed
-        sendUpdate data, -> undefined
+
+sendUpdate data, -> undefined
+
     
 
 
