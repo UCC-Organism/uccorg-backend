@@ -63,7 +63,6 @@ try
   configfile = process.argv[2]
   configfile = "config" if !configfile
   configfile += ".json" if configfile.slice(-5, 0) != ".json"
-  console.log configfile
   config = JSON.parse fs.readFileSync configfile, "utf8"
 catch e
   console.log e
@@ -98,12 +97,22 @@ if config.prepare
   #{{{2 Calendar data
   #{{{2 SQL Server data source
   getSqlServerData = (done) ->
+    if config.prepare.mssqlDump
+      try
+        result = JSON.parse fs.readFileSync config.prepare.mssqlDump
+        return done? result
+      catch e
+        console.log e
+
     entries = ["Hold", "Studerende", "Ansatte", "AnsatteHold", "StuderendeHold"]
     result = {}
-    return done(result) if not config.prepare.mssql
+    return done?(result) if not config.prepare.mssql
 
     handleNext = ->
-      return done(result) if entries.length == 0
+      if entries.length == 0
+        if config.prepare.mssqlDump
+          fs.writeFileSync config.prepare.mssqlDump, (JSON.stringify data, null, 2)
+        return done?(result)
       current = entries.pop()
       req = con.request()
       req.execute "Get#{current}CampusNord", (err, reqset) ->
@@ -121,13 +130,12 @@ if config.prepare
   # If needed extract code from old-backend-code.js
   
   getWebUntisData = (callback) ->
-    # DEBUG code, run it on cached data instead of loading all of the webuntis data
-    try
-      result = JSON.parse fs.readFileSync "#{__dirname}/webuntis.json"
-      return callback?(result)
-    catch e
-      console.log e
-      undefined
+    if config.prepare.webuntisDump
+      try
+        result = JSON.parse fs.readFileSync config.prepare.webuntisDump
+        return callback?(result)
+      catch e
+        console.log e
   
     do ->
       apikey = config.prepare.webuntis
@@ -166,9 +174,9 @@ if config.prepare
   
       extractData (err, data) ->
         throw err if err
+        if config.prepare.webuntisDump
+          fs.writeFileSync config.prepare.webuntisDump, (JSON.stringify data, null, 2)
         callback?(data)
-        # DEBUG code, run it on cached data instead of loading all of the webuntis data
-        fs.writeFile "webuntis.json", (JSON.stringify data, null, 4), -> undefined
   
   
   #{{{2 Transform data for the event/api-server
@@ -286,27 +294,17 @@ if config.prepare
     callback result
   
   #{{{2 execute
-  if config.prepare.mssql
-    getWebUntisData (data1) ->
-      getSqlServerData (data2) ->
-        processData data1, data2, (result) ->
-          sendUpdate result, () ->
-            console.log "submitted to api-server"
-  else
-    fs.readFile "dump.json", (err, data) ->
-      throw err if err
-      data = JSON.parse data
-      processData data.webuntis, data.sqlserver, (result) ->
-        fs.writeFileSync "foo.json", JSON.stringify(result, null, 4)
+  getWebUntisData (data1) ->
+    getSqlServerData (data2) ->
+      processData data1, data2, (result) ->
         sendUpdate result, () ->
           console.log "submitted to api-server"
-        undefined
+          process.exit 0
 
 #{{{1 event/api-server
 else
   #{{{2 Pushed to the server from UCC daily. 
   handleUCCData = (data, done) ->
-    fs.writeFile "#{__dirname}/dump.json", JSON.stringify data
     console.log "handle data update from ucc-server", data
     #... update data-object based on UCC-data, include prune old data
     cacheData done

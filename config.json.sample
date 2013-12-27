@@ -1,6 +1,8 @@
 {
   "prepare": {
+    "webuntisDump": "filename to read from, instead of using api",
     "webuntis": "..api-key..",
+    "mssqlDump": "filename to read from, instead of using api",
     "mssql": {
       "server": "...",
       "database": "...",
