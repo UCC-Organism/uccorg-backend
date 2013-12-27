@@ -111,9 +111,10 @@ if config.prepare
     handleNext = ->
       if entries.length == 0
         if config.prepare.mssqlDump
-          fs.writeFileSync config.prepare.mssqlDump, (JSON.stringify data, null, 2)
+          fs.writeFileSync config.prepare.mssqlDump, (JSON.stringify result, null, 2)
         return done?(result)
       current = entries.pop()
+      console.log "mssql", current
       req = con.request()
       req.execute "Get#{current}CampusNord", (err, reqset) ->
         throw err if err
