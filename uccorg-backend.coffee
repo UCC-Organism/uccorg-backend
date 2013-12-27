@@ -13,7 +13,7 @@
 # - some teachers on webuntis missing from mssql (thus missing gender non-critical)
 # - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
 # - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
-# - note: several activities may happen at same location at the same time
+# - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
 #
 # {{{2 Done
 # {{{3 Milestone 2 - running until Dec. 29
@@ -406,6 +406,22 @@ else
     group: "groups"
     location: "locations"
 
+  app.all "/now/:kind/:id", (req, res) ->
+    arr = activitiesBy[req.params.kind][req.params.id]
+    return res.end if ! arr
+    now = getISODate()
+    idx = binSearchFn arr, (activity) -> activity.end.localeCompare now
+    result = {
+      current: []
+    }
+    result.prev = arr[idx-1]
+    while arr[idx] && arr[idx].start < now
+      result.current.push arr[idx]
+      ++idx
+    result.next = arr[idx]
+    res.json result
+    res.end()
+  
   defRest name, member for name, member of endpoints
   
   #{{{3 When getting a request to /update, write it to data.json
@@ -472,6 +488,10 @@ else
           testLog id, JSON.parse data
           done()
       async.series [
+        restTestRequest "now/location/Brikserum C.125"
+        restTestRequest "now/group/39"
+        restTestRequest "now/teacher/23"
+        restTestRequest "now/location/C.224"
         restTestRequest "group/39"
         restTestRequest "teacher/23"
         restTestRequest "location/C.206"
