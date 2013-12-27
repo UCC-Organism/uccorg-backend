@@ -320,9 +320,23 @@ else
   
   #{{{3 Data structures
   #
+  activitiesBy =
+    group: {}
+    location: {}
+    teacher: {}
   events = []
   eventPos = 0
   enrichData = ->
+
+    #{{{4 Tables with activities ordered by group/location/teacher
+    for _, activity of data.activities
+      for kind, collection of activitiesBy
+        for elem in activity["#{kind}s"]
+          collection[elem] ?= []
+          collection[elem].push activity
+    for _, collection of activitiesBy
+      for _, arr of collection
+        arr.sort (a, b) -> a.start.localeCompare b.start
 
     #{{{4 Table with `events` (activity start/end)
     # 
