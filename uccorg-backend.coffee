@@ -53,6 +53,7 @@ http = require "http"
 faye = require "faye"
 async = require "async"
 mssql = require "mssql"
+request = require "request"
 
 # {{{2 Load config file
 #
@@ -70,7 +71,7 @@ catch e
 
 # {{{2 Utility functions
 getISODate = -> (new Date).toISOString()
-sleep = (t, fn) -> setTimeout fn, t
+sleep = (t, fn) -> setTimeout fn, t*1000
 sendUpdate = (data, callback) ->
   datastr = JSON.stringify data
   # escape unicode as ascii
@@ -144,7 +145,7 @@ if config.prepare
       webuntis = (name, cb) ->
         console.log "webuntis", name, ++untisCall
         url = "https://api.webuntis.dk/api/" + name + "?api_key=" + apikey
-        (require 'request') url, (err, result, content) ->
+        request url, (err, result, content) ->
           return cb err if err
           console.log url, content
           cb null, JSON.parse content
@@ -421,6 +422,23 @@ else
     # Factor by which the time will run by during the test
     testSpeed = config.test.xTime
 
+    #{{{3 Rest test
+    restTest = ->
+      restTest = -> undefined
+      console.log "restTest", getISODate()
+
+      url = "http://localhost:#{config.apiserver.port}/"
+      restTestRequest = (id) -> (done) ->
+        request url + id, (err, req, data) ->
+          testLog id, JSON.parse data
+          done()
+      async.series [
+        restTestRequest "group/39"
+        restTestRequest "teacher/23"
+        restTestRequest "location/C.206"
+        restTestRequest "activity/23730"
+      ]
+      undefined
   
     #{{{3 Mock getISODate, 
     #
@@ -434,6 +452,8 @@ else
     bayeux.getClient().subscribe "/events", (message) ->
       testLog "event", message
     setInterval (->
+      if config.test.restTestTime && getISODate() >= config.test.restTestTime
+        restTest()
       if getISODate() >= testEnd
         testLog "testDone"
         testDone()
