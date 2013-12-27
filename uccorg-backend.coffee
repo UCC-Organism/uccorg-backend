@@ -13,6 +13,7 @@
 # - some teachers on webuntis missing from mssql (thus missing gender non-critical)
 # - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
 # - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
+# - note: several activities may happen at same location at the same time
 #
 # {{{2 Done
 # {{{3 Milestone 2 - running until Dec. 29

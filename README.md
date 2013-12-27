@@ -18,6 +18,7 @@ In addition to this, there is some shared code, and testing.
 - some teachers on webuntis missing from mssql (thus missing gender non-critical)
 - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
 - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
+- note: several activities may happen at same location at the same time
 
 ## Done
 ### Milestone 2 - running until Dec. 29
@@ -59,6 +60,7 @@ In addition to this, there is some shared code, and testing.
     faye = require "faye"
     async = require "async"
     mssql = require "mssql"
+    request = require "request"
     
 
 ## Load config file
@@ -71,18 +73,16 @@ See sample file in `config.json-sample`, and `test.json`.
       configfile = process.argv[2]
       configfile = "config" if !configfile
       configfile += ".json" if configfile.slice(-5, 0) != ".json"
-      console.log configfile
       config = JSON.parse fs.readFileSync configfile, "utf8"
     catch e
-      console.log e
-      console.log "could not read configfile #{configfile}"
+      console.log "reading config #{configfile}:", e
       process.exit 1
     
 
 ## Utility functions
 
     getISODate = -> (new Date).toISOString()
-    sleep = (t, fn) -> setTimeout fn, t
+    sleep = (t, fn) -> setTimeout fn, t*1000
     sendUpdate = (data, callback) ->
       datastr = JSON.stringify data
 
@@ -114,13 +114,24 @@ escape unicode as ascii
 ## SQL Server data source
 
       getSqlServerData = (done) ->
+        if config.prepare.mssqlDump
+          try
+            result = JSON.parse fs.readFileSync config.prepare.mssqlDump
+            return done? result
+          catch e
+            console.log "Loading mssql dump:",  e
+    
         entries = ["Hold", "Studerende", "Ansatte", "AnsatteHold", "StuderendeHold"]
         result = {}
-        return done(result) if not config.prepare.mssql
+        return done?(result) if not config.prepare.mssql
     
         handleNext = ->
-          return done(result) if entries.length == 0
+          if entries.length == 0
+            if config.prepare.mssqlDump
+              fs.writeFileSync config.prepare.mssqlDump, (JSON.stringify result, null, 2)
+            return done?(result)
           current = entries.pop()
+          console.log "mssql", current
           req = con.request()
           req.execute "Get#{current}CampusNord", (err, reqset) ->
             throw err if err
@@ -139,15 +150,12 @@ If needed extract code from old-backend-code.js
 
       
       getWebUntisData = (callback) ->
-
-DEBUG code, run it on cached data instead of loading all of the webuntis data
-
-        try
-          result = JSON.parse fs.readFileSync "#{__dirname}/webuntis.json"
-          return callback?(result)
-        catch e
-          console.log e
-          undefined
+        if config.prepare.webuntisDump
+          try
+            result = JSON.parse fs.readFileSync config.prepare.webuntisDump
+            return callback?(result)
+          catch e
+            console.log "Loading webuntis dump:", e
       
         do ->
           apikey = config.prepare.webuntis
@@ -158,7 +166,7 @@ webuntis - function for calling the webuntis api
           webuntis = (name, cb) ->
             console.log "webuntis", name, ++untisCall
             url = "https://api.webuntis.dk/api/" + name + "?api_key=" + apikey
-            (require 'request') url, (err, result, content) ->
+            request url, (err, result, content) ->
               return cb err if err
               console.log url, content
               cb null, JSON.parse content
@@ -190,11 +198,9 @@ extract data, download data needed from webuntis
       
           extractData (err, data) ->
             throw err if err
+            if config.prepare.webuntisDump
+              fs.writeFileSync config.prepare.webuntisDump, (JSON.stringify data, null, 2)
             callback?(data)
-
-DEBUG code, run it on cached data instead of loading all of the webuntis data
-
-            fs.writeFile "webuntis.json", (JSON.stringify data, null, 4), -> undefined
       
       
 
@@ -203,8 +209,13 @@ DEBUG code, run it on cached data instead of loading all of the webuntis data
     
       processData = (webuntis, sqlserver, callback) ->
     
-        startTime = "2013-09-20"
-        endTime = "2013-09-21"
+        startTime = config.prepare.startDate || 0
+        if typeof startTime == "number"
+          startTime = (new Date(+(new Date()) + startTime * 24*60*60*1000)).toISOString()
+        else
+          startTime = (new Date(startTime)).toISOString()
+        endTime = (new Date(+(new Date(startTime)) + (config.prepare.timespan || 1) * 24*60*60*1000)).toISOString()
+        console.log "Extracting data from #{startTime} to #{endTime}"
       
 
 The file in the repository contains sample data for test.
@@ -334,21 +345,12 @@ For each kind of data there is a mapping from id to individual object
 
 ## execute
 
-      if config.prepare.mssql
-        getWebUntisData (data1) ->
-          getSqlServerData (data2) ->
-            processData data1, data2, (result) ->
-              sendUpdate result, () ->
-                console.log "submitted to api-server"
-      else
-        fs.readFile "dump.json", (err, data) ->
-          throw err if err
-          data = JSON.parse data
-          processData data.webuntis, data.sqlserver, (result) ->
-            fs.writeFileSync "foo.json", JSON.stringify(result, null, 4)
+      getWebUntisData (data1) ->
+        getSqlServerData (data2) ->
+          processData data1, data2, (result) ->
             sendUpdate result, () ->
               console.log "submitted to api-server"
-            undefined
+              process.exit 0
     
 
 # event/api-server
@@ -357,39 +359,69 @@ For each kind of data there is a mapping from id to individual object
 
 ## Pushed to the server from UCC daily.
 
-      handleUCCData = (data, done) ->
-        fs.writeFile "#{__dirname}/dump.json", JSON.stringify data
-        console.log "handle data update from ucc-server", data
-
-... update data-object based on UCC-data, include prune old data
-
-        cacheData done
-      
-      data = JSON.parse fs.readFileSync config.apiserver.cachefile
-      cacheData = (done) ->
-        fs.writeFile "#{__dirname}/data.json", JSON.stringify(data), done
-      
+      handleUCCData = (input, done) ->
+        console.log "handling data update from ucc-server"
+        fs.writeFile config.apiserver.cachefile, JSON.stringify(input), ->
+          data = input
+          enrichData()
+          console.log "data replaced with new data from ucc-server"
+          done()
       
 
 ### Data structures
+
+
+      activitiesBy =
+        group: {}
+        location: {}
+        teacher: {}
+      events = []
+      eventPos = 0
+      enrichData = ->
+    
+
+#### Tables with activities ordered by group/location/teacher
+
+        for _, activity of data.activities
+          for kind, collection of activitiesBy
+            for elem in activity["#{kind}s"]
+              collection[elem] ?= []
+              collection[elem].push activity
+        for _, collection of activitiesBy
+          for _, arr of collection
+            arr.sort (a, b) -> a.start.localeCompare b.start
+    
 
 #### Table with `events` (activity start/end)
 
 activity start/stop - ordered by time, - used for emitting events
 
-      events = []
-      eventPos = 0
-      updateEvents = ->
         now = getISODate()
         eventEmitter()
         events = []
+        eventPos = 0
         for _,activity of data.activities
           events.push "#{activity.start} start #{activity.id}" if activity.start > now
           events.push "#{activity.end} end #{activity.id}" if activity.end > now
         events.sort()
-        eventPos = 0
-      process.nextTick updateEvents
+    
+
+#### activities by group/location/teacher
+
+TODO
+
       
+      
+      
+
+### read cached data
+
+      try
+        data = JSON.parse fs.readFileSync config.apiserver.cachefile
+        process.nextTick enrichData
+      catch e
+        console.log "reading cached data:", e
+        data = {}
       
       
 
@@ -425,7 +457,7 @@ no need to tell the world what server software we are running, - security best p
         teacher: "teachers"
         activity: "activities"
         group: "groups"
-        student: "students"
+        location: "locations"
       
       defRest name, member for name, member of endpoints
       
@@ -476,26 +508,44 @@ TODO temporary url while rerouting through ssl.solsort.com
 ## Test
 
 
-      if config.runTest
+      if config.test
       
         testResult = ""
         testLog = (args...)->
           testResult += JSON.stringify([args...]) + "\n"
         testDone = ->
-          fs.writeFileSync "test.out", testResult
+          fs.writeFileSync config.test.outfile, testResult if config.test.outfile
           process.exit()
       
         app.use express.static "#{__dirname}/public"
       
       
-        testStart = "2013-09-20T06:20:00"
-        testEnd = "2013-09-20T18:20:00"
+        testStart = config.test.startDate
+        testEnd = config.test.endDate
 
-testEnd = "2013-09-21T06:20:00"
 Factor by which the time will run by during the test
 
-        testSpeed = 3000
+        testSpeed = config.test.xTime
     
+
+### Rest test
+
+        restTest = ->
+          restTest = -> undefined
+          console.log "restTest", getISODate()
+    
+          url = "http://localhost:#{config.apiserver.port}/"
+          restTestRequest = (id) -> (done) ->
+            request url + id, (err, req, data) ->
+              testLog id, JSON.parse data
+              done()
+          async.series [
+            restTestRequest "group/39"
+            restTestRequest "teacher/23"
+            restTestRequest "location/C.206"
+            restTestRequest "activity/23730"
+          ]
+          undefined
       
 
 ### Mock getISODate,
@@ -512,11 +562,11 @@ Date corresponds to the test data set, and a clock that runs very fast
 
         bayeux.getClient().subscribe "/events", (message) ->
           testLog "event", message
-          if message[0] == "end" and message[1].id == 10587
-            testDone()
         setInterval (->
+          if config.test.restTestTime && getISODate() >= config.test.restTestTime
+            restTest()
           if getISODate() >= testEnd
-            testLog "date > testend"
+            testLog "testDone"
             testDone()
         ), 100000 / testSpeed
 
