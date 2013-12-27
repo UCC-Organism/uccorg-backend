@@ -18,11 +18,13 @@ In addition to this, there is some shared code, and testing.
 - some teachers on webuntis missing from mssql (thus missing gender non-critical)
 - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
 - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
-- note: several activities may happen at same location at the same time
+- activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
 
 ## Done
 ### Milestone 2 - running until Dec. 29
 
+- added api for getting current/next/prev activity given a location, teacher or group
+- update REST-api
 - moving configuration into config-file
 - generate datafile for apiserver from ucc/webuntis-data
 - anonymising students
@@ -54,6 +56,7 @@ In addition to this, there is some shared code, and testing.
 ## Dependencies
 
     
+    assert = require "assert"
     fs = require "fs"
     express = require "express"
     http = require "http"
@@ -83,6 +86,29 @@ See sample file in `config.json-sample`, and `test.json`.
 
     getISODate = -> (new Date).toISOString()
     sleep = (t, fn) -> setTimeout fn, t*1000
+
+### binarySearchFn
+
+    binSearchFn = (arr, fn) ->
+      start = 0
+      end = arr.length
+      while start < end
+        mid = start + end >> 1
+        if fn(arr[mid]) < 0
+          start = mid + 1
+        else
+          end = mid
+      return start
+    
+    if config.test then do ->
+      arr = [0,1,2,3,4,5]
+      assert.equal 2, binSearchFn arr, (a) -> a - 2
+      assert.equal 3, binSearchFn arr, (a) -> a - 2.1
+    
+    
+
+### sendUpdate
+
     sendUpdate = (data, callback) ->
       datastr = JSON.stringify data
 
@@ -357,7 +383,8 @@ For each kind of data there is a mapping from id to individual object
 
     else
 
-## Pushed to the server from UCC daily.
+## 
+### Pushed to the server from UCC daily.
 
       handleUCCData = (input, done) ->
         console.log "handling data update from ucc-server"
@@ -389,7 +416,7 @@ For each kind of data there is a mapping from id to individual object
               collection[elem].push activity
         for _, collection of activitiesBy
           for _, arr of collection
-            arr.sort (a, b) -> a.start.localeCompare b.start
+            arr.sort (a, b) -> a.end.localeCompare b.end
     
 
 #### Table with `events` (activity start/end)
@@ -404,14 +431,6 @@ activity start/stop - ordered by time, - used for emitting events
           events.push "#{activity.start} start #{activity.id}" if activity.start > now
           events.push "#{activity.end} end #{activity.id}" if activity.end > now
         events.sort()
-    
-
-#### activities by group/location/teacher
-
-TODO
-
-      
-      
       
 
 ### read cached data
@@ -458,6 +477,22 @@ no need to tell the world what server software we are running, - security best p
         activity: "activities"
         group: "groups"
         location: "locations"
+    
+      app.all "/now/:kind/:id", (req, res) ->
+        arr = activitiesBy[req.params.kind][req.params.id]
+        return res.end if ! arr
+        now = getISODate()
+        idx = binSearchFn arr, (activity) -> activity.end.localeCompare now
+        result = {
+          current: []
+        }
+        result.prev = arr[idx-1]
+        while arr[idx] && arr[idx].start < now
+          result.current.push arr[idx]
+          ++idx
+        result.next = arr[idx]
+        res.json result
+        res.end()
       
       defRest name, member for name, member of endpoints
       
@@ -509,7 +544,6 @@ TODO temporary url while rerouting through ssl.solsort.com
 
 
       if config.test
-      
         testResult = ""
         testLog = (args...)->
           testResult += JSON.stringify([args...]) + "\n"
@@ -540,6 +574,10 @@ Factor by which the time will run by during the test
               testLog id, JSON.parse data
               done()
           async.series [
+            restTestRequest "now/location/Brikserum C.125"
+            restTestRequest "now/group/39"
+            restTestRequest "now/teacher/23"
+            restTestRequest "now/location/C.224"
             restTestRequest "group/39"
             restTestRequest "teacher/23"
             restTestRequest "location/C.206"

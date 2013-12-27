@@ -18,6 +18,8 @@
 # {{{2 Done
 # {{{3 Milestone 2 - running until Dec. 29
 #
+# - added api for getting current/next/prev activity given a location, teacher or group
+# - update REST-api
 # - moving configuration into config-file
 # - generate datafile for apiserver from ucc/webuntis-data
 # - anonymising students
