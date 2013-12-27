@@ -310,34 +310,45 @@ if config.prepare
 #{{{1 event/api-server
 else
   #{{{2 Pushed to the server from UCC daily. 
-  handleUCCData = (data, done) ->
-    console.log "handle data update from ucc-server", data
-    #... update data-object based on UCC-data, include prune old data
-    cacheData done
-  
-  data = JSON.parse fs.readFileSync config.apiserver.cachefile
-  cacheData = (done) ->
-    fs.writeFile "#{__dirname}/data.json", JSON.stringify(data), done
-  
+  handleUCCData = (input, done) ->
+    console.log "handling data update from ucc-server"
+    fs.writeFile config.apiserver.cachefile, JSON.stringify(input), ->
+      data = input
+      enrichData()
+      console.log "data replaced with new data from ucc-server"
+      done()
   
   #{{{3 Data structures
   #
-  #{{{4 Table with `events` (activity start/end)
-  # 
-  # activity start/stop - ordered by time, - used for emitting events
   events = []
   eventPos = 0
-  updateEvents = ->
+  enrichData = ->
+
+    #{{{4 Table with `events` (activity start/end)
+    # 
+    # activity start/stop - ordered by time, - used for emitting events
     now = getISODate()
     eventEmitter()
     events = []
+    eventPos = 0
     for _,activity of data.activities
       events.push "#{activity.start} start #{activity.id}" if activity.start > now
       events.push "#{activity.end} end #{activity.id}" if activity.end > now
     events.sort()
-    eventPos = 0
-  process.nextTick updateEvents
+
+    #{{{4 activities by group/location/teacher
+    #
+    #TODO
   
+  
+  
+  #{{{3 read cached data
+  try
+    data = JSON.parse fs.readFileSync config.apiserver.cachefile
+    process.nextTick enrichData
+  catch e
+    console.log "reading cached data:", e
+    data = {}
   
   
   # {{{2 Server
@@ -418,7 +429,6 @@ else
   
     testStart = config.test.startDate
     testEnd = config.test.endDate
-    #testEnd = "2013-09-21T06:20:00"
     # Factor by which the time will run by during the test
     testSpeed = config.test.xTime
 
