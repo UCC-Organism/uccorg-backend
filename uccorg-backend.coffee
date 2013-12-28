@@ -1,13 +1,28 @@
 # {{{1 Info
 #
-# This is actually code for two different servers:
+# The server is run with `coffee uccorg-backend.coffee configfile.json`, where `configfile.json` contains the actual configuration of the server. 
+# Depending on the configuration, this runs as:
+# 
+# - production data preparation server(windows), which is responsible for getting the data from ucc/webuntis/calendar/..., anonymising them, and sending them onwards to the api server
+# - production api server(debian on macmini), which gets the anonymised data from the data preparation server, makes them available via an api, and emits events using the Bayeux protocol
+# - development server for backend, which uses real data dumps instead of talking with external services
+# - automated test, which runs automatically using travis, uses sample data dumps, and mocks the time to run very fast.
+# - development server for frontend, - which runs of sample data dump and mocks the time, - to be able to get events without having to wait for real-world activities 
 #
-# 1. ssmldata-server, which is responsible for getting the data from ucc/webuntis/calendar/..., anonymising them, and sending them onwards
-# 2. macmini-server, which gets the anonymised data from the ssmldata-server, makes them available via an api, and emits events
+#{{{2 Configuration
 #
-# In addition to this, there is some shared code, and testing.
+# All configuration options are listed in `config.json.sample`. Also see `test.json` for an actual configuration, the content of this configuration wille also be a good choice for a frontend development server, - just remove `"outfile"`, and reduce the time speed factor `"xTime"` - which tells how much faster the mocked clock should run.
 #
-# {{{2 Status/issues
+#{{{2 API
+#
+# The api delivers JSON objects, and is available through http, with JSONP and CORS enabled. The endpoints are:
+#
+# - `/(teacher|group|location|activity)/$ID` returns info about the particular entity
+# - `/now/(teacher|group|location)/$ID` returns an object with the next, current, and previous activity for the given entity
+#
+# Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
+#
+#{{{2 Status/issues
 #
 # - cannot access macmini through port 8080, - temporary workaround through ssl.solsort.com, but needs to be fixed.
 # - some teachers on webuntis missing from mssql (thus missing gender non-critical)
@@ -18,6 +33,7 @@
 # {{{2 Done
 # {{{3 Milestone 2 - running until Dec. 29
 #
+# - the windows server configured to extract the data each night at 1'o'clock, and send them to the mac mini.
 # - added api for getting current/next/prev activity given a location, teacher or group
 # - update REST-api
 # - moving configuration into config-file
@@ -42,7 +58,7 @@
 # {{{2 To Do
 #
 # - get data from remote-calendar
-# - make servers production-ready
+# - make macmini production-ready
 # - test daylight saving handling
 # - dashboard / administrative interface
 # - train schedule
