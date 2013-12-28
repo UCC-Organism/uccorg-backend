@@ -166,11 +166,11 @@ if config.prepare
       untisCall = 0
       #webuntis - function for calling the webuntis api
       webuntis = (name, cb) ->
-        console.log "webuntis", name, ++untisCall
+        if ((++untisCall) % 100) == 0
+          console.log "webuntis api call ##{untisCall}: #{name}"
         url = "https://api.webuntis.dk/api/" + name + "?api_key=" + apikey
         request url, (err, result, content) ->
           return cb err if err
-          console.log url, content
           cb null, JSON.parse content
       #extract data, download data needed from webuntis
       extractData = (dataDone) ->
@@ -183,9 +183,9 @@ if config.prepare
           departments: {}
         
         async.eachSeries (Object.keys result), ((datatype, cb) ->
+          console.log "getting #{datatype} from webuntis"
           webuntis datatype, (err, data) ->
             cb err if err
-            console.log err, data[0]["untis_id"]
             async.eachSeries data, ((obj, cb) ->
               id = obj.untis_id
               webuntis "#{datatype}/#{id}", (err, data) ->
@@ -193,7 +193,6 @@ if config.prepare
                 cb err
             ), (err) -> cb err
         ), (err) ->
-          console.log result
           dataDone err, result
   
       extractData (err, data) ->
