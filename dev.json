@@ -1,0 +1,11 @@
+{
+  "apiserver": {
+    "port": 8080,
+    "cachefile": "sample-data.json"
+  },
+  "test": {
+    "startDate": "2013-09-20T06:20:00",
+    "endDate": "2013-09-20T18:20:00",
+    "xTime": 300
+  }
+}

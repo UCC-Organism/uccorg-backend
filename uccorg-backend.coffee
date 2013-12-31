@@ -57,10 +57,10 @@
 #
 # {{{2 To Do
 #
+# - dashboard / administrative interface
 # - get data from remote-calendar
 # - make macmini production-ready
 # - test daylight saving handling
-# - dashboard / administrative interface
 # - train schedule
 #
 # {{{1 Common stuff
@@ -83,7 +83,7 @@ request = require "request"
 try
   configfile = process.argv[2]
   configfile = "config" if !configfile
-  configfile += ".json" if configfile.slice(-5, 0) != ".json"
+  configfile += ".json" if configfile.slice(-5) != ".json"
   config = JSON.parse fs.readFileSync configfile, "utf8"
 catch e
   console.log "reading config #{configfile}:", e
@@ -415,6 +415,9 @@ else
   defRest = (name, member) ->
     app.all "/#{name}/:id", (req, res) ->
       res.json data[member][req.params.id]
+      res.end()
+    app.all "/#{member}", (req, res) ->
+      res.json Object.keys data[member]
       res.end()
   
   endpoints =
