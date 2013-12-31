@@ -19,6 +19,7 @@
 #
 # - `/(teacher|group|location|activity)/$ID` returns info about the particular entity
 # - `/now/(teacher|group|location)/$ID` returns an object with the next, current, and previous activity for the given entity
+# - `/(teachers|groups|locations|activities)` returns list of ids
 #
 # Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
 #
@@ -31,6 +32,13 @@
 # - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
 #
 # {{{2 Done
+#
+# {{{3 Milestone 3 - running until Jan. 5
+#
+# - dashboard: show events live as they happen
+# - dashboard skeleton
+# - added api for getting ids of all teachers/groups/locations/activities
+#
 # {{{3 Milestone 2 - running until Dec. 29
 #
 # - the windows server configured to extract the data each night at 1'o'clock, and send them to the mac mini.

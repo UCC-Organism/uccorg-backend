@@ -24,6 +24,7 @@ The api delivers JSON objects, and is available through http, with JSONP and COR
 
 - `/(teacher|group|location|activity)/$ID` returns info about the particular entity
 - `/now/(teacher|group|location)/$ID` returns an object with the next, current, and previous activity for the given entity
+- `/(teachers|groups|locations|activities)` returns list of ids
 
 Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
 
@@ -36,6 +37,13 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
 
 ## Done
+
+### Milestone 3 - running until Jan. 5
+
+- dashboard: show events live as they happen
+- dashboard skeleton
+- added api for getting ids of all teachers/groups/locations/activities
+
 ### Milestone 2 - running until Dec. 29
 
 - the windows server configured to extract the data each night at 1'o'clock, and send them to the mac mini.
@@ -62,10 +70,10 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 
 ## To Do
 
+- dashboard / administrative interface
 - get data from remote-calendar
 - make macmini production-ready
 - test daylight saving handling
-- dashboard / administrative interface
 - train schedule
 
 # Common stuff
@@ -91,7 +99,7 @@ See sample file in `config.json-sample`, and `test.json`.
     try
       configfile = process.argv[2]
       configfile = "config" if !configfile
-      configfile += ".json" if configfile.slice(-5, 0) != ".json"
+      configfile += ".json" if configfile.slice(-5) != ".json"
       config = JSON.parse fs.readFileSync configfile, "utf8"
     catch e
       console.log "reading config #{configfile}:", e
@@ -485,6 +493,9 @@ no need to tell the world what server software we are running, - security best p
       defRest = (name, member) ->
         app.all "/#{name}/:id", (req, res) ->
           res.json data[member][req.params.id]
+          res.end()
+        app.all "/#{member}", (req, res) ->
+          res.json Object.keys data[member]
           res.end()
       
       endpoints =
