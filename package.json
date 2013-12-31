@@ -4,13 +4,13 @@
     "author": "Rasmus Erik Voel Jensen",
     "description": "Backend for the UCC-organism",
     "dependencies": {
-        "coffee-script": "*",
-        "jshint": "*",
-        "async": "*",
-        "request": "*",
-        "faye": "*",
-        "express": "*",
-        "mssql": "*",
+        "async": "0.2.9",
+        "coffee-script": "1.6.3",
+        "express": "3.4.6",
+        "faye": "1.0.1",
+        "jshint": "2.4.0",
+        "mssql": "0.4.1",
+        "request": "2.30.0",
         "solapp": "*"
     },
     "scripts": {
