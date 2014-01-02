@@ -1,3 +1,4 @@
+#!/usr/bin/env coffee
 # {{{1 Info
 #
 # The server is run with `coffee uccorg-backend.coffee configfile.json`, where `configfile.json` contains the actual configuration of the server. 
@@ -33,8 +34,9 @@
 #
 # {{{2 Done
 #
-# {{{3 Milestone 3 - running until Jan. 5
+# {{{3 Milestone 3 - running until ..
 #
+# - preparation-server: support dump to file for development purposes
 # - dashboard: show events live as they happen
 # - dashboard skeleton
 # - added api for getting ids of all teachers/groups/locations/activities
@@ -65,6 +67,7 @@
 #
 # {{{2 To Do
 #
+# - update config on windows server, to send current days, and not one month in the future for test.
 # - dashboard / administrative interface
 # - get data from remote-calendar
 # - make macmini production-ready
@@ -139,7 +142,7 @@ sendUpdate = (data, callback) ->
   req.write datastr
   req.end()
 
-#{{{1 data processing/extract running on the SSMLDATA-server
+#{{{1 data preparation - processing/extract running on the SSMLDATA-server
 if config.prepare
   #{{{2 Calendar data
   #{{{2 SQL Server data source
@@ -228,7 +231,7 @@ if config.prepare
   
   #{{{2 Transform data for the event/api-server
 
-  processData = (webuntis, sqlserver, callback) ->
+  processData = (webuntis, sqlserver, icaldata, callback) ->
 
     startTime = config.prepare.startDate || 0
     if typeof startTime == "number"
@@ -345,13 +348,19 @@ if config.prepare
     #{{{3 done
     callback result
   
+  #{{{2 getCalendarData
+  getCalendarData = (done) ->
+    done()
   #{{{2 execute
   getWebUntisData (data1) ->
     getSqlServerData (data2) ->
-      processData data1, data2, (result) ->
-        sendUpdate result, () ->
-          console.log "submitted to api-server"
-          process.exit 0
+      getCalendarData (data3) ->
+        processData data1, data2, data3, (result) ->
+          if config.prepare.dest.dump
+            fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
+          sendUpdate result, (err, data) ->
+            console.log "submitted to api-server"
+            process.exit 0
 
 #{{{1 event/api-server
 else
