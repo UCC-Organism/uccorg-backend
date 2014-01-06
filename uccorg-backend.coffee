@@ -417,6 +417,7 @@ else
   
   # {{{2 Server
   app = express()
+  app.use express.static "#{__dirname}/public"
   server = app.listen config.apiserver.port
   console.log "starting server on port: #{config.apiserver.port}"
   #{{{3 REST server
@@ -506,7 +507,6 @@ else
       fs.writeFileSync config.test.outfile, testResult if config.test.outfile
       process.exit()
   
-    app.use express.static "#{__dirname}/public"
   
   
     testStart = config.test.startDate
