@@ -369,7 +369,7 @@ if config.prepare
 
 #{{{1 event/api-server
 else
-  #{{{2
+  #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
     console.log "handling data update from ucc-server"
@@ -388,6 +388,11 @@ else
   events = []
   eventPos = 0
   enrichData = ->
+
+    activitiesBy =
+      group: {}
+      location: {}
+      teacher: {}
 
     #{{{4 Tables with activities ordered by group/location/teacher
     for _, activity of data.activities
