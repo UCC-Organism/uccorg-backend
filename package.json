@@ -11,6 +11,7 @@
         "faye": "1.0.1",
         "mssql": "0.4.1",
         "request": "2.30.0",
+        "rrule": "2.0.0",
         "solapp": "*"
     },
     "scripts": {

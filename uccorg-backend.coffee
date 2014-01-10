@@ -88,6 +88,7 @@ exports.about =
     faye: "1.0.1"
     mssql: "0.4.1"
     request: "2.30.0"
+    rrule: "2.0.0"
     solapp: "*"
   scripts:
     test: "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
@@ -154,6 +155,31 @@ sendUpdate = (data, callback) ->
 
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
+  #{{{2 getCalendarData
+  getCalendarData = (done) ->
+    return done() if ! config?.prepare?.icalUrl
+    
+    if config.prepare.icalDump && fs.existsSync config.prepare.icalDump
+      fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
+        throw err if err
+        handleIcal content
+    else
+      request config.prepare.icalUrl, (err, result, content) ->
+        fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
+        throw err if err
+        handleIcal content
+
+    handleIcal = (ical)->
+      events = []
+      !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
+        props = e.split(/\r\n/).filter((x) -> x != "")
+        event = {}
+        for prop in props
+          pos = prop.indexOf ":"
+          pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
+          event[prop.slice(0,pos)] = prop.slice(pos+1)
+        events.push event
+      done events
   #{{{2 SQL Server data source
   getSqlServerData = (done) ->
     if config.prepare.mssqlDump
@@ -241,7 +267,6 @@ dataPreparationServer = ->
   #{{{2 Transform data for the event/api-server
 
   processData = (webuntis, sqlserver, icaldata, callback) ->
-
     startTime = config.prepare.startDate || 0
     if typeof startTime == "number"
       startTime = (new Date(+(new Date()) + startTime * 24*60*60*1000)).toISOString()
@@ -354,35 +379,40 @@ dataPreparationServer = ->
           subject: activity.subjects.map((subj) -> webuntis.subjects[subj].longname).join(" ")
           groups: activity.groups.map (untis_id) ->
             addGroup webuntis.groups[untis_id]
+
+    #{{{3 Handle input from iCal
+    if icaldata then for event in icaldata
+      icalDate = (t) ->
+        d = t.replace /.*:/, ""
+        # WARNING: here we assume that we are in Europe/Copenhagen-timezone
+        d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
+        d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+        if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
+          d
+        else if t.slice(-1) == "Z"
+          d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+        else
+          console.log "timezone bug in calendar data", t, d
+        d
+
+      handleEvent = (dtstart, event) ->
+        console.log dtstart.toISOString(), JSON.stringify event
+
+      if event.RRULE
+        RRule = (require "rrule").RRule
+        opts = RRule.parseString event.RRULE
+        opts.dtstart = icalDate event.DTSTART
+        rule = new RRule(opts)
+        occurences = rule.between(new Date(startTime), new Date(endTime), true)
+        for occurence in occurences
+          handleEvent occurence, event
+      else if startTime <= icalDate(event.DTSTART).toISOString() < endTime
+        handleEvent icalDate(event.DTSTART), event
+
+
     #{{{3 done
     callback result
   
-  #{{{2 getCalendarData
-  getCalendarData = (done) ->
-    return done() if ! config?.prepare?.icalUrl
-    
-    if config.prepare.icalDump && fs.existsSync config.prepare.icalDump
-      fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
-        throw err if err
-        handleIcal content
-    else
-      request config.prepare.icalUrl, (err, result, content) ->
-        fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
-        throw err if err
-        handleIcal content
-
-    handleIcal = (ical)->
-      events = []
-      !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
-        props = e.split(/\r\n/).filter((x) -> x != "")
-        event = {}
-        for prop in props
-          pos = prop.indexOf ":"
-          pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
-          event[prop.slice(0,pos).toLowerCase()] = prop.slice(pos+1)
-        events.push event
-      console.log events
-      done()
   #{{{2 execute
   getWebUntisData (data1) ->
     getSqlServerData (data2) ->
