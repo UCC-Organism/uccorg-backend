@@ -79,9 +79,11 @@
 
 exports.about =
   title: "UCC Organism Backend"
+  author: "Rasmus Erik Voel Jensen"
   description: "Backend for the UCC-organism"
   dependencies:
     async: "0.2.9"
+    "coffee-script": "1.6.3"
     express: "3.4.6"
     faye: "1.0.1"
     mssql: "0.4.1"

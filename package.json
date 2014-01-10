@@ -1,6 +1,7 @@
 {
     "name": "uccorg-backend",
-    "version": "0.0.2",
+    "version": "0.0.3",
+    "title": "UCC Organism Backend",
     "author": "Rasmus Erik Voel Jensen",
     "description": "Backend for the UCC-organism",
     "dependencies": {
@@ -8,19 +9,19 @@
         "coffee-script": "1.6.3",
         "express": "3.4.6",
         "faye": "1.0.1",
-        "jshint": "2.4.0",
         "mssql": "0.4.1",
         "request": "2.30.0",
         "solapp": "*"
     },
     "scripts": {
-        "start": "coffee ./node_modules/solapp/solapp.coffee start",
-        "test": "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
+        "test": "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected",
+        "start": "node ./node_modules/solapp/solapp.js start"
     },
-    "engines": {
-        "node": "*"
-    },
-    "fullname": "UCC Organism Backend",
     "owner": "UCC-Organism",
-    "main": "uccorg-backend.js"
+    "fullname": "UCC Organism Backend",
+    "main": "uccorg-backend.js",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/UCC-Organism/uccorg-backend.git"
+    }
 }
