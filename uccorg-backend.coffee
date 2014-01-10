@@ -76,6 +76,7 @@
 #
 # {{{1 Common stuff
 # {{{2 About
+
 exports.about =
   title: "UCC Organism Backend"
   description: "Backend for the UCC-organism"
@@ -102,20 +103,6 @@ async = require "async"
 mssql = require "mssql"
 request = require "request"
 
-# {{{2 Load config file
-#
-# See sample file in `config.json-sample`, and `test.json`.
-#
-
-try
-  configfile = process.argv[2]
-  configfile = "config" if !configfile
-  configfile += ".json" if configfile.slice(-5) != ".json"
-  config = JSON.parse fs.readFileSync configfile, "utf8"
-catch e
-  console.log "reading config #{configfile}:", e
-  process.exit 1
-
 # {{{2 Utility functions
 #
 # Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
@@ -136,7 +123,7 @@ binSearchFn = (arr, fn) ->
       end = mid
   return start
 
-if config.test then do ->
+if typeof isTesting == "boolean" && isTesting then do ->
   arr = [0,1,2,3,4,5]
   assert.equal 2, binSearchFn arr, (a) -> a - 2
   assert.equal 3, binSearchFn arr, (a) -> a - 2.1
@@ -164,7 +151,7 @@ sendUpdate = (data, callback) ->
   req.end()
 
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
-if config.prepare
+dataPreparationServer = ->
   #{{{2 Calendar data
   #{{{2 SQL Server data source
   getSqlServerData = (done) ->
@@ -384,7 +371,7 @@ if config.prepare
             process.exit 0
 
 #{{{1 event/api-server
-else
+apiServer = ->
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
@@ -582,3 +569,20 @@ else
         testDone()
     ), 100000 / testSpeed
     #sendUpdate data, -> undefined
+# {{{1 Main
+#
+# See sample file in `config.json-sample`, and `test.json`.
+#
+config = undefined
+if require.main == module then do ->
+  try
+    configfile = process.argv[2]
+    configfile = "config" if !configfile
+    configfile += ".json" if configfile.slice(-5) != ".json"
+    config = JSON.parse fs.readFileSync configfile, "utf8"
+  catch e
+    console.log "reading config #{configfile}:", e
+    process.exit 1
+
+  if config.prepare then dataPreparationServer() else apiServer()
+
