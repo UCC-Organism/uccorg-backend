@@ -492,6 +492,7 @@ else
     while eventPos < events.length and events[eventPos] <= now
       event = events[eventPos].split(" ").slice -2
       event[1] = data.activities[event[1]] || event[1]
+      console.log JSON.stringify event #DEBUG
       bayeux.getClient().publish "/events", event
       ++eventPos
   setInterval eventEmitter, 100
