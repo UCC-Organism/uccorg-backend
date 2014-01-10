@@ -101,7 +101,12 @@ catch e
   process.exit 1
 
 # {{{2 Utility functions
-getISODate = -> (new Date).toISOString()
+#
+# Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
+#
+getDateTime = -> (new Date(Date.now() - (new Date).getTimezoneOffset() * 60 * 1000)).toISOString().slice(0,-1)
+#
+# more comfortable syntax for set timeout: `sleep #seconds, -> ...`
 sleep = (t, fn) -> setTimeout fn, t*1000
 #{{{3 binarySearchFn
 binSearchFn = (arr, fn) ->
@@ -397,7 +402,7 @@ else
     #{{{4 Table with `events` (activity start/end)
     # 
     # activity start/stop - ordered by time, - used for emitting events
-    now = getISODate()
+    now = getDateTime()
     eventEmitter()
     events = []
     eventPos = 0
@@ -447,7 +452,7 @@ else
   app.all "/now/:kind/:id", (req, res) ->
     arr = activitiesBy[req.params.kind][req.params.id]
     return res.end if ! arr
-    now = getISODate()
+    now = getDateTime()
     idx = binSearchFn arr, (activity) -> activity.end.localeCompare now
     result = {
       current: []
@@ -488,11 +493,11 @@ else
   
   #{{{4 Events and event emitter
   eventEmitter = ->
-    now = getISODate()
+    now = getDateTime()
     while eventPos < events.length and events[eventPos] <= now
       event = events[eventPos].split(" ").slice -2
+      console.log Date(), events[eventPos]
       event[1] = data.activities[event[1]] || event[1]
-      console.log JSON.stringify event #DEBUG
       bayeux.getClient().publish "/events", event
       ++eventPos
   setInterval eventEmitter, 100
@@ -518,7 +523,7 @@ else
     #{{{3 Rest test
     restTest = ->
       restTest = -> undefined
-      console.log "restTest", getISODate()
+      console.log "restTest", getDateTime()
 
       url = "http://localhost:#{config.apiserver.port}/"
       restTestRequest = (id) -> (done) ->
@@ -537,21 +542,21 @@ else
       ]
       undefined
   
-    #{{{3 Mock getISODate, 
+    #{{{3 Mock getDateTime, 
     #
     # Date corresponds to the test data set, and a clock that runs very fast
     startTime = Date.now()
     testTime = + (new Date testStart)
-    getISODate = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
+    getDateTime = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
   
   
     #{{{3 run the test - current test client just emits "/events" back as "/test"
     bayeux.getClient().subscribe "/events", (message) ->
       testLog "event", message
     setInterval (->
-      if config.test.restTestTime && getISODate() >= config.test.restTestTime
+      if config.test.restTestTime && getDateTime() >= config.test.restTestTime
         restTest()
-      if getISODate() >= testEnd
+      if getDateTime() >= testEnd
         testLog "testDone"
         testDone()
     ), 100000 / testSpeed
