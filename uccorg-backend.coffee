@@ -36,6 +36,7 @@
 #
 # {{{3 Milestone 3 - running until ..
 #
+# - fix timezone bug (test daylight saving handling)
 # - do not tunnel data anymore, but send it directly to the macmini via port 8080 now that the firewall is opened.
 # - update config on windows server, to send current days, and not one month in the future for test.
 # - preparation-server: support dump to file for development purposes
@@ -72,9 +73,24 @@
 # - dashboard / administrative interface
 # - get data from remote-calendar (train schedule, etc.)
 # - make macmini production-ready
-# - fix timezone bug (test daylight saving handling)
 #
 # {{{1 Common stuff
+# {{{2 About
+exports.about =
+  title: "UCC Organism Backend"
+  description: "Backend for the UCC-organism"
+  dependencies:
+    async: "0.2.9"
+    express: "3.4.6"
+    faye: "1.0.1"
+    mssql: "0.4.1"
+    request: "2.30.0"
+    solapp: "*"
+  scripts:
+    test: "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
+  owner: "UCC-Organism"
+  name: "uccorg-backend"
+
 # {{{2 Dependencies
 
 assert = require "assert"
