@@ -3,6 +3,7 @@
 
 Backend for the UCC-organism
 
+!/usr/bin/env coffee
 # Info
 
 The server is run with `coffee uccorg-backend.coffee configfile.json`, where `configfile.json` contains the actual configuration of the server. 
@@ -38,8 +39,11 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 
 ## Done
 
-### Milestone 3 - running until Jan. 5
+### Milestone 3 - running until ..
 
+- do not tunnel data anymore, but send it directly to the macmini via port 8080 now that the firewall is opened.
+- update config on windows server, to send current days, and not one month in the future for test.
+- preparation-server: support dump to file for development purposes
 - dashboard: show events live as they happen
 - dashboard skeleton
 - added api for getting ids of all teachers/groups/locations/activities
@@ -71,10 +75,9 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 ## To Do
 
 - dashboard / administrative interface
-- get data from remote-calendar
+- get data from remote-calendar (train schedule, etc.)
 - make macmini production-ready
-- test daylight saving handling
-- train schedule
+- fix timezone bug (test daylight saving handling)
 
 # Common stuff
 ## Dependencies
@@ -156,7 +159,7 @@ escape unicode as ascii
       req.end()
     
 
-# data processing/extract running on the SSMLDATA-server
+# data preparation - processing/extract running on the SSMLDATA-server
 
     if config.prepare
 
@@ -256,7 +259,7 @@ extract data, download data needed from webuntis
 ## Transform data for the event/api-server
 
     
-      processData = (webuntis, sqlserver, callback) ->
+      processData = (webuntis, sqlserver, icaldata, callback) ->
     
         startTime = config.prepare.startDate || 0
         if typeof startTime == "number"
@@ -392,14 +395,22 @@ For each kind of data there is a mapping from id to individual object
         callback result
       
 
+## getCalendarData
+
+      getCalendarData = (done) ->
+        done()
+
 ## execute
 
       getWebUntisData (data1) ->
         getSqlServerData (data2) ->
-          processData data1, data2, (result) ->
-            sendUpdate result, () ->
-              console.log "submitted to api-server"
-              process.exit 0
+          getCalendarData (data3) ->
+            processData data1, data2, data3, (result) ->
+              if config.prepare.dest.dump
+                fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
+              sendUpdate result, (err, data) ->
+                console.log "submitted to api-server"
+                process.exit 0
     
 
 # event/api-server
@@ -470,6 +481,7 @@ activity start/stop - ordered by time, - used for emitting events
 ## Server
 
       app = express()
+      app.use express.static "#{__dirname}/public"
       server = app.listen config.apiserver.port
       console.log "starting server on port: #{config.apiserver.port}"
 
@@ -577,7 +589,6 @@ TODO temporary url while rerouting through ssl.solsort.com
           fs.writeFileSync config.test.outfile, testResult if config.test.outfile
           process.exit()
       
-        app.use express.static "#{__dirname}/public"
       
       
         testStart = config.test.startDate

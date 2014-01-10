@@ -36,6 +36,8 @@
 #
 # {{{3 Milestone 3 - running until ..
 #
+# - do not tunnel data anymore, but send it directly to the macmini via port 8080 now that the firewall is opened.
+# - update config on windows server, to send current days, and not one month in the future for test.
 # - preparation-server: support dump to file for development purposes
 # - dashboard: show events live as they happen
 # - dashboard skeleton
@@ -67,12 +69,10 @@
 #
 # {{{2 To Do
 #
-# - update config on windows server, to send current days, and not one month in the future for test.
 # - dashboard / administrative interface
-# - get data from remote-calendar
+# - get data from remote-calendar (train schedule, etc.)
 # - make macmini production-ready
-# - test daylight saving handling
-# - train schedule
+# - fix timezone bug (test daylight saving handling)
 #
 # {{{1 Common stuff
 # {{{2 Dependencies
