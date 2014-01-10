@@ -154,7 +154,6 @@ sendUpdate = (data, callback) ->
 
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
-  #{{{2 Calendar data
   #{{{2 SQL Server data source
   getSqlServerData = (done) ->
     if config.prepare.mssqlDump
@@ -360,7 +359,30 @@ dataPreparationServer = ->
   
   #{{{2 getCalendarData
   getCalendarData = (done) ->
-    done()
+    return done() if ! config?.prepare?.icalUrl
+    
+    if config.prepare.icalDump && fs.existsSync config.prepare.icalDump
+      fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
+        throw err if err
+        handleIcal content
+    else
+      request config.prepare.icalUrl, (err, result, content) ->
+        fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
+        throw err if err
+        handleIcal content
+
+    handleIcal = (ical)->
+      events = []
+      !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
+        props = e.split(/\r\n/).filter((x) -> x != "")
+        event = {}
+        for prop in props
+          pos = prop.indexOf ":"
+          pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
+          event[prop.slice(0,pos).toLowerCase()] = prop.slice(pos+1)
+        events.push event
+      console.log events
+      done()
   #{{{2 execute
   getWebUntisData (data1) ->
     getSqlServerData (data2) ->
