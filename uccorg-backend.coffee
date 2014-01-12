@@ -81,19 +81,21 @@ exports.about =
   title: "UCC Organism Backend"
   author: "Rasmus Erik Voel Jensen"
   description: "Backend for the UCC-organism"
-  dependencies:
-    async: "0.2.9"
-    "coffee-script": "1.6.3"
-    express: "3.4.6"
-    faye: "1.0.1"
-    mssql: "0.4.1"
-    request: "2.30.0"
-    rrule: "2.0.0"
-    solapp: "*"
   scripts:
     test: "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
   owner: "UCC-Organism"
   name: "uccorg-backend"
+  dependencies:
+    solapp: "*"
+  package:
+    dependencies:
+      async: "0.2.9"
+      "coffee-script": "1.6.3"
+      express: "3.4.6"
+      faye: "1.0.1"
+      mssql: "0.4.1"
+      request: "2.30.0"
+      rrule: "2.0.0"
 
 # {{{2 Dependencies
 
@@ -285,6 +287,7 @@ dataPreparationServer = ->
     # - groups: id, group-name, programme, students(id,gender)
     # - teachers: id, gender, programme
     # - locations: id, name, longname, capacity
+    # - calendarEvents: start, end, title, description
    
     #{{{3 input description
     #
@@ -381,34 +384,39 @@ dataPreparationServer = ->
             addGroup webuntis.groups[untis_id]
 
     #{{{3 Handle input from iCal
-    if icaldata then for event in icaldata
-      icalDate = (t) ->
-        d = t.replace /.*:/, ""
-        # WARNING: here we assume that we are in Europe/Copenhagen-timezone
-        d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
-        d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-        if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
-          d
-        else if t.slice(-1) == "Z"
-          d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-        else
-          console.log "timezone bug in calendar data", t, d
+    result.calendarEvents = []
+    handleEvent = (dtstart, event) ->
+      console.log dtstart.toISOString(), JSON.stringify event
+      result.calendarEvents.push
+        start: dtstart.toISOString()
+        end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
+        title: event.SUMMARY
+        description: event.DESCRIPTION
+
+    iCalDate = (t) ->
+      d = t.replace /.*:/, ""
+      # WARNING: here we assume that we are in Europe/Copenhagen-timezone
+      d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
+      d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+      if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
         d
+      else if t.slice(-1) == "Z"
+        d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+      else
+        console.log "timezone bug in calendar data", t, d
+      d
 
-      handleEvent = (dtstart, event) ->
-        console.log dtstart.toISOString(), JSON.stringify event
-
+    if icaldata then for event in icaldata
       if event.RRULE
         RRule = (require "rrule").RRule
         opts = RRule.parseString event.RRULE
-        opts.dtstart = icalDate event.DTSTART
+        opts.dtstart = iCalDate event.DTSTART
         rule = new RRule(opts)
         occurences = rule.between(new Date(startTime), new Date(endTime), true)
         for occurence in occurences
           handleEvent occurence, event
-      else if startTime <= icalDate(event.DTSTART).toISOString() < endTime
-        handleEvent icalDate(event.DTSTART), event
-
+      else if startTime <= iCalDate(event.DTSTART).toISOString() < endTime
+        handleEvent iCalDate(event.DTSTART), event
 
     #{{{3 done
     callback result
