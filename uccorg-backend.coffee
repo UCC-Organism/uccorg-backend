@@ -384,14 +384,25 @@ dataPreparationServer = ->
             addGroup webuntis.groups[untis_id]
 
     #{{{3 Handle input from iCal
+    calId = 0
     result.calendarEvents = []
     handleEvent = (dtstart, event) ->
       console.log dtstart.toISOString(), JSON.stringify event
-      result.calendarEvents.push
+      activity =
+        id: "cal#{++calId}"
         start: dtstart.toISOString()
         end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
-        title: event.SUMMARY
+        locations: event.LOCATION.split(",").map (s) -> s.trim()
+        teachers: []
+        groups: []
+        subject: event.SUMMARY
         description: event.DESCRIPTION
+      try
+        for key, val of JSON.parse activity.description
+          activity[key] = val
+      catch e
+        undefined
+      result.activities[activity.id] = activity
 
     iCalDate = (t) ->
       d = t.replace /.*:/, ""
