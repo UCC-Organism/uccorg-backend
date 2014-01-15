@@ -36,6 +36,7 @@
 #
 # {{{3 Milestone 3 - running until ..
 #
+# - get data from remote-calendar (train schedule, etc.)
 # - fix timezone bug (test daylight saving handling)
 # - do not tunnel data anymore, but send it directly to the macmini via port 8080 now that the firewall is opened.
 # - update config on windows server, to send current days, and not one month in the future for test.
@@ -71,8 +72,13 @@
 # {{{2 To Do
 #
 # - dashboard / administrative interface
-# - get data from remote-calendar (train schedule, etc.)
+#   - tasklist, what is missing
+#   - browse api
+#   - connected clients, 
+#   - when was last update
+#   - number of tasks in eventlist, first, last and current-pos+ current + current+1
 # - make macmini production-ready
+# - setup calender for anders
 #
 # {{{1 Common stuff
 # {{{2 About
@@ -81,13 +87,13 @@ exports.about =
   title: "UCC Organism Backend"
   author: "Rasmus Erik Voel Jensen"
   description: "Backend for the UCC-organism"
-  scripts:
-    test: "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
   owner: "UCC-Organism"
   name: "uccorg-backend"
   dependencies:
     solapp: "*"
   package:
+    scripts:
+      test: "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
     dependencies:
       async: "0.2.9"
       "coffee-script": "1.6.3"
