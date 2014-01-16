@@ -1,6 +1,6 @@
 {
     "name": "uccorg-backend",
-    "version": "0.0.7",
+    "version": "0.0.9",
     "scripts": {
         "test": "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected",
         "start": "node ./node_modules/solapp/solapp.js start"

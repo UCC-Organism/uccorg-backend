@@ -36,6 +36,7 @@
 #
 # {{{3 Milestone 3 - running until ..
 #
+# - dashboard: browse api
 # - get data from remote-calendar (train schedule, etc.)
 # - fix timezone bug (test daylight saving handling)
 # - do not tunnel data anymore, but send it directly to the macmini via port 8080 now that the firewall is opened.
@@ -73,7 +74,6 @@
 #
 # - dashboard / administrative interface
 #   - tasklist, what is missing
-#   - browse api
 #   - connected clients, 
 #   - when was last update
 #   - number of tasks in eventlist, first, last and current-pos+ current + current+1
