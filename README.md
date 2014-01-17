@@ -613,7 +613,7 @@ no need to tell the world what server software we are running, - security best p
     
           res.json
             organismTime: getDateTime()
-            lastDataUpdate: stat.atime
+            lastDataUpdate: stat.mtime
             eventDetails:
               count: events.length
               pos: eventPos

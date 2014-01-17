@@ -536,7 +536,7 @@ apiServer = ->
 
       res.json
         organismTime: getDateTime()
-        lastDataUpdate: stat.atime
+        lastDataUpdate: stat.mtime
         eventDetails:
           count: events.length
           pos: eventPos
