@@ -446,6 +446,7 @@ dataPreparationServer = ->
 
 #{{{1 event/api-server
 apiServer = ->
+  data = undefined
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->

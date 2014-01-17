@@ -503,6 +503,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 # event/api-server
 
     apiServer = ->
+      data = undefined
 
 ## Handle data
 ### Pushed to the server from UCC daily.
