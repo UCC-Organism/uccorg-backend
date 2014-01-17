@@ -34,9 +34,9 @@
 #
 # {{{2 Done
 #
-# {{{3 Milestone 3 - running until ..
+# {{{3 Milestone 3 - running until Jan 17
 #
-# - dashboard: browse api
+# - dashboard
 # - get data from remote-calendar (train schedule, etc.)
 # - fix timezone bug (test daylight saving handling)
 # - do not tunnel data anymore, but send it directly to the macmini via port 8080 now that the firewall is opened.
@@ -72,11 +72,6 @@
 #
 # {{{2 To Do
 #
-# - dashboard / administrative interface
-#   - tasklist, what is missing
-#   - connected clients, 
-#   - when was last update
-#   - number of tasks in eventlist, first, last and current-pos+ current + current+1
 # - make macmini production-ready
 # - setup calender for anders
 #
@@ -536,6 +531,21 @@ apiServer = ->
     group: "groups"
     location: "locations"
 
+  app.all "/status", (req, res) ->
+    fs.stat config.apiserver.cachefile, (err, stat) ->
+
+      res.json
+        organismTime: getDateTime()
+        lastDataUpdate: stat.atime
+        eventDetails:
+          count: events.length
+          pos: eventPos
+          first: events[0]
+          next: events[eventPos + 1]
+          last: events[events.length - 1]
+        connections: clientCount
+      res.end()
+
   app.all "/now/:kind/:id", (req, res) ->
     arr = activitiesBy[req.params.kind][req.params.id]
     return res.end if ! arr
@@ -575,6 +585,14 @@ apiServer = ->
   
   bayeux.on "subscribe", (clientId, channel) ->
     console.log channel, typeof channel
+
+  clientCount = 0
+
+  bayeux.on "handshake", (clientId, channel) ->
+    ++clientCount
+
+  bayeux.on "disconnect", (clientId, channel) ->
+    --clientCount
   
   bayeux.attach server
   

@@ -4,6 +4,7 @@
 # - when was last update
 #
 explore = (url, cb) ->
+  return if ! url
   $.get url,  (x) ->
     result = "<h3>#{url}</h3>"
     type = url.split("/")[1]
@@ -24,6 +25,15 @@ subscription = client.subscribe "/events", (msg) ->
   ($ "#events").prepend "<div><strong>#{Date()}:</strong><br/><small>#{JSON.stringify msg}</small></div>"
 console.log subscription
 
-($ window).on "hashchange", ->
+update = ->
   explore location.hash.replace "#", "/"
   console.log "hashchange", location.hash
+  $.get "/status", (status) ->
+    ($ "#status").html "
+      Updated #{Date()}
+      <pre>#{JSON.stringify status, null, 2}</pre>
+      (connection count includes the api-server itself, and this dashboard)"
+
+($ window).on "hashchange", update
+($ "#updateButton").on "click", update
+$ -> setTimeout update, 1000
