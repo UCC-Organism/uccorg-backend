@@ -40,6 +40,7 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 
 ### Milestone 3 - running until Jan 17
 
+- configure mac-mini autostart api-server
 - dashboard
 - get data from remote-calendar (train schedule, etc.)
 - fix timezone bug (test daylight saving handling)
@@ -76,7 +77,6 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 
 ## To Do
 
-- make macmini production-ready
 - setup calender for anders
 
 # Common stuff
@@ -415,6 +415,19 @@ For each kind of data there is a mapping from id to individual object
           grp.id
     
 
+### Add all groups groups and teachers
+
+to make sure they are available if needed needed by calendar events
+
+    
+        do ->
+          for _, teacher of webuntis.teachers
+            addTeacher teacher
+    
+          for _, group of webuntis.groups
+            addGroup group
+    
+
 ### Handle Activities
 
         for _, activity of webuntis.lessons
@@ -424,7 +437,7 @@ For each kind of data there is a mapping from id to individual object
               start: activity.start
               end: activity.end
               teachers: activity.teachers.map (untis_id) ->
-                addTeacher(webuntis.teachers[untis_id])
+                addTeacher webuntis.teachers[untis_id]
                 untis_id
               locations: activity.locations.map (loc) -> webuntis.locations[loc].name
               subject: activity.subjects.map((subj) -> webuntis.subjects[subj].longname).join(" ")

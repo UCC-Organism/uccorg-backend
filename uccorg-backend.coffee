@@ -36,6 +36,7 @@
 #
 # {{{3 Milestone 3 - running until Jan 17
 #
+# - configure mac-mini autostart api-server
 # - dashboard
 # - get data from remote-calendar (train schedule, etc.)
 # - fix timezone bug (test daylight saving handling)
@@ -72,7 +73,6 @@
 #
 # {{{2 To Do
 #
-# - make macmini production-ready
 # - setup calender for anders
 #
 # {{{1 Common stuff
@@ -369,6 +369,17 @@ dataPreparationServer = ->
       grp.programme = "#{dept?.name} - #{dept?.longname}"
       grp.id
 
+    #{{{3 Add all groups groups and teachers 
+    #
+    # to make sure they are available if needed needed by calendar events
+
+    do ->
+      for _, teacher of webuntis.teachers
+        addTeacher teacher
+
+      for _, group of webuntis.groups
+        addGroup group
+
     #{{{3 Handle Activities
     for _, activity of webuntis.lessons
       if startTime < activity.end && activity.start < endTime && activity.end
@@ -377,7 +388,7 @@ dataPreparationServer = ->
           start: activity.start
           end: activity.end
           teachers: activity.teachers.map (untis_id) ->
-            addTeacher(webuntis.teachers[untis_id])
+            addTeacher webuntis.teachers[untis_id]
             untis_id
           locations: activity.locations.map (loc) -> webuntis.locations[loc].name
           subject: activity.subjects.map((subj) -> webuntis.subjects[subj].longname).join(" ")
