@@ -34,7 +34,7 @@
 #
 # {{{2 Done
 #
-# {{{3 Milestone 3 - running until Jan 17
+# {{{3 Milestone 3 - running until Jan 20.
 #
 # - configure mac-mini autostart api-server
 # - dashboard
@@ -69,11 +69,6 @@
 # - dummy data-set for automatic test
 # - automatic test on macmini with fast time for development
 # - deprecated solsort.com running webuntis-based webservice for development
-#
-#
-# {{{2 To Do
-#
-# - setup calender for anders
 #
 # {{{1 Common stuff
 # {{{2 About
@@ -580,7 +575,6 @@ apiServer = ->
   # For example upload with: curl -X POST -H "Content-Type: application/json" -d @datafile.json http://localhost:7890/update
   app.all "/update", (req, res) ->
     handleUCCData req.body, -> res.end()
-  # TODO temporary url while rerouting through ssl.solsort.com
   app.use "/uccorg-update", (req, res, next) ->
     result = ""
     req.on "data", (data) ->

@@ -38,7 +38,7 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 
 ## Done
 
-### Milestone 3 - running until Jan 17
+### Milestone 3 - running until Jan 20.
 
 - configure mac-mini autostart api-server
 - dashboard
@@ -73,11 +73,6 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 - dummy data-set for automatic test
 - automatic test on macmini with fast time for development
 - deprecated solsort.com running webuntis-based webservice for development
-
-
-## To Do
-
-- setup calender for anders
 
 # Common stuff
 ## About
@@ -661,9 +656,6 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 
       app.all "/update", (req, res) ->
         handleUCCData req.body, -> res.end()
-
-TODO temporary url while rerouting through ssl.solsort.com
-
       app.use "/uccorg-update", (req, res, next) ->
         result = ""
         req.on "data", (data) ->
