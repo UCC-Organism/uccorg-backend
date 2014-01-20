@@ -634,17 +634,15 @@ no need to tell the world what server software we are running, - security best p
     
       app.all "/now/:kind/:id", (req, res) ->
         arr = activitiesBy[req.params.kind][req.params.id]
-        return res.end if ! arr
-        now = getDateTime()
-        idx = binSearchFn arr, (activity) -> activity.end.localeCompare now
-        result = {
-          current: []
-        }
-        result.prev = arr[idx-1]
-        while arr[idx] && arr[idx].start < now
-          result.current.push arr[idx]
-          ++idx
-        result.next = arr[idx]
+        result = { current: [] }
+        if arr
+          now = getDateTime()
+          idx = binSearchFn arr, (activity) -> activity.end.localeCompare now
+          result.prev = arr[idx-1]
+          while arr[idx] && arr[idx].start < now
+            result.current.push arr[idx]
+            ++idx
+          result.next = arr[idx]
         res.json result
         res.end()
       
