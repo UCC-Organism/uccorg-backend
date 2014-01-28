@@ -404,6 +404,7 @@ dataPreparationServer = ->
         groups: []
         subject: event.SUMMARY
         description: event.DESCRIPTION
+      activity.description = "#{activity.description}".replace /\\(.)/g, (_, c) -> ({n:"\n",r:"\r",t:"\t"}[c] || c)
       try
         for key, val of JSON.parse activity.description
           activity[key] = val
