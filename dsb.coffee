@@ -28,6 +28,8 @@ soapreq = """
   </soap:Envelope>
 """
   
+uic = "8600683"
+url = "http://xmlopen.rejseplanen.dk/bin/rest.exe/arrivalBoard?id=8600683&date=07.02.14&time=15:30"
 (require "request") {
     url: url
     method: "POST"
