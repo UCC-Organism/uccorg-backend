@@ -567,6 +567,11 @@ apiServer = ->
       result.next = arr[idx]
     res.json result
     res.end()
+
+  app.all "/arrivals", (req, res) ->
+    arrivals (result) ->
+      res.json result
+      res.end()
   
   defRest name, member for name, member of endpoints
   
@@ -613,6 +618,55 @@ apiServer = ->
   setInterval eventEmitter, 100
   
   
+  #{{{2 Train arrival data from rejseplanen
+  #{{{3 Get data
+  arrivalCache = []
+  getArrivals = (d, cb) ->
+
+    url = "http://xmlopen.rejseplanen.dk/bin/rest.exe/arrivalBoard" +
+      "?id=8600683&date=#{d.getUTCDate()}.#{d.getUTCMonth() + 1}.#{String(d.getUTCFullYear()).slice(2)}&time=#{d.getUTCHours()}:#{d.getUTCMinutes()}"
+    (require "request") url, (err, _, data) ->
+      return cb(err) if err
+      arrivalCache = []
+      !data.replace /<Arrival name="(.*?)"[^>]*?type="(.*?)"[^>]*?time="(.*?)" date="(.*?)" [^>]*? origin="(.*)">/g, (_, name, type, time, date, origin) ->
+        arrivalCache.push
+          name: name
+          type: type
+          date: "20#{date.slice(6,8)}-#{date.slice(3,5)}-#{date.slice(0,2)}T#{time}:00"
+          origin: origin
+      cb null, arrivalCache
+
+  arrivals = (cb) ->
+    now = getDateTime()
+    getArrivals (new Date(now)), (err, result) ->
+      if err
+        cb []
+      else
+        cb result
+
+  #{{{3 Emit events
+  lastArrivalEmit = undefined
+  arrivalEmitter = ->
+    now = getDateTime().slice(0,-6) + "00"
+
+    doEmit = (arrs) ->
+      if now == lastArrivalEmit
+        return setTimeout arrivalEmitter, 10000
+      lastArrivalEmit = now
+      if !arrs.length
+        return setTimeout arrivalEmitter, 60*60*1000
+      for arrival in arrs
+        if arrival.date == now
+          bayeux.getClient().publish "/arrival", arrival
+      setTimeout arrivalEmitter, 10000
+
+    if !arrivalCache.length || now >= arrivalCache[arrivalCache.length - 1].date
+      arrivals doEmit
+    else
+      doEmit arrivalCache
+
+  arrivalEmitter()
+
   #{{{2 Test
   #
   if config.test
