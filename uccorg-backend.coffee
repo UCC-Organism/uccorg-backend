@@ -651,14 +651,14 @@ apiServer = ->
 
     doEmit = (arrs) ->
       if now == lastArrivalEmit
-        return setTimeout arrivalEmitter, 10000
+        return setTimeout arrivalEmitter, 30000
       lastArrivalEmit = now
       if !arrs.length
         return setTimeout arrivalEmitter, 60*60*1000
       for arrival in arrs
         if arrival.date == now
           bayeux.getClient().publish "/arrival", arrival
-      setTimeout arrivalEmitter, 10000
+      setTimeout arrivalEmitter, 30000
 
     if !arrivalCache.length || now >= arrivalCache[arrivalCache.length - 1].date
       arrivals doEmit
