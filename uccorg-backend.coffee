@@ -229,9 +229,13 @@ dataPreparationServer = ->
         if ((++untisCall) % 100) == 0
           console.log "webuntis api call ##{untisCall}: #{name}"
         url = "https://api.webuntis.dk/api/" + name + "?api_key=" + apikey
-        request url, (err, result, content) ->
-          return cb err if err
-          cb null, JSON.parse content
+        request {
+            url: url
+            rejectUnauthorized: false
+          }, (err, result, content) ->
+            return cb err if err
+            cb null, JSON.parse content
+
       #extract data, download data needed from webuntis
       extractData = (dataDone) ->
         result =
