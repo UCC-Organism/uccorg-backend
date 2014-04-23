@@ -344,9 +344,27 @@ dataPreparationServer = ->
 
     for obj in sqlserver.Studerende[0]
       studentIds[obj.Studienummer] = ++studentId
-      students[getStudentId obj.Studienummer] =
+      studentObject =
         id: getStudentId obj.Studienummer
         gender: obj["Køn"]
+
+      # calculate age from birthday
+      today = new Date()
+      birthday = obj["Fødselsdag"]
+      if birthday
+        birthyear = parseInt(birthday.slice(4), 10)
+        # fix two-digit year problem,
+        # ie. "12" could be both 1912 and 2012
+        # assume 21st century if it is before today.
+        birthyear += 100 if birthyear < (today.getYear() - 100)
+        age = d.getYear() - birthYear
+        birthday.setYear today.getYear()
+        age -= 1 if birthday > today
+        studentObject.age = age
+
+      studentObject.end = obj.Forventet_slutdato if obj.Forventet_slutdato
+
+      students[getStudentId obj.Studienummer] = studentObject
 
     groups = {}
     for obj in sqlserver.Hold[0]
