@@ -352,14 +352,19 @@ dataPreparationServer = ->
       today = new Date()
       birthday = obj["Fødselsdag"]
       if birthday
-        birthyear = parseInt(birthday.slice(4), 10)
+
+        birthyear = parseInt(birthday.slice(4,6), 10)
         # fix two-digit year problem,
         # ie. "12" could be both 1912 and 2012
         # assume 21st century if it is before today.
         birthyear += 100 if birthyear < (today.getYear() - 100)
+
+        birthmonth = parseInt(birthday.slice(2,4), 10)
+        birthdate = parseInt(birthday.slice(0,2), 10)
+
         age = today.getYear() - birthyear
-        birthday.setYear today.getYear()
-        age -= 1 if birthday > today
+        age -= 1 if new Date(today.getYear(), birthmonth - 1, birthdate) > today
+
         studentObject.age = age
 
       studentObject.end = obj.Forventet_slutdato if obj.Forventet_slutdato
