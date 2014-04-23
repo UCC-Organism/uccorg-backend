@@ -410,12 +410,12 @@ dataPreparationServer = ->
           start: activity.start
           end: activity.end
           teachers: activity.teachers.map (untis_id) ->
-            addTeacher webuntis.teachers[untis_id] || {untis_id: untis_id, name: "missing", departments: ["missing"] }
+            addTeacher webuntis.teachers[untis_id] || {untis_id: untis_id, name: "error:missing", departments: ["error:missing"] }
             untis_id
-          locations: activity.locations.map (loc) -> webuntis.locations[loc].name
-          subject: activity.subjects.map((subj) -> webuntis.subjects[subj].longname).join(" ")
+          locations: activity.locations.map (loc) -> webuntis.locations[loc]?.name || "error:missing"
+          subject: activity.subjects.map((subj) -> webuntis.subjects[subj]?.longname || "error:missing").join(" ")
           groups: activity.groups.map (untis_id) ->
-            addGroup webuntis.groups[untis_id]
+            addGroup webuntis.groups[untis_id] || {untis_id: untis_id}
 
     #{{{3 Handle input from iCal
     calId = 0
