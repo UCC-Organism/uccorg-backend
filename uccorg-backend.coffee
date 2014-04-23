@@ -410,7 +410,7 @@ dataPreparationServer = ->
           start: activity.start
           end: activity.end
           teachers: activity.teachers.map (untis_id) ->
-            addTeacher webuntis.teachers[untis_id]
+            addTeacher webuntis.teachers[untis_id] || {untis_id: untis_id, name: "missing", departments: ["missing"] }
             untis_id
           locations: activity.locations.map (loc) -> webuntis.locations[loc].name
           subject: activity.subjects.map((subj) -> webuntis.subjects[subj].longname).join(" ")
