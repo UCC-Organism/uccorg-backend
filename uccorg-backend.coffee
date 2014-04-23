@@ -357,7 +357,7 @@ dataPreparationServer = ->
         # ie. "12" could be both 1912 and 2012
         # assume 21st century if it is before today.
         birthyear += 100 if birthyear < (today.getYear() - 100)
-        age = today.getYear() - birthYear
+        age = today.getYear() - birthyear
         birthday.setYear today.getYear()
         age -= 1 if birthday > today
         studentObject.age = age
