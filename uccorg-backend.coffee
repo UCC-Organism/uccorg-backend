@@ -380,7 +380,12 @@ dataPreparationServer = ->
         end: obj.SlutDato
         students: []
     for obj in sqlserver.StuderendeHold[0]
-      groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
+      if !groups[obj.Holdnavn]
+        console.log 'Error: no Hold for ', obj.Holdnavn
+        console.log 'debug groups:', groups
+        console.log 'debug obj:', obj
+      else
+        groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
 
     addGroup = (obj) ->
       return obj.untis_id if result.groups[obj.untis_id]
