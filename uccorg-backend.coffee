@@ -384,8 +384,7 @@ dataPreparationServer = ->
         console.log 'Error: no Hold for ', obj.Holdnavn
         console.log 'debug groups:', groups
         console.log 'debug obj:', obj
-      else
-        groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
+      groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
 
     addGroup = (obj) ->
       return obj.untis_id if result.groups[obj.untis_id]
