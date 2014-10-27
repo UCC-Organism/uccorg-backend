@@ -381,9 +381,14 @@ dataPreparationServer = ->
         students: []
     for obj in sqlserver.StuderendeHold[0]
       if !groups[obj.Holdnavn]
-        console.log 'Error: no Hold for ', obj.Holdnavn
-        console.log 'debug groups:', groups
-        console.log 'debug obj:', obj
+        console.log 'Data error: Hold missing for StuderendeHold', obj
+        # Dummy hold
+        groups[obj.Holdnavn] =
+          name: obj.Holdnavn
+          department: '219405'
+          start: '01-01-2014'
+          end: '01-01-2060'
+          students: []
       groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
 
     addGroup = (obj) ->
