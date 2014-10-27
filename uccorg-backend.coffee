@@ -164,7 +164,10 @@ dataPreparationServer = ->
     else
       request config.prepare.icalUrl, (err, result, content) ->
         fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
-        throw err if err
+        if err
+          console.log 'Error getting calendar data', config.prepare.icalUrl
+          console.log err
+          throw err
         handleIcal content
 
     handleIcal = (ical)->
@@ -484,6 +487,8 @@ dataPreparationServer = ->
           if config.prepare.dest.dump
             fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
           sendUpdate result, (err, data) ->
+            if err
+              console.log 'sendUpdate error:', err
             console.log "submitted to api-server"
             process.exit 0
 
