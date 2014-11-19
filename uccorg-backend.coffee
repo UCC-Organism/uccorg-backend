@@ -396,7 +396,8 @@ dataPreparationServer = ->
 
     addGroup = (obj) ->
       return obj.untis_id if result.groups[obj.untis_id]
-      grp = result.groups[obj.untis_id] = groups[obj.alias] || {}
+      # Buggy data: sometimes the same group has several untis_id, which is why we make a deep copy with json.parse/stringify
+      grp = result.groups[obj.untis_id] = JSON.parse JSON.stringify groups[obj.alias] || {}
       grp.id = obj.untis_id
       grp.group = obj.name
       dept = webuntis.departments[obj.department]
