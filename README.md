@@ -28,17 +28,40 @@ The api delivers JSON objects, and is available through http, with JSONP and COR
 
 Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
 
-## Status/issues
+# Status
 
-- cannot access macmini through port 8080, - temporary workaround through ssl.solsort.com, but needs to be fixed.
+## Data Issues
+
 - some teachers on webuntis missing from mssql (thus missing gender non-critical)
 - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
 - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
 - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
 
-## Done
+## Back Log - January-April 2015
 
-### Milestone 3 - running until Jan 20.
+- integration/test with frontend
+- uniform agent scheduling / representation of agent-events
+- repeat with recent non-empty data, if empty data
+- delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
+- ambient data
+  - `/timeofday` day cycle
+  - grants, su, etc.
+- structured/random events for agents: 
+  - agent types: researchers, kitchen staff, administrators, janitors, ..
+  - lunch, toilet-breaks, illness-leave, ..
+
+## Release Log
+
+### In between development 2014
+
+- dummy-hold when missing data
+- workaround for data where several groups has the same untis_did
+- create dummy data with "error:missing" when missing teacher, location or subject
+- student age
+- ignore bad ssl-certificates for webuntis - as they were/(are?) buggy
+
+
+### Milestone 3 - running until Jan 20. 2014
 
 - configure mac-mini autostart api-server
 - dashboard
@@ -51,7 +74,7 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 - dashboard skeleton
 - added api for getting ids of all teachers/groups/locations/activities
 
-### Milestone 2 - running until Dec. 29
+### Milestone 2 - running until Dec. 29 2013
 
 - the windows server configured to extract the data each night at 1'o'clock, and send them to the mac mini.
 - added api for getting current/next/prev activity given a location, teacher or group
@@ -62,7 +85,7 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 - temporarily forwarding data through ssl.solsort.com, as port 8080 from ssmldata to macmini doesn't seem to be open.
 - send data from ssmldata-server to macmini
 
-### Milestone 1 - running until Dec. 22
+### Milestone 1 - running until Dec. 22 2013
 
 - get data from sqlserver
 - getting data from webuntis
@@ -185,7 +208,10 @@ escape unicode as ascii
         else
           request config.prepare.icalUrl, (err, result, content) ->
             fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
-            throw err if err
+            if err
+              console.log 'Error getting calendar data', config.prepare.icalUrl
+              console.log err
+              throw err
             handleIcal content
     
         handleIcal = (ical)->
@@ -256,9 +282,13 @@ webuntis - function for calling the webuntis api
             if ((++untisCall) % 100) == 0
               console.log "webuntis api call ##{untisCall}: #{name}"
             url = "https://api.webuntis.dk/api/" + name + "?api_key=" + apikey
-            request url, (err, result, content) ->
-              return cb err if err
-              cb null, JSON.parse content
+            request {
+                url: url
+                rejectUnauthorized: false
+              }, (err, result, content) ->
+                return cb err if err
+                cb null, JSON.parse content
+    
 
 extract data, download data needed from webuntis
 
@@ -385,9 +415,36 @@ For each kind of data there is a mapping from id to individual object
     
         for obj in sqlserver.Studerende[0]
           studentIds[obj.Studienummer] = ++studentId
-          students[getStudentId obj.Studienummer] =
+          studentObject =
             id: getStudentId obj.Studienummer
             gender: obj["Køn"]
+    
+
+calculate age from birthday
+
+          today = new Date()
+          birthday = obj["Fødselsdag"]
+          if birthday
+    
+            birthyear = parseInt(birthday.slice(4,6), 10)
+
+fix two-digit year problem,
+ie. "12" could be both 1912 and 2012
+assume 21st century if it is before today.
+
+            birthyear += 100 if birthyear < (today.getYear() - 100)
+    
+            birthmonth = parseInt(birthday.slice(2,4), 10)
+            birthdate = parseInt(birthday.slice(0,2), 10)
+    
+            age = today.getYear() - birthyear
+            age -= 1 if new Date(today.getYear(), birthmonth - 1, birthdate) > today
+    
+            studentObject.age = age
+    
+          studentObject.end = obj.Forventet_slutdato if obj.Forventet_slutdato
+    
+          students[getStudentId obj.Studienummer] = studentObject
     
         groups = {}
         for obj in sqlserver.Hold[0]
@@ -398,11 +455,25 @@ For each kind of data there is a mapping from id to individual object
             end: obj.SlutDato
             students: []
         for obj in sqlserver.StuderendeHold[0]
+          if !groups[obj.Holdnavn]
+            console.log 'Data error: Hold missing for StuderendeHold', obj
+
+Dummy hold
+
+            groups[obj.Holdnavn] =
+              name: obj.Holdnavn
+              department: '219405'
+              start: '01-01-2014'
+              end: '01-01-2060'
+              students: []
           groups[obj.Holdnavn].students.push students[getStudentId obj.Studienummer]
     
         addGroup = (obj) ->
           return obj.untis_id if result.groups[obj.untis_id]
-          grp = result.groups[obj.untis_id] = groups[obj.alias] || {}
+
+Buggy data: sometimes the same group has several untis_id, which is why we make a deep copy with json.parse/stringify
+
+          grp = result.groups[obj.untis_id] = JSON.parse JSON.stringify groups[obj.alias] || {}
           grp.id = obj.untis_id
           grp.group = obj.name
           dept = webuntis.departments[obj.department]
@@ -432,12 +503,12 @@ to make sure they are available if needed needed by calendar events
               start: activity.start
               end: activity.end
               teachers: activity.teachers.map (untis_id) ->
-                addTeacher webuntis.teachers[untis_id]
+                addTeacher webuntis.teachers[untis_id] || {untis_id: untis_id, name: "error:missing", departments: ["error:missing"] }
                 untis_id
-              locations: activity.locations.map (loc) -> webuntis.locations[loc].name
-              subject: activity.subjects.map((subj) -> webuntis.subjects[subj].longname).join(" ")
+              locations: activity.locations.map (loc) -> webuntis.locations[loc]?.name || "error:missing"
+              subject: activity.subjects.map((subj) -> webuntis.subjects[subj]?.longname || "error:missing").join(" ")
               groups: activity.groups.map (untis_id) ->
-                addGroup webuntis.groups[untis_id]
+                addGroup webuntis.groups[untis_id] || {untis_id: untis_id}
     
 
 ### Handle input from iCal
@@ -455,6 +526,7 @@ to make sure they are available if needed needed by calendar events
             groups: []
             subject: event.SUMMARY
             description: event.DESCRIPTION
+          activity.description = "#{activity.description}".replace /\\(.)/g, (_, c) -> ({n:"\n",r:"\r",t:"\t"}[c] || c)
           try
             for key, val of JSON.parse activity.description
               activity[key] = val
@@ -504,6 +576,8 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
               if config.prepare.dest.dump
                 fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
               sendUpdate result, (err, data) ->
+                if err
+                  console.log 'sendUpdate error:', err
                 console.log "submitted to api-server"
                 process.exit 0
     
@@ -645,6 +719,11 @@ no need to tell the world what server software we are running, - security best p
           result.next = arr[idx]
         res.json result
         res.end()
+    
+      app.all "/arrivals", (req, res) ->
+        arrivals (result) ->
+          res.json result
+          res.end()
       
       defRest name, member for name, member of endpoints
       
@@ -697,6 +776,59 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
       setInterval eventEmitter, 100
       
       
+
+## Train arrival data from rejseplanen
+### Get data
+
+      arrivalCache = []
+      getArrivals = (d, cb) ->
+    
+        url = "http://xmlopen.rejseplanen.dk/bin/rest.exe/arrivalBoard" +
+          "?id=8600683&date=#{d.getUTCDate()}.#{d.getUTCMonth() + 1}.#{String(d.getUTCFullYear()).slice(2)}&time=#{d.getUTCHours()}:#{d.getUTCMinutes()}"
+        (require "request") url, (err, _, data) ->
+          return cb(err) if err
+          arrivalCache = []
+          !data.replace /<Arrival name="(.*?)"[^>]*?type="(.*?)"[^>]*?time="(.*?)" date="(.*?)" [^>]*? origin="(.*)">/g, (_, name, type, time, date, origin) ->
+            arrivalCache.push
+              name: name
+              type: type
+              date: "20#{date.slice(6,8)}-#{date.slice(3,5)}-#{date.slice(0,2)}T#{time}:00"
+              origin: origin
+          cb null, arrivalCache
+    
+      arrivals = (cb) ->
+        now = getDateTime()
+        getArrivals (new Date(now)), (err, result) ->
+          if err
+            cb []
+          else
+            cb result
+    
+
+### Emit events
+
+      lastArrivalEmit = undefined
+      arrivalEmitter = ->
+        now = getDateTime().slice(0,-6) + "00"
+    
+        doEmit = (arrs) ->
+          if now == lastArrivalEmit
+            return setTimeout arrivalEmitter, 30000
+          lastArrivalEmit = now
+          if !arrs.length
+            return setTimeout arrivalEmitter, 60*60*1000
+          for arrival in arrs
+            if arrival.date == now
+              bayeux.getClient().publish "/arrival", arrival
+          setTimeout arrivalEmitter, 30000
+    
+        if !arrivalCache.length || now >= arrivalCache[arrivalCache.length - 1].date
+          arrivals doEmit
+        else
+          doEmit arrivalCache
+    
+      arrivalEmitter()
+    
 
 ## Test
 

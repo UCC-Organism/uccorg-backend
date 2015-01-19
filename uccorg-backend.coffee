@@ -24,17 +24,40 @@
 #
 # Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
 #
-#{{{2 Status/issues
+# {{{1 Status
 #
-# - cannot access macmini through port 8080, - temporary workaround through ssl.solsort.com, but needs to be fixed.
+# {{{2 Data Issues
+#
 # - some teachers on webuntis missing from mssql (thus missing gender non-critical)
 # - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
 # - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
 # - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
 #
-# {{{2 Done
+# {{{2 Back Log - January-April 2015
 #
-# {{{3 Milestone 3 - running until Jan 20.
+# - integration/test with frontend
+# - uniform agent scheduling / representation of agent-events
+# - repeat with recent non-empty data, if empty data
+# - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
+# - ambient data
+#   - `/timeofday` day cycle
+#   - grants, su, etc.
+# - structured/random events for agents: 
+#   - agent types: researchers, kitchen staff, administrators, janitors, ..
+#   - lunch, toilet-breaks, illness-leave, ..
+#
+# {{{2 Release Log
+#
+# {{{3 In between development 2014
+#
+# - dummy-hold when missing data
+# - workaround for data where several groups has the same untis_did
+# - create dummy data with "error:missing" when missing teacher, location or subject
+# - student age
+# - ignore bad ssl-certificates for webuntis - as they were/(are?) buggy
+#
+#
+# {{{3 Milestone 3 - running until Jan 20. 2014
 #
 # - configure mac-mini autostart api-server
 # - dashboard
@@ -47,7 +70,7 @@
 # - dashboard skeleton
 # - added api for getting ids of all teachers/groups/locations/activities
 #
-# {{{3 Milestone 2 - running until Dec. 29
+# {{{3 Milestone 2 - running until Dec. 29 2013
 #
 # - the windows server configured to extract the data each night at 1'o'clock, and send them to the mac mini.
 # - added api for getting current/next/prev activity given a location, teacher or group
@@ -58,7 +81,7 @@
 # - temporarily forwarding data through ssl.solsort.com, as port 8080 from ssmldata to macmini doesn't seem to be open.
 # - send data from ssmldata-server to macmini
 #
-# {{{3 Milestone 1 - running until Dec. 22
+# {{{3 Milestone 1 - running until Dec. 22 2013
 #
 # - get data from sqlserver
 # - getting data from webuntis
