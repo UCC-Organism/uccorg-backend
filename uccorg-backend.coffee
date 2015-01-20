@@ -45,6 +45,7 @@
 # - structured/random events for agents: 
 #   - agent types: researchers, kitchen staff, administrators, janitors, ..
 #   - lunch, toilet-breaks, illness-leave, ..
+# - temporary proxy for frontend development
 #
 # {{{2 Release Log
 #
