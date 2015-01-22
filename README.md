@@ -49,7 +49,43 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 - structured/random events for agents: 
   - agent types: researchers, kitchen staff, administrators, janitors, ..
   - lunch, toilet-breaks, illness-leave, ..
-- temporary proxy for frontend development
+- √temporary proxy for frontend development
+
+### uniform agent scheduling notes
+
+New data schema:
+- agents: (teachers, or students member of groups)
+  - id
+  - TODO: type: teacher | student | researcher | janitor | bus | train | ...
+  - ?gender: 0/1
+  - ?programme:
+  - ?programmeDesc:
+  - ?age
+  - ?end
+- now/agent
+- activities
+  - id
+  - start
+  - end
+  - locations
+  - subject
+  - TODO: agents-field with all agents - from group+teachers+whatever
+  - (teachers)
+  - (groups)
+- locations
+  - id - string
+  - name
+  - ?capacity
+- (old) teachers
+  - ...
+- (old) groups
+  - id
+  - name
+  - department
+  - start
+  - end
+  - group
+  - programme
 
 ## Release Log
 

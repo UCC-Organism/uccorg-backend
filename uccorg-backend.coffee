@@ -45,7 +45,34 @@
 # - structured/random events for agents: 
 #   - agent types: researchers, kitchen staff, administrators, janitors, ..
 #   - lunch, toilet-breaks, illness-leave, ..
-# - temporary proxy for frontend development
+# - √temporary proxy for frontend development
+#
+# {{{3 uniform agent scheduling notes
+# 
+# New data schema:
+# - agents: (teachers, or students member of groups)
+#   - id
+#   - kind: teacher | student | researcher | janitor | bus | train | ...
+#   - ?gender: 0/1 (for teacher/student)
+#   - ?groups (for students)
+#     - id
+#     - group (groupname/id)
+#     - programme
+#     - department
+#     - name (groupname/id)
+#   - ?programme:
+#   - ?programmeDesc:
+#   - ?age (for student)
+#   - ?end (for student)
+#   - ?name (for train/bus)
+#   - ?origin (for train/bus)
+# - now/agent: current, prev, next events for agent
+# - events - from activities, train arrivals, etc.
+#   - time
+#   - kind: activity-start, activity-end, bus-arrival, train-arrival, 
+#   - desc: activity-subject, etc.
+#   - agents
+#   - locations
 #
 # {{{2 Release Log
 #
