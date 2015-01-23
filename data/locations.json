@@ -1,6 +1,6 @@
 [
 { "id": "Auditorium", "name": "Auditorium C.028", "capacity": 148 },
-{ "id": "C.108", "name": "Teori", "capacity": 40 },
+{ "id": "C.108", "name": "Teori", "capacity": 40, "kind": "study" },
 { "id": "C.107", "name": "Teori", "capacity": 40 },
 { "id": "C.106", "name": "Teori", "capacity": 40 },
 { "id": "C.101", "name": "Teori", "capacity": 40 },
@@ -33,11 +33,12 @@
 { "id": "Grupperum C113", "name": "Grupperum 1. sal", "capacity": 10 },
 { "id": "Grupperum C213", "name": "Grupperum 2. sal", "capacity": 10 },
 { "id": "Atrium", "name": "Atrium", "capacity": 300 },
-{ "id": "Kantine", "name": "Kantine", "capacity": 150 },
+{ "id": "Køkken", "name": "Køkken"},
+{ "id": "Kantine", "name": "Kantine", "capacity": 150},
 { "id": "Bevægelse B.001", "name": "Bevægelsessal B.001", "capacity": 40 },
 { "id": "Grupperum C.113", "name": "Grupperum 1. sal", "capacity": 10 },
 { "id": "Grupperum C.213", "name": "Grupperum 2. sal", "capacity": 10 },
 { "id": "Konference B.105", "name": "Konference B.105", "capacity": 15 },
 { "id": "Reservér selv flexru", "name": "Flexrum"},
-{ "id": "Studieadministration", "name": "Studieadministrationen"}
+{ "id": "Studieadministration", "name": "Studieadministrationen", "categories": ["adm"] }
 ]

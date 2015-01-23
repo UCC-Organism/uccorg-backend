@@ -1,0 +1,40 @@
+{
+    "agents": [
+        {
+            "kind": "kitchen staff",
+            "count": 5
+        },
+        {
+            "kind": "researchers",
+            "count": 50
+        }
+    ],
+    "activities": [
+        {
+            "agents": [
+                "kitchen staff"
+            ],
+            "calendar": "cooking",
+            "id": "cooking",
+            "locations": [
+                "K\u00f8kken",
+                "Kantine"
+            ]
+        },
+        {
+            "agents": [
+                "students",
+                "teachers",
+                "researchers",
+                "kitchen staff",
+                "janitors"
+            ],
+            "id": "toilet",
+            "locations": [
+                "TODO"
+            ],
+            "duration": 300,
+            "probability": 0.001
+        }
+    ]
+}
