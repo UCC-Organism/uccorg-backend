@@ -593,6 +593,9 @@ apiServer = ->
       events.push "#{activity.start} start #{activity.id}" if activity.start > now
       events.push "#{activity.end} end #{activity.id}" if activity.end > now
     events.sort()
+
+    #{{{4 add agent+events
+    addAgentEvents()
   
   #{{{3 read cached data
   try
@@ -631,6 +634,8 @@ apiServer = ->
     activity: "activities"
     group: "groups"
     location: "locations"
+    event: "events"
+    agent: "agents"
 
   app.all "/status", (req, res) ->
     fs.stat config.apiserver.cachefile, (err, stat) ->
@@ -759,6 +764,70 @@ apiServer = ->
       doEmit arrivalCache
 
   arrivalEmitter()
+
+  #{{{2 agent/event data structure
+  addAgentEvents = ->
+    data.agents = {}
+    programmes= {}
+    for _, teacher of data.teachers
+      id = "teacher" + teacher.id
+      data.agents[id] = agent = {}
+      agent.kind = "teacher"
+      agent.gender = teacher.gender
+      agent.programme = teacher.programmeDesc
+      agent.id = id
+
+    data.agents.JamesBond =
+      kind: "yes"
+      gender: 1
+      license: "kill -9"
+      id: "007"
+      description: "undercover testagent"
+
+    for groupId, group of data.groups
+      continue if not group.students
+      for student in group.students
+        id = "student" + student.id
+        data.agents[id] = agent = data.agents[id] || {}
+        if agent.programme && group.programme != agent.programme
+          console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
+        agent.kind = "student"
+        agent.programme = group.programme
+        agent.groups ?= []
+        agent.groups.push groupId
+        agent.age = student.age
+        agent.gender = student.gender
+        agent.end = student.end
+        agent.id = id
+
+    data.events = {}
+    for id in events
+      data.events[id] = event = {}
+      [time, op, activityId] = id.split " "
+      activity = data.activities[activityId]
+      event.id = id
+
+      if op == "start"
+        event.locations = activity.locations
+        event.description = activity.subject
+        event.time = time
+      else
+        # TODO subtract an epsilon from time to make sure sequentials schedules doesn't overlap
+        event.description = "end of activity"
+        event.time = time
+        event.locations = []
+
+      event.agents = []
+      for teacherId in activity.teachers
+        event.agents.push "teacher" + teacherId
+      for groupId in activity.groups
+        for student in data.groups[groupId].students || []
+          event.agents.push "student" + student.id
+
+
+
+
+        
 
   #{{{2 Test
   #
