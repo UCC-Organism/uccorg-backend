@@ -547,6 +547,13 @@ dataPreparationServer = ->
 #{{{1 event/api-server
 apiServer = ->
   data = undefined
+  activitiesBy =
+    group: {}
+    location: {}
+    teacher: {}
+  eventsByAgent = {}
+  events = []
+  eventPos = 0
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
@@ -557,15 +564,7 @@ apiServer = ->
       console.log "data replaced with new data from ucc-server"
       done()
   
-  #{{{3 Data structures
-  #
-  activitiesBy =
-    group: {}
-    location: {}
-    teacher: {}
-  events = []
-  eventPos = 0
-  enrichData = ->
+  enrichData = -> #{{{3 
 
     activitiesBy =
       group: {}
@@ -767,8 +766,7 @@ apiServer = ->
 
   #{{{2 agent/event data structure
   addAgentEvents = ->
-    data.agents = {}
-    programmes= {}
+    data.agents = {} #{{{3
     for _, teacher of data.teachers
       id = "teacher" + teacher.id
       data.agents[id] = agent = {}
@@ -800,7 +798,7 @@ apiServer = ->
         agent.end = student.end
         agent.id = id
 
-    data.events = {}
+    data.events = {} # {{{3
     for id in events
       data.events[id] = event = {}
       [time, op, activityId] = id.split " "
@@ -824,10 +822,13 @@ apiServer = ->
         for student in data.groups[groupId].students || []
           event.agents.push "student" + student.id
 
-
-
-
-        
+    eventsByAgent = {} #{{{3
+    allEvents = (event for _, event of data.events)
+    allEvents.sort((a,b) -> if a.time < b.time then -1 else 1)
+    for event in allEvents
+      for agent in event.agents
+        eventsByAgent[agent] = [] if !eventsByAgent[agent]
+        eventsByAgent[agent].push event
 
   #{{{2 Test
   #
