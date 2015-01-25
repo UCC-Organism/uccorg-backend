@@ -810,9 +810,8 @@ apiServer = ->
         event.description = activity.subject
         event.time = time
       else
-        # TODO subtract an epsilon from time to make sure sequentials schedules doesn't overlap
         event.description = "end of activity"
-        event.time = time
+        event.time = (new Date(new Date(time.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19)
         event.locations = []
 
       event.agents = []
