@@ -17,7 +17,7 @@ explore = (url, cb) ->
     else
       result += "<pre>#{JSON.stringify x, null, 2}</pre>"
     ($ "#apiResult").html result
-    if type in ["teacher", "group", "location", "agents"]
+    if type in ["teacher", "group", "location", "agent"]
       $.get "/now" + url,  (x) ->
         result += "<h3>/now#{url}</h3>"
         result += "<pre>#{JSON.stringify x, null, 2}</pre>"

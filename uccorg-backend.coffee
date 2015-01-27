@@ -172,6 +172,11 @@ request = require "request"
 
 # {{{2 Utility functions
 #
+# Unique ID
+uniqueId = do ->
+  prevId = 0
+  return -> prevId += 1
+#
 # Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
 #
 getDateTime = -> (new Date(Date.now() - (new Date).getTimezoneOffset() * 60 * 1000)).toISOString().slice(0,-1)
@@ -569,6 +574,7 @@ apiServer = ->
   eventsByAgent = {}
   events = []
   eventPos = 0
+  state = {}
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
@@ -667,6 +673,9 @@ apiServer = ->
       res.end()
 
   app.all "/now/:kind/:id", (req, res) ->
+    res.json (data[req.params.kind + "Now"] || {})[req.params.id] || []
+    res.end()
+    ###
     arr = activitiesBy[req.params.kind][req.params.id]
     result = { current: [] }
     if arr
@@ -679,6 +688,7 @@ apiServer = ->
       result.next = arr[idx]
     res.json result
     res.end()
+    ###
 
   app.all "/arrivals", (req, res) ->
     arrivals (result) ->
@@ -779,6 +789,19 @@ apiServer = ->
 
   arrivalEmitter()
 
+  #{{{2 update global state (agents/events)
+  updateState = (eventId) ->
+    console.log 'updatestate', event
+    event = data.events[eventId]
+    for agent in event.agents
+      prevLocation = data.agentNow[agent]
+      data.locationNow[prevLocation] = (data.locationNow[prevLocation] || []).filter ( (a) -> a != agent) if prevLocation
+      location = event.location
+      if location
+        data.locationNow[location] = (data.locationNow[location] || [])
+        data.locationNow[location].push agent
+      data.agentNow[agent] = location || "undefined"
+
   #{{{2 agent/event data structure
   addAgentEvents = ->
     data.agents = {} #{{{3
@@ -814,6 +837,26 @@ apiServer = ->
         agent.id = id
 
     data.events = {} # {{{3
+    addEvent = (agents, location, time, description) ->
+      id = time + ' ' + uniqueId()
+      data.events[id] =
+        id: id
+        description: description
+        time: time
+        agents: agents
+        location: location
+
+    for _, activity of data.activities
+      agents = []
+      for teacherId in activity.teachers
+        agents.push "teacher" + teacherId
+      for groupId in activity.groups
+        for student in data.groups[groupId].students || []
+          agents.push "student" + student.id
+      # TODO handle several locations per event
+      addEvent agents, activity.locations[0], activity.start, activity.subject
+      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), 'end of activity'
+    ###
     for id in events
       data.events[id] = event = {}
       [time, op, activityId] = id.split " "
@@ -835,14 +878,30 @@ apiServer = ->
       for groupId in activity.groups
         for student in data.groups[groupId].students || []
           event.agents.push "student" + student.id
+    ###
 
-    eventsByAgent = {} #{{{3
+    data.eventPos = 0 #{{{3
+    data.agentNow = {}
+    data.locationNow = {}
+    data.eventList = Object.keys data.events
+    data.eventList.sort()
+
+    for id, _ of data.agents
+      console.log id
+      data.agentNow[id] = "undefined" 
+    while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
+      updateState(data.eventList[data.eventPos])
+      data.eventPos += 1
+    console.log data.agentNow
+
+    ### eventsByAgent = {} #{{{3
     allEvents = (event for _, event of data.events)
     allEvents.sort((a,b) -> if a.time < b.time then -1 else 1)
     for event in allEvents
       for agent in event.agents
         eventsByAgent[agent] = [] if !eventsByAgent[agent]
         eventsByAgent[agent].push event
+    ###
 
   #{{{2 Test
   #
