@@ -5,9 +5,9 @@
   },
   "test": {
     "outfile": "test.out",
-    "startDate": "2013-09-20T06:20:00",
-    "endDate": "2013-09-20T18:20:00",
-    "restTestTime": "2013-09-20T09:35:00",
-    "xTime": 3000
+    "startDate": "2015-01-22T06:20:00",
+    "endDate": "2015-01-22T18:20:00",
+    "xTime": 8000,
+    "DISABLED restTestTime": "2015-01-22T09:35:00"
   }
 }

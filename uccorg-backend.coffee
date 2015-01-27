@@ -35,6 +35,22 @@
 #
 # {{{2 Back Log - January-April 2015
 #
+#
+# - (marcin? mapping between ucc-organism room id's and schedule room name)
+# - update rest-test
+# - location->agents at current time api
+# - update location and agent state on events
+# - use new events
+#
+# - √new data for testing (but disabled rest-test)
+# - √agent+event uniform static data
+# - √temporary proxy for frontend development
+#
+# {{{3 misc todo
+#
+# - location -> agents at current time
+#   - events using new event api
+#   - current state object, traverse new events live, and update state
 # - integration/test with frontend
 # - uniform agent scheduling / representation of agent-events
 # - repeat with recent non-empty data, if empty data
@@ -45,7 +61,6 @@
 # - structured/random events for agents: 
 #   - agent types: researchers, kitchen staff, administrators, janitors, ..
 #   - lunch, toilet-breaks, illness-leave, ..
-# - √temporary proxy for frontend development
 #
 # {{{3 uniform agent scheduling notes
 # 
@@ -858,13 +873,13 @@ apiServer = ->
           done()
       async.series [
         restTestRequest "now/location/Brikserum C.125"
-        restTestRequest "now/group/39"
+        restTestRequest "now/group/49"
         restTestRequest "now/teacher/23"
-        restTestRequest "now/location/C.224"
-        restTestRequest "group/39"
+        restTestRequest "now/location/C.284"
+        restTestRequest "group/49"
         restTestRequest "teacher/23"
-        restTestRequest "location/C.206"
-        restTestRequest "activity/23730"
+        restTestRequest "location/C.208"
+        restTestRequest "activity/99009"
       ]
       undefined
   
