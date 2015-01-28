@@ -25,7 +25,6 @@
 # Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
 #
 # {{{1 Status
-#
 # {{{2 Data Issues
 #
 # - some teachers on webuntis missing from mssql (thus missing gender non-critical)
@@ -35,32 +34,19 @@
 #
 # {{{2 Back Log - January-April 2015
 #
-#
-# - (marcin? mapping between ucc-organism room id's and schedule room name)
-# - update rest-test
-# - location->agents at current time api
-# - update location and agent state on events
-# - use new events
-#
-# - √new data for testing (but disabled rest-test)
-# - √agent+event uniform static data
-# - √temporary proxy for frontend development
-#
-# {{{3 misc todo
-#
-# - location -> agents at current time
-#   - events using new event api
-#   - current state object, traverse new events live, and update state
-# - integration/test with frontend
-# - uniform agent scheduling / representation of agent-events
-# - repeat with recent non-empty data, if empty data
-# - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
-# - ambient data
-#   - `/timeofday` day cycle
-#   - grants, su, etc.
 # - structured/random events for agents: 
 #   - agent types: researchers, kitchen staff, administrators, janitors, ..
 #   - lunch, toilet-breaks, illness-leave, ..
+# - ambient data - `/timeofday` day cycle - grants, su, etc.
+# - (marcin? mapping between ucc-organism room id's and schedule room name)
+# - repeat with recent non-empty data, if empty data
+# - update rest-test
+# - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
+# - include warnings in status
+# - integration/test with frontend
+# - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
+# - bus/train events as events instead of separate arrivals
+# - refactor + eliminate dead code
 #
 # {{{3 uniform agent scheduling notes
 # 
@@ -90,7 +76,15 @@
 #   - locations
 #
 # {{{2 Release Log
-#
+# {{{3 January-April 2015
+# - week 5
+#   - webservice to get current state of agents and locations, replaces old `/now/`
+#   - events emitted are from the new uniform api
+#   - new test data (but rest-test disabled)
+# - week 4
+#   - draft new api: `/events`, `/agents`, `/locations`
+#   - agent+event uniform static data
+#   - temporary proxy for frontend development
 # {{{3 In between development 2014
 #
 # - dummy-hold when missing data
