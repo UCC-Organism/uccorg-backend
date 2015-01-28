@@ -673,7 +673,7 @@ apiServer = ->
       res.end()
 
   app.all "/now/:kind/:id", (req, res) ->
-    res.json (data[req.params.kind + "Now"] || {})[req.params.id] || []
+    res.json (data[req.params.kind + "Now"] || {})[req.params.id] || {}
     res.end()
     ###
     arr = activitiesBy[req.params.kind][req.params.id]
@@ -806,13 +806,16 @@ apiServer = ->
   updateState = (eventId) ->
     event = data.events[eventId]
     for agent in event.agents
-      prevLocation = data.agentNow[agent]
-      data.locationNow[prevLocation] = (data.locationNow[prevLocation] || []).filter ( (a) -> a != agent) if prevLocation
+      prevLocation = (data.agentNow[agent] || {}).location
+      data.locationNow[prevLocation].agents = data.locationNow[prevLocation].agents.filter ( (a) -> a != agent) if prevLocation
       location = event.location
       if location
-        data.locationNow[location] = (data.locationNow[location] || [])
-        data.locationNow[location].push agent
-      data.agentNow[agent] = location || "undefined"
+        data.locationNow[location] = data.locationNow[location] || {}
+        data.locationNow[location].agents = data.locationNow[location].agents || []
+        data.locationNow[location].agents.push agent
+      data.agentNow[agent] = {}
+      data.agentNow[agent].location = location if location
+      data.agentNow[agent].activity = event.description if event.description
 
   #{{{2 agent/event data structure
   addAgentEvents = ->
@@ -853,10 +856,10 @@ apiServer = ->
       id = time + ' ' + uniqueId()
       data.events[id] =
         id: id
+        location: location || undefined
         description: description
         time: time
         agents: agents
-        location: location
 
     for _, activity of data.activities
       agents = []
@@ -867,7 +870,7 @@ apiServer = ->
           agents.push "student" + student.id
       # TODO handle several locations per event
       addEvent agents, activity.locations[0], activity.start, activity.subject
-      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), 'end of activity'
+      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
     ###
     for id in events
       data.events[id] = event = {}
@@ -898,8 +901,6 @@ apiServer = ->
     data.eventList = Object.keys data.events
     data.eventList.sort()
 
-    for id, _ of data.agents
-      data.agentNow[id] = "undefined" 
     while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
       updateState(data.eventList[data.eventPos])
       data.eventPos += 1
