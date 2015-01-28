@@ -29,7 +29,6 @@ The api delivers JSON objects, and is available through http, with JSONP and COR
 Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
 
 # Status
-
 ## Data Issues
 
 - some teachers on webuntis missing from mssql (thus missing gender non-critical)
@@ -39,56 +38,57 @@ Events are pushed on `/events` as they happens through faye (http://faye.jcoglan
 
 ## Back Log - January-April 2015
 
-- integration/test with frontend
-- uniform agent scheduling / representation of agent-events
-- repeat with recent non-empty data, if empty data
-- delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
-- ambient data
-  - `/timeofday` day cycle
-  - grants, su, etc.
 - structured/random events for agents: 
   - agent types: researchers, kitchen staff, administrators, janitors, ..
   - lunch, toilet-breaks, illness-leave, ..
-- √temporary proxy for frontend development
+- ambient data - `/timeofday` day cycle - grants, su, etc.
+- (marcin? mapping between ucc-organism room id's and schedule room name)
+- repeat with recent non-empty data, if empty data
+- update rest-test
+- delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
+- include warnings in status
+- integration/test with frontend
+- include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
+- bus/train events as events instead of separate arrivals
+- refactor + eliminate dead code
 
 ### uniform agent scheduling notes
 
 New data schema:
 - agents: (teachers, or students member of groups)
   - id
-  - TODO: type: teacher | student | researcher | janitor | bus | train | ...
-  - ?gender: 0/1
+  - kind: teacher | student | researcher | janitor | bus | train | ...
+  - ?gender: 0/1 (for teacher/student)
+  - ?groups (for students)
+    - id
+    - group (groupname/id)
+    - programme
+    - department
+    - name (groupname/id)
   - ?programme:
   - ?programmeDesc:
-  - ?age
-  - ?end
-- now/agent
-- activities
-  - id
-  - start
-  - end
+  - ?age (for student)
+  - ?end (for student)
+  - ?name (for train/bus)
+  - ?origin (for train/bus)
+- now/agent: current, prev, next events for agent
+- events - from activities, train arrivals, etc.
+  - time
+  - kind: activity-start, activity-end, bus-arrival, train-arrival, 
+  - desc: activity-subject, etc.
+  - agents
   - locations
-  - subject
-  - TODO: agents-field with all agents - from group+teachers+whatever
-  - (teachers)
-  - (groups)
-- locations
-  - id - string
-  - name
-  - ?capacity
-- (old) teachers
-  - ...
-- (old) groups
-  - id
-  - name
-  - department
-  - start
-  - end
-  - group
-  - programme
 
 ## Release Log
-
+### January-April 2015
+- week 5
+  - webservice to get current state of agents and locations, replaces old `/now/`
+  - events emitted are from the new uniform api
+  - new test data (but rest-test disabled)
+- week 4
+  - draft new api: `/events`, `/agents`, `/locations`
+  - agent+event uniform static data
+  - temporary proxy for frontend development
 ### In between development 2014
 
 - dummy-hold when missing data
@@ -173,6 +173,13 @@ New data schema:
     
 
 ## Utility functions
+
+Unique ID
+
+    uniqueId = do ->
+      prevId = 0
+      return -> prevId += 1
+
 
 Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
 
@@ -623,6 +630,14 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 
     apiServer = ->
       data = undefined
+      activitiesBy =
+        group: {}
+        location: {}
+        teacher: {}
+      eventsByAgent = {}
+      events = []
+      eventPos = 0
+      state = {}
 
 ## Handle data
 ### Pushed to the server from UCC daily.
@@ -635,17 +650,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
           console.log "data replaced with new data from ucc-server"
           done()
       
-
-### Data structures
-
-
-      activitiesBy =
-        group: {}
-        location: {}
-        teacher: {}
-      events = []
-      eventPos = 0
-      enrichData = ->
+      enrichData = -> #{{{3 
     
         activitiesBy =
           group: {}
@@ -670,13 +675,20 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 activity start/stop - ordered by time, - used for emitting events
 
         now = getDateTime()
-        eventEmitter()
+
+eventEmitter()
+
         events = []
         eventPos = 0
         for _,activity of data.activities
           events.push "#{activity.start} start #{activity.id}" if activity.start > now
           events.push "#{activity.end} end #{activity.id}" if activity.end > now
         events.sort()
+    
+
+#### add agent+events
+
+        addAgentEvents()
       
 
 ### read cached data
@@ -727,6 +739,8 @@ no need to tell the world what server software we are running, - security best p
         activity: "activities"
         group: "groups"
         location: "locations"
+        event: "events"
+        agent: "agents"
     
       app.all "/status", (req, res) ->
         fs.stat config.apiserver.cachefile, (err, stat) ->
@@ -744,6 +758,11 @@ no need to tell the world what server software we are running, - security best p
           res.end()
     
       app.all "/now/:kind/:id", (req, res) ->
+        res.json (data[req.params.kind + "Now"] || {})[req.params.id] || {}
+        res.end()
+
+##
+
         arr = activitiesBy[req.params.kind][req.params.id]
         result = { current: [] }
         if arr
@@ -756,6 +775,9 @@ no need to tell the world what server software we are running, - security best p
           result.next = arr[idx]
         res.json result
         res.end()
+
+##
+
     
       app.all "/arrivals", (req, res) ->
         arrivals (result) ->
@@ -800,7 +822,7 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
       bayeux.attach server
       
 
-#### Events and event emitter
+#### ##  Events and event emitter
 
       eventEmitter = ->
         now = getDateTime()
@@ -811,6 +833,25 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
           bayeux.getClient().publish "/events", event
           ++eventPos
       setInterval eventEmitter, 100
+
+##
+
+    
+
+#### New events and event emitter
+
+      eventEmitter2 = ->
+        now = getDateTime()
+        while data.eventPos < data.eventList.length and data.eventList[data.eventPos] <= now
+          event = data.events[data.eventList[data.eventPos]]
+          console.log now, event.id, event.description, event.location
+
+event[1] = data.activities[event[1]] || event[1]
+
+          updateState event.id
+          bayeux.getClient().publish "/events", event
+          ++data.eventPos
+      setInterval eventEmitter2, 100
       
       
 
@@ -867,6 +908,132 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
       arrivalEmitter()
     
 
+## update global state (agents/events)
+
+      updateState = (eventId) ->
+        event = data.events[eventId]
+        for agent in event.agents
+          prevLocation = (data.agentNow[agent] || {}).location
+          data.locationNow[prevLocation].agents = data.locationNow[prevLocation].agents.filter ( (a) -> a != agent) if prevLocation
+          location = event.location
+          if location
+            data.locationNow[location] = data.locationNow[location] || {}
+            data.locationNow[location].agents = data.locationNow[location].agents || []
+            data.locationNow[location].agents.push agent
+          data.agentNow[agent] = {}
+          data.agentNow[agent].location = location if location
+          data.agentNow[agent].activity = event.description if event.description
+    
+
+## agent/event data structure
+
+      addAgentEvents = ->
+        data.agents = {} #{{{3
+        for _, teacher of data.teachers
+          id = "teacher" + teacher.id
+          data.agents[id] = agent = {}
+          agent.kind = "teacher"
+          agent.gender = teacher.gender
+          agent.programme = teacher.programmeDesc
+          agent.id = id
+    
+        data.agents.JamesBond =
+          kind: "yes"
+          gender: 1
+          license: "kill -9"
+          id: "007"
+          description: "undercover testagent"
+    
+        for groupId, group of data.groups
+          continue if not group.students
+          for student in group.students
+            id = "student" + student.id
+            data.agents[id] = agent = data.agents[id] || {}
+            if agent.programme && group.programme != agent.programme
+              console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
+            agent.kind = "student"
+            agent.programme = group.programme
+            agent.groups ?= []
+            agent.groups.push groupId
+            agent.age = student.age
+            agent.gender = student.gender
+            agent.end = student.end
+            agent.id = id
+    
+        data.events = {} # {{{3
+        addEvent = (agents, location, time, description) ->
+          id = time + ' ' + uniqueId()
+          data.events[id] =
+            id: id
+            location: location || undefined
+            description: description
+            time: time
+            agents: agents
+    
+        for _, activity of data.activities
+          agents = []
+          for teacherId in activity.teachers
+            agents.push "teacher" + teacherId
+          for groupId in activity.groups
+            for student in data.groups[groupId].students || []
+              agents.push "student" + student.id
+
+TODO handle several locations per event
+
+          addEvent agents, activity.locations[0], activity.start, activity.subject
+          addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
+
+##
+
+        for id in events
+          data.events[id] = event = {}
+          [time, op, activityId] = id.split " "
+          activity = data.activities[activityId]
+          event.id = id
+    
+          if op == "start"
+            event.locations = activity.locations
+            event.description = activity.subject
+            event.time = time
+          else
+            event.description = "end of activity"
+            event.time = (new Date(new Date(time.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19)
+            event.locations = []
+    
+          event.agents = []
+          for teacherId in activity.teachers
+            event.agents.push "teacher" + teacherId
+          for groupId in activity.groups
+            for student in data.groups[groupId].students || []
+              event.agents.push "student" + student.id
+
+##
+
+    
+        data.eventPos = 0 #{{{3
+        data.agentNow = {}
+        data.locationNow = {}
+        data.eventList = Object.keys data.events
+        data.eventList.sort()
+    
+        while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
+          updateState(data.eventList[data.eventPos])
+          data.eventPos += 1
+    
+
+### ## eventsByAgent = {} #
+
+        allEvents = (event for _, event of data.events)
+        allEvents.sort((a,b) -> if a.time < b.time then -1 else 1)
+        for event in allEvents
+          for agent in event.agents
+            eventsByAgent[agent] = [] if !eventsByAgent[agent]
+            eventsByAgent[agent].push event
+
+##
+
+    
+
 ## Test
 
 
@@ -901,13 +1068,13 @@ Factor by which the time will run by during the test
               done()
           async.series [
             restTestRequest "now/location/Brikserum C.125"
-            restTestRequest "now/group/39"
+            restTestRequest "now/group/49"
             restTestRequest "now/teacher/23"
-            restTestRequest "now/location/C.224"
-            restTestRequest "group/39"
+            restTestRequest "now/location/C.284"
+            restTestRequest "group/49"
             restTestRequest "teacher/23"
-            restTestRequest "location/C.206"
-            restTestRequest "activity/23730"
+            restTestRequest "location/C.208"
+            restTestRequest "activity/99009"
           ]
           undefined
       
