@@ -89,6 +89,7 @@ New data schema:
   - draft new api: `/events`, `/agents`, `/locations`
   - agent+event uniform static data
   - temporary proxy for frontend development
+
 ### In between development 2014
 
 - dummy-hold when missing data
