@@ -606,7 +606,7 @@ apiServer = ->
     # 
     # activity start/stop - ordered by time, - used for emitting events
     now = getDateTime()
-    eventEmitter()
+    #eventEmitter()
     events = []
     eventPos = 0
     for _,activity of data.activities
@@ -728,7 +728,7 @@ apiServer = ->
   
   bayeux.attach server
   
-  #{{{4 Events and event emitter
+  ### {{{4 Events and event emitter
   eventEmitter = ->
     now = getDateTime()
     while eventPos < events.length and events[eventPos] <= now
@@ -738,6 +738,19 @@ apiServer = ->
       bayeux.getClient().publish "/events", event
       ++eventPos
   setInterval eventEmitter, 100
+  ###
+
+  #{{{4 New events and event emitter
+  eventEmitter2 = ->
+    now = getDateTime()
+    while data.eventPos < data.eventList.length and data.eventList[data.eventPos] <= now
+      event = data.events[data.eventList[data.eventPos]]
+      console.log now, event.id, event.description, event.location
+      #event[1] = data.activities[event[1]] || event[1]
+      updateState event.id
+      bayeux.getClient().publish "/events", event
+      ++data.eventPos
+  setInterval eventEmitter2, 100
   
   
   #{{{2 Train arrival data from rejseplanen
@@ -791,7 +804,6 @@ apiServer = ->
 
   #{{{2 update global state (agents/events)
   updateState = (eventId) ->
-    console.log 'updatestate', event
     event = data.events[eventId]
     for agent in event.agents
       prevLocation = data.agentNow[agent]
@@ -887,12 +899,10 @@ apiServer = ->
     data.eventList.sort()
 
     for id, _ of data.agents
-      console.log id
       data.agentNow[id] = "undefined" 
     while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
       updateState(data.eventList[data.eventPos])
       data.eventPos += 1
-    console.log data.agentNow
 
     ### eventsByAgent = {} #{{{3
     allEvents = (event for _, event of data.events)

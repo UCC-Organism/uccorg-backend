@@ -27,7 +27,7 @@ explore = (url, cb) ->
 client = new Faye.Client "/faye"
 
 subscription = client.subscribe "/events", (msg) ->
-  ($ "#events").prepend "<div>#{(new Date).toLocaleString()} <strong>/events</strong>:<br/><small>#{JSON.stringify msg}</small></div>"
+  ($ "#events").prepend "<div>#{(new Date).toLocaleString()} <strong>/events</strong>:<br/><pre style=\"font-size: 66%;\">#{JSON.stringify msg}</pre></div>"
 subscription = client.subscribe "/arrival", (msg) ->
   ($ "#events").prepend "<div>#{(new Date).toLocaleString()} <strong>/arrival</strong>:<br/><small>#{JSON.stringify msg}</small></div>"
 console.log subscription
