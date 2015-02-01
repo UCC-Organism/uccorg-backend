@@ -676,9 +676,6 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 activity start/stop - ordered by time, - used for emitting events
 
         now = getDateTime()
-
-eventEmitter()
-
         events = []
         eventPos = 0
         for _,activity of data.activities
@@ -823,25 +820,9 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
       bayeux.attach server
       
 
-#### ##  Events and event emitter
+#### Events and event emitter
 
       eventEmitter = ->
-        now = getDateTime()
-        while eventPos < events.length and events[eventPos] <= now
-          event = events[eventPos].split(" ").slice -2
-          console.log Date(), events[eventPos]
-          event[1] = data.activities[event[1]] || event[1]
-          bayeux.getClient().publish "/events", event
-          ++eventPos
-      setInterval eventEmitter, 100
-
-##
-
-    
-
-#### New events and event emitter
-
-      eventEmitter2 = ->
         now = getDateTime()
         while data.eventPos < data.eventList.length and data.eventList[data.eventPos] <= now
           event = data.events[data.eventList[data.eventPos]]
@@ -852,7 +833,7 @@ event[1] = data.activities[event[1]] || event[1]
           updateState event.id
           bayeux.getClient().publish "/events", event
           ++data.eventPos
-      setInterval eventEmitter2, 100
+      setInterval eventEmitter, 100
       
       
 
