@@ -18,12 +18,41 @@
 #
 # The api delivers JSON objects, and is available through http, with JSONP and CORS enabled. The endpoints are:
 #
-# - `/(teacher|group|location|activity)/$ID` returns info about the particular entity
-# - `/now/(teacher|group|location)/$ID` returns an object with the next, current, and previous activity for the given entity
-# - `/(teachers|groups|locations|activities)` returns list of ids
+# - `/(agents|locations|events)` returns list of ids. NOTICE: some events/agents will be created on the fly and may not be in the list yet
+# - `/(agent|location|event)/$ID` returns info about the particular entity
+# - `/now/(agent|location)/$ID` returns an object with status for the moment, NOTICE: this varies over time
+#
+# Old api:
+# - `/(teacher|group|activity)/$ID` returns info about the particular entity
+# - `/(teachers|groups|activities)` returns list of ids
 #
 # Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
 #
+# {{{3 uniform agent scheduling notes
+# 
+# Data schema:
+# - agents: (teachers, or students member of groups)
+#   - id
+#   - kind: teacher | student | researcher | janitor | bus | train | ...
+#   - ?gender: 0/1 (for teacher/student)
+#   - ?groups of ids (for students)
+#   - ?programme:
+#   - ?age (for student)
+#   - ?end (for student)
+#   - ?name (for train/bus)
+#   - ?origin (for train/bus)
+# - events - from activities, train arrivals, etc.
+#   - time
+#   - TODO kind: activity-start, activity-end, bus-arrival, train-arrival, 
+#   - agents
+#   - ?description: activity-subject, etc.
+#   - ?location
+#   - TODO ?activity - link to ucc-activity for debugging
+# - locations
+#   - id
+#   - name
+#   - ?capacity
+#   
 # {{{1 Status
 # {{{2 Data Issues
 #
@@ -47,33 +76,6 @@
 # - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 # - bus/train events as events instead of separate arrivals
 # - refactor + eliminate dead code
-#
-# {{{3 uniform agent scheduling notes
-# 
-# New data schema:
-# - agents: (teachers, or students member of groups)
-#   - id
-#   - kind: teacher | student | researcher | janitor | bus | train | ...
-#   - ?gender: 0/1 (for teacher/student)
-#   - ?groups (for students)
-#     - id
-#     - group (groupname/id)
-#     - programme
-#     - department
-#     - name (groupname/id)
-#   - ?programme:
-#   - ?programmeDesc:
-#   - ?age (for student)
-#   - ?end (for student)
-#   - ?name (for train/bus)
-#   - ?origin (for train/bus)
-# - now/agent: current, prev, next events for agent
-# - events - from activities, train arrivals, etc.
-#   - time
-#   - kind: activity-start, activity-end, bus-arrival, train-arrival, 
-#   - desc: activity-subject, etc.
-#   - agents
-#   - locations
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
