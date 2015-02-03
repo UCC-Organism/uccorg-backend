@@ -40,5 +40,9 @@
 { "id": "Grupperum C.213", "name": "Grupperum 2. sal", "capacity": 10 },
 { "id": "Konference B.105", "name": "Konference B.105", "capacity": 15 },
 { "id": "Reservér selv flexru", "name": "Flexrum"},
-{ "id": "Studieadministration", "name": "Studieadministrationen", "categories": ["adm"] }
+{ "id": "Studieadministration", "name": "Studieadministrationen", "categories": ["adm"] },
+{ "id": "BUS"},
+{ "id": "EXB"},
+{ "id": "S"},
+{ "id": "TOG"}
 ]

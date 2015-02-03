@@ -74,11 +74,14 @@
 # - include warnings in status
 # - integration/test with frontend
 # - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
-# - bus/train events as events instead of separate arrivals
 # - refactor + eliminate dead code
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 6
+#   - bus/train events as uniform events instead of separate arrivals
+#   - contact UCC about SSMLDATA-server is down
+#   - some refactoring / dead code elimination
 # - week 5
 #   - webservice to get current state of agents and locations, replaces old `/now/`
 #   - events emitted are from the new uniform api
@@ -697,14 +700,17 @@ apiServer = ->
   bayeux.attach server
   
   #{{{4 Events and event emitter
+  emitEvent = (event) ->
+    data.events[event.id] = event if !data.events[event.id]
+    console.log getDateTime(), event.id, event.description, event.location
+    updateState event
+    bayeux.getClient().publish "/events", event
+
   eventEmitter = ->
     now = getDateTime()
     while data.eventPos < data.eventList.length and data.eventList[data.eventPos] <= now
       event = data.events[data.eventList[data.eventPos]]
-      console.log now, event.id, event.description, event.location
-      #event[1] = data.activities[event[1]] || event[1]
-      updateState event.id
-      bayeux.getClient().publish "/events", event
+      emitEvent event
       ++data.eventPos
   setInterval eventEmitter, 100
   
@@ -737,6 +743,34 @@ apiServer = ->
 
   #{{{3 Emit events
   lastArrivalEmit = undefined
+
+  doArrival = (arrival) ->
+    agentId = arrival.name + " " + arrival.origin
+    agent = data.agents[agentId]
+    if !agent
+      agent = data.agents[agentId] =
+        id: agentId
+        kind: "transport"
+        name: arrival.name
+        origin: arrival.origin
+    location = data.locations[arrival.type]
+    if !location
+      location = data.locations[arrival.type] =
+        id: arrival.type
+        kind: "transport"
+    emitEvent
+      id: getDateTime() + agentId + " arrive"
+      time: getDateTime()
+      description: "transport arrival"
+      agents: [agent.id]
+      location: arrival.type
+    sleep 2 + Math.random() * 60, ->
+      emitEvent
+        id: getDateTime() + agentId + " leave"
+        time: getDateTime()
+        description: "transport leaving"
+        agents: [agent.id]
+
   arrivalEmitter = ->
     now = getDateTime().slice(0,-6) + "00"
 
@@ -748,7 +782,7 @@ apiServer = ->
         return setTimeout arrivalEmitter, 60*60*1000
       for arrival in arrs
         if arrival.date == now
-          bayeux.getClient().publish "/arrival", arrival
+          doArrival arrival
       setTimeout arrivalEmitter, 30000
 
     if !arrivalCache.length || now >= arrivalCache[arrivalCache.length - 1].date
@@ -756,11 +790,10 @@ apiServer = ->
     else
       doEmit arrivalCache
 
-  arrivalEmitter()
+  arrivalEmitter() if not config.test
 
   #{{{2 update global state (agents/events)
-  updateState = (eventId) ->
-    event = data.events[eventId]
+  updateState = (event) ->
     for agent in event.agents
       prevLocation = (data.agentNow[agent] || {}).location
       data.locationNow[prevLocation].agents = data.locationNow[prevLocation].agents.filter ( (a) -> a != agent) if prevLocation
@@ -835,7 +868,7 @@ apiServer = ->
     data.eventList.sort()
 
     while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
-      updateState(data.eventList[data.eventPos])
+      updateState(data.events[data.eventList[data.eventPos]])
       data.eventPos += 1
 
   #{{{2 Test
