@@ -569,9 +569,6 @@ apiServer = ->
     location: {}
     teacher: {}
   eventsByAgent = {}
-  events = []
-  eventPos = 0
-  state = {}
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
@@ -598,17 +595,6 @@ apiServer = ->
     for _, collection of activitiesBy
       for _, arr of collection
         arr.sort (a, b) -> a.end.localeCompare b.end
-
-    #{{{4 Table with `events` (activity start/end)
-    # 
-    # activity start/stop - ordered by time, - used for emitting events
-    now = getDateTime()
-    events = []
-    eventPos = 0
-    for _,activity of data.activities
-      events.push "#{activity.start} start #{activity.id}" if activity.start > now
-      events.push "#{activity.end} end #{activity.id}" if activity.end > now
-    events.sort()
 
     #{{{4 add agent+events
     addAgentEvents()
@@ -660,31 +646,17 @@ apiServer = ->
         organismTime: getDateTime()
         lastDataUpdate: stat.mtime
         eventDetails:
-          count: events.length
-          pos: eventPos
-          first: events[0]
-          next: events[eventPos + 1]
-          last: events[events.length - 1]
+          count: data.eventList.length
+          pos: data.eventPos
+          first: data.eventList[0]
+          next: data.eventList[data.eventPos + 1]
+          last: data.eventList[data.eventList.length - 1]
         connections: clientCount
       res.end()
 
   app.all "/now/:kind/:id", (req, res) ->
     res.json (data[req.params.kind + "Now"] || {})[req.params.id] || {}
     res.end()
-    ###
-    arr = activitiesBy[req.params.kind][req.params.id]
-    result = { current: [] }
-    if arr
-      now = getDateTime()
-      idx = binSearchFn arr, (activity) -> activity.end.localeCompare now
-      result.prev = arr[idx-1]
-      while arr[idx] && arr[idx].start < now
-        result.current.push arr[idx]
-        ++idx
-      result.next = arr[idx]
-    res.json result
-    res.end()
-    ###
 
   app.all "/arrivals", (req, res) ->
     arrivals (result) ->
@@ -855,29 +827,6 @@ apiServer = ->
       # TODO handle several locations per event
       addEvent agents, activity.locations[0], activity.start, activity.subject
       addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
-    ###
-    for id in events
-      data.events[id] = event = {}
-      [time, op, activityId] = id.split " "
-      activity = data.activities[activityId]
-      event.id = id
-
-      if op == "start"
-        event.locations = activity.locations
-        event.description = activity.subject
-        event.time = time
-      else
-        event.description = "end of activity"
-        event.time = (new Date(new Date(time.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19)
-        event.locations = []
-
-      event.agents = []
-      for teacherId in activity.teachers
-        event.agents.push "teacher" + teacherId
-      for groupId in activity.groups
-        for student in data.groups[groupId].students || []
-          event.agents.push "student" + student.id
-    ###
 
     data.eventPos = 0 #{{{3
     data.agentNow = {}
@@ -888,15 +837,6 @@ apiServer = ->
     while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
       updateState(data.eventList[data.eventPos])
       data.eventPos += 1
-
-    ### eventsByAgent = {} #{{{3
-    allEvents = (event for _, event of data.events)
-    allEvents.sort((a,b) -> if a.time < b.time then -1 else 1)
-    for event in allEvents
-      for agent in event.agents
-        eventsByAgent[agent] = [] if !eventsByAgent[agent]
-        eventsByAgent[agent].push event
-    ###
 
   #{{{2 Test
   #
