@@ -222,6 +222,12 @@ sendUpdate = (data, callback) ->
   req.write datastr
   req.end()
 
+#{{{2 status
+status =
+  bootTime: getDateTime()
+  warnings: {}
+warn = (msg) ->
+  status.warnings[msg] = getDateTime()
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
   #{{{2 getCalendarData
@@ -230,6 +236,7 @@ dataPreparationServer = ->
     
     if config.prepare.icalDump && fs.existsSync config.prepare.icalDump
       fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
+        warn "icalDump error" if err
         throw err if err
         handleIcal content
     else
@@ -237,6 +244,7 @@ dataPreparationServer = ->
         fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
         if err
           console.log 'Error getting calendar data', config.prepare.icalUrl
+          warn 'Error getting calendar data ' + config.prepare.icalUrl
           console.log err
           throw err
         handleIcal content
@@ -293,6 +301,7 @@ dataPreparationServer = ->
         result = JSON.parse fs.readFileSync config.prepare.webuntisDump
         return callback?(result)
       catch e
+        warn "error loading webunits dump"
         console.log "Loading webuntis dump:", e
   
     do ->
@@ -307,6 +316,7 @@ dataPreparationServer = ->
             url: url
             rejectUnauthorized: false
           }, (err, result, content) ->
+            warn "webuntis request error #{name}" if err
             return cb err if err
             cb null, JSON.parse content
 
@@ -334,6 +344,7 @@ dataPreparationServer = ->
           dataDone err, result
   
       extractData (err, data) ->
+        warn "extractData error" if err
         throw err if err
         if config.prepare.webuntisDump
           fs.writeFileSync config.prepare.webuntisDump, (JSON.stringify data, null, 2)
@@ -456,6 +467,7 @@ dataPreparationServer = ->
     for obj in sqlserver.StuderendeHold[0]
       if !groups[obj.Holdnavn]
         console.log 'Data error: Hold missing for StuderendeHold', obj
+        warn 'Data error: Hold missing for StuderendeHold ' + obj.Holdnavn
         # Dummy hold
         groups[obj.Holdnavn] =
           name: obj.Holdnavn
@@ -533,6 +545,7 @@ dataPreparationServer = ->
       else if t.slice(-1) == "Z"
         d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
       else
+        warn "timezone bug in calendar data " + t + " " + d
         console.log "timezone bug in calendar data", t, d
       d
 
@@ -556,11 +569,13 @@ dataPreparationServer = ->
     getSqlServerData (data2) ->
       getCalendarData (data3) ->
         processData data1, data2, data3, (result) ->
+          result.status = status
           if config.prepare.dest.dump
             fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
           sendUpdate result, (err, data) ->
             if err
               console.log 'sendUpdate error:', err
+              warn 'sendUpdate error'
             console.log "submitted to api-server"
             process.exit 0
 
@@ -578,6 +593,9 @@ apiServer = ->
     console.log "handling data update from ucc-server"
     fs.writeFile config.apiserver.cachefile, JSON.stringify(input), ->
       data = input
+      if input.status.warnings
+        for key, val of input.status.warnings
+          status.warnings[key] = "data " + val
       enrichData()
       console.log "data replaced with new data from ucc-server"
       done()
@@ -644,17 +662,16 @@ apiServer = ->
 
   app.all "/status", (req, res) ->
     fs.stat config.apiserver.cachefile, (err, stat) ->
-
-      res.json
-        organismTime: getDateTime()
-        lastDataUpdate: stat.mtime
-        eventDetails:
+      status.organismTime = getDateTime()
+      status.lastDataUpdate = stat.mtime
+      status.eventDetails =
           count: data.eventList.length
           pos: data.eventPos
           first: data.eventList[0]
           next: data.eventList[data.eventPos + 1]
           last: data.eventList[data.eventList.length - 1]
-        connections: clientCount
+      status.connections = clientCount
+      res.json status
       res.end()
 
   app.all "/now/:kind/:id", (req, res) ->
@@ -831,6 +848,7 @@ apiServer = ->
         data.agents[id] = agent = data.agents[id] || {}
         if agent.programme && group.programme != agent.programme
           console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
+          warn "warning: student in several programmes, ignoring " + id  + " " + group.programme + " " + agent.programme
         agent.kind = "student"
         agent.programme = group.programme
         agent.groups ?= []
@@ -858,6 +876,8 @@ apiServer = ->
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
       # TODO handle several locations per event
+      if activity.locations.length > 1
+        warn "TODO several locations for single activity not yet handled"
       addEvent agents, activity.locations[0], activity.start, activity.subject
       addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
 
