@@ -623,10 +623,14 @@ apiServer = ->
   #{{{3 read cached data
   try
     data = JSON.parse fs.readFileSync config.apiserver.cachefile
+    if data.status && data.status.warnings
+      for key, val of data.status.warnings
+        status.warnings[key] = "data " + val
     process.nextTick enrichData
   catch e
     console.log "reading cached data:", e
     data = {}
+    warn "couldn't read cached data"
   
   
   # {{{2 Server
