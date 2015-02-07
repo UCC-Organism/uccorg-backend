@@ -230,6 +230,7 @@ warn = (msg) ->
   status.warnings[msg] = getDateTime()
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
+  warn "datePreparationServer test warn"
   #{{{2 getCalendarData
   getCalendarData = (done) ->
     return done() if ! config?.prepare?.icalUrl
@@ -593,7 +594,7 @@ apiServer = ->
     console.log "handling data update from ucc-server"
     fs.writeFile config.apiserver.cachefile, JSON.stringify(input), ->
       data = input
-      if input.status.warnings
+      if input.status and input.status.warnings
         for key, val of input.status.warnings
           status.warnings[key] = "data " + val
       enrichData()
