@@ -66,12 +66,13 @@
 # - structured/random events for agents: 
 #   - agent types: researchers, kitchen staff, administrators, janitors, ..
 #   - lunch, toilet-breaks, illness-leave, ..
+# - udkast til aftale om driftssupport
+# - udkast til aftale om driftsovervågning
 # - ambient data - `/timeofday` day cycle - grants, su, etc.
 # - (marcin? mapping between ucc-organism room id's and schedule room name)
 # - repeat with recent non-empty data, if empty data
 # - update rest-test
 # - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
-# - include warnings in status
 # - integration/test with frontend
 # - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 # - refactor + eliminate dead code
@@ -79,6 +80,7 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 6
+#   - include warnings in status, and propagate warnings from windows server to api-server
 #   - bus/train events as uniform events instead of separate arrivals
 #   - contact UCC about SSMLDATA-server is down
 #   - some refactoring / dead code elimination
@@ -230,7 +232,6 @@ warn = (msg) ->
   status.warnings[msg] = getDateTime()
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
-  warn "datePreparationServer test warn"
   #{{{2 getCalendarData
   getCalendarData = (done) ->
     return done() if ! config?.prepare?.icalUrl
