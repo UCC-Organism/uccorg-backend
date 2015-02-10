@@ -80,7 +80,7 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 7
-#   - assign agent to random location, when event has several locations
+#   - assign agent to alternating locations, when event has several locations
 # - week 6
 #   - include warnings in status, and propagate warnings from windows server to api-server
 #   - bus/train events as uniform events instead of separate arrivals
@@ -180,9 +180,6 @@ request = require "request"
 uniqueId = do ->
   prevId = 0
   return -> prevId += 1
-
-# {{{3 pickRandom
-pickRandom = (arr) -> arr[Math.random() * arr.length | 0]
 
 # {{{3 getDateTime
 # Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
@@ -888,7 +885,15 @@ apiServer = ->
       for groupId in activity.groups
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
-      addEvent agents, pickRandom(activity.locations), activity.start, activity.subject
+      len = activity.locations.length
+      # create events
+      if len > 1
+        # distribute agents into locations for event
+        for i in [0..len-1] by 1
+          addEvent (agents[j] for j in [i..agents.length-1] by len),
+            activity.locations[i], activity.start, activity.subject
+      else
+        addEvent agents, activity.locations[0], activity.start, activity.subject
       addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
 
     data.eventPos = 0 #{{{3
