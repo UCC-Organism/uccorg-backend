@@ -79,6 +79,8 @@
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 7
+#   - assign agent to random location, when event has several locations
 # - week 6
 #   - include warnings in status, and propagate warnings from windows server to api-server
 #   - bus/train events as uniform events instead of separate arrivals
@@ -174,11 +176,15 @@ request = require "request"
 
 # {{{2 Utility functions
 #
-# Unique ID
+# {{{3 uniqueId
 uniqueId = do ->
   prevId = 0
   return -> prevId += 1
-#
+
+# {{{3 pickRandom
+pickRandom = (arr) -> arr[Math.random() * arr.length | 0]
+
+# {{{3 getDateTime
 # Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
 #
 getDateTime = -> (new Date(Date.now() - (new Date).getTimezoneOffset() * 60 * 1000)).toISOString().slice(0,-1)
@@ -522,6 +528,7 @@ dataPreparationServer = ->
       console.log dtstart.toISOString(), JSON.stringify event
       activity =
         id: "cal#{++calId}"
+        kind: "calendar"
         start: dtstart.toISOString()
         end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
         locations: event.LOCATION.split(",").map (s) -> s.trim()
@@ -881,10 +888,7 @@ apiServer = ->
       for groupId in activity.groups
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
-      # TODO handle several locations per event
-      if activity.locations.length > 1
-        warn "TODO several locations for single activity not yet handled"
-      addEvent agents, activity.locations[0], activity.start, activity.subject
+      addEvent agents, pickRandom(activity.locations), activity.start, activity.subject
       addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
 
     data.eventPos = 0 #{{{3
