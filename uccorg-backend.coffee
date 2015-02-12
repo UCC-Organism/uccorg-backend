@@ -878,6 +878,7 @@ apiServer = ->
         time: time
         agents: agents
 
+    calendar = []
     for _, activity of data.activities
       agents = []
       for teacherId in activity.teachers
@@ -885,16 +886,35 @@ apiServer = ->
       for groupId in activity.groups
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
-      len = activity.locations.length
-      # create events
-      if len > 1
-        # distribute agents into locations for event
-        for i in [0..len-1] by 1
-          addEvent (agents[j] for j in [i..agents.length-1] by len),
-            activity.locations[i], activity.start, activity.subject
-      else
-        addEvent agents, activity.locations[0], activity.start, activity.subject
-      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
+
+      if true # agents.length > 0
+        len = activity.locations.length
+        # create events
+        if len > 1
+          # distribute agents into locations for event
+          for i in [0..len-1] by 1
+            addEvent (agents[j] for j in [i..agents.length-1] by len),
+              activity.locations[i], activity.start, activity.subject
+        else
+          addEvent agents, activity.locations[0], activity.start, activity.subject
+        addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
+
+      if activity.kind == "calendar"
+        calendar.push
+          type: activity.subject
+          start: activity.start
+          end: activity.end
+
+    behaviourApi =
+      addEvent: (o) ->
+        addEvent o.agents, o.location, o.time, o.description
+      addAgent: (agent) ->
+        agent.id = agent.id || uniqueId()
+        warn "missing agent kind #{agent.id}" if !agent.kind
+        warn "duplicate agent #{agent.id}" if data.agents[agent.id]
+        data.agents[agent.id] = agent
+
+    (require "./data/behaviour.js").randomAgents calendar, behaviourApi
 
     data.eventPos = 0 #{{{3
     data.agentNow = {}
@@ -911,7 +931,7 @@ apiServer = ->
   if config.test
     testResult = ""
     testLog = (args...)->
-      testResult += JSON.stringify([args...]) + "\n"
+      testResult += (JSON.stringify([args...]) + "\n").replace(/("id":"2015[^ ]*)[^"]*/, '"id":"some-id')
     testDone = ->
       fs.writeFileSync config.test.outfile, testResult if config.test.outfile
       process.exit()
