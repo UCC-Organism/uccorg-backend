@@ -869,6 +869,7 @@ apiServer = ->
         agent.id = id
 
     data.events = {} # {{{3
+
     addEvent = (agents, location, time, description) ->
       id = time + ' ' + uniqueId()
       data.events[id] =
@@ -877,6 +878,17 @@ apiServer = ->
         description: description
         time: time
         agents: agents
+
+    addEvents = (agents, locations, time, description) ->
+      len = locations.length
+      if len > 1
+        # distribute agents into locations for event
+        for i in [0..len-1] by 1
+          addEvent (agents[j] for j in [i..agents.length-1] by len),
+            locations[i], time, description
+      else
+        addEvent agents, activity.locations[0], activity.start, activity.subject
+
 
     calendar = []
     for _, activity of data.activities
@@ -887,17 +899,8 @@ apiServer = ->
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
 
-      if true # agents.length > 0
-        len = activity.locations.length
-        # create events
-        if len > 1
-          # distribute agents into locations for event
-          for i in [0..len-1] by 1
-            addEvent (agents[j] for j in [i..agents.length-1] by len),
-              activity.locations[i], activity.start, activity.subject
-        else
-          addEvent agents, activity.locations[0], activity.start, activity.subject
-        addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
+      addEvents agents, activity.locations, activity.start, activity.subject
+      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
 
       if activity.kind == "calendar"
         calendar.push
@@ -907,7 +910,10 @@ apiServer = ->
 
     behaviourApi =
       addEvent: (o) ->
-        addEvent o.agents, o.location, o.time, o.description
+        if Array.isArray o.location
+          addEvents o.agents, o.location, o.time, o.description
+        else
+          addEvent o.agents, o.location, o.time, o.description
       addAgent: (agent) ->
         agent.id = agent.id || uniqueId()
         warn "missing agent kind #{agent.id}" if !agent.kind
