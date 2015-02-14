@@ -11,6 +11,7 @@
     "express": "3.4.6",
     "faye": "1.0.1",
     "js-beautify": "^1.5.4",
+    "jshint": "^2.6.0",
     "mssql": "0.4.1",
     "platformenv": "*",
     "request": "2.30.0",

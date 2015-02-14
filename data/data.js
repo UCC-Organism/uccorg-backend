@@ -1,4 +1,4 @@
-var behaviour = {
+var config = {
     "activities": {
         "researchers": {
             "agents": "researcher",
@@ -193,9 +193,23 @@ var behaviour = {
     }
 };
 
-exports.calendarAgents = function(calendar, uccorg) {
+exports.calendarAgents = function(calendar, uccorg, data) {
     var id, i, o, researchers;
 
+    /*
+    for(var agentType in config.agents) {
+      var agentInfo = config.agents[agentType];
+      if(agentInfo.count) {
+        for(i=0;i<agentInfo.count;++i) {
+          id = agentType + i;
+          addAgent({
+            id: id,
+            kind: agentType
+          });
+        }
+      }
+    }
+    */
     researchers = [];
     for (i = 0; i < 100; ++i) {
         id = "researcher" + i;
