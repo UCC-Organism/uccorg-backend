@@ -920,7 +920,7 @@ apiServer = ->
         warn "duplicate agent #{agent.id}" if data.agents[agent.id]
         data.agents[agent.id] = agent
 
-    (require "./data/behaviour.js").randomAgents calendar, behaviourApi
+    (require "./data/data.js").calendarAgents calendar, behaviourApi, data
 
     data.eventPos = 0 #{{{3
     data.agentNow = {}
