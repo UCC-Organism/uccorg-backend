@@ -200,19 +200,19 @@ exports.calendarAgents = function(calendar, uccorg, data) {
     var id, i, o, researchers, activity;
     randomSeed = 0;
 
-    for(var agentType in config.agents) {
-      var agentInfo = config.agents[agentType];
-      if(agentInfo.count) {
-        var agentIds = agentNames(agentType, agentInfo.count);
-        for(i=0;i<agentIds.length;++i) {
-          uccorg.addAgent({
-            id: agentIds[i],
-            kind: agentType,
-            age: agentInfo.minAge + pseudoRandom() * (agentInfo.maxAge-agentInfo.minAge) | 0,
-            gender: (pseudoRandom() > agentInfo.genderBalance)?0:1
-          });
+    for (var agentType in config.agents) {
+        var agentInfo = config.agents[agentType];
+        if (agentInfo.count) {
+            var agentIds = agentNames(agentType, agentInfo.count);
+            for (i = 0; i < agentIds.length; ++i) {
+                uccorg.addAgent({
+                    id: agentIds[i],
+                    kind: agentType,
+                    age: agentInfo.minAge + pseudoRandom() * (agentInfo.maxAge - agentInfo.minAge) | 0,
+                    gender: (pseudoRandom() > agentInfo.genderBalance) ? 0 : 1
+                });
+            }
         }
-      }
     }
 
     for (i = 0; i < calendar.length; ++i) {
@@ -232,20 +232,17 @@ exports.calendarAgents = function(calendar, uccorg, data) {
         }
         console.log(o);
     }
-    for(var i = 0; i < 1000; ++i) {
-      console.log(pseudoRandom());
-    }
 };
 
 function agentNames(name, count) {
-  var result = [];
-  for(var i = 1; i <= count; ++i) {
-    result.push(name + i);
-  }
-  return result;
+    var result = [];
+    for (var i = 1; i <= count; ++i) {
+        result.push(name + i);
+    }
+    return result;
 }
 
 function pseudoRandom() {
-  randomSeed = 1103515245 * randomSeed + 12345 & 0x7fffffff;
-  return (randomSeed & 0x3fffffff) / 0x40000000;
+    randomSeed = 1103515245 * randomSeed + 12345 & 0x7fffffff;
+    return (randomSeed & 0x3fffffff) / 0x40000000;
 }
