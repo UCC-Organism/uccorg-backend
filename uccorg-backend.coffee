@@ -80,7 +80,9 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 7
-#   - assign agent to alternating locations, when event has several locations
+#   - handle several locations, by distributing agents into locations
+#   - creation of events and agents from calendar
+#   - configuration of calendar behaviour in data/data.js
 # - week 6
 #   - include warnings in status, and propagate warnings from windows server to api-server
 #   - bus/train events as uniform events instead of separate arrivals
