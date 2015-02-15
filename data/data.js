@@ -1,8 +1,7 @@
 var config = {
     "activities": {
         "researchers": {
-            "agents": "researcher",
-            "count": 10,
+            "agents": agentNames("researcher", 10),
             "location": ["B.103", "B.105", "B.104", "B.109", "A.104", "A.106"]
         },
     },
@@ -183,7 +182,10 @@ var config = {
     }],
     "agents": {
         "researcher": {
-            "count": 100
+            "count": 100,
+            "minAge": 20,
+            "maxAge": 60,
+            "genderBalance": 0.5
         },
         "janitor": {},
         "kitchen staff": {},
@@ -193,47 +195,57 @@ var config = {
     }
 };
 
+var randomSeed;
 exports.calendarAgents = function(calendar, uccorg, data) {
-    var id, i, o, researchers;
+    var id, i, o, researchers, activity;
+    randomSeed = 0;
 
-    /*
     for(var agentType in config.agents) {
       var agentInfo = config.agents[agentType];
       if(agentInfo.count) {
-        for(i=0;i<agentInfo.count;++i) {
-          id = agentType + i;
-          addAgent({
-            id: id,
-            kind: agentType
+        var agentIds = agentNames(agentType, agentInfo.count);
+        for(i=0;i<agentIds.length;++i) {
+          uccorg.addAgent({
+            id: agentIds[i],
+            kind: agentType,
+            age: agentInfo.minAge + pseudoRandom() * (agentInfo.maxAge-agentInfo.minAge) | 0,
+            gender: (pseudoRandom() > agentInfo.genderBalance)?0:1
           });
         }
       }
     }
-    */
-    researchers = [];
-    for (i = 0; i < 100; ++i) {
-        id = "researcher" + i;
-        uccorg.addAgent({
-            id: id,
-            kind: "researcher"
-        });
-        researchers.push(id);
-    }
 
     for (i = 0; i < calendar.length; ++i) {
         o = calendar[i];
-        if (o.type === "researchers") {
+        activity = config.activities[o.type];
+        if (activity) {
             uccorg.addEvent({
                 time: o.start,
-                agents: researchers,
-                location: "research facility",
-                description: "research"
+                agents: activity.agents,
+                location: activity.location,
+                description: o.type
             });
             uccorg.addEvent({
                 time: o.end,
-                agents: researchers
+                agents: activity.agents
             });
         }
         console.log(o);
     }
+    for(var i = 0; i < 1000; ++i) {
+      console.log(pseudoRandom());
+    }
 };
+
+function agentNames(name, count) {
+  var result = [];
+  for(var i = 1; i <= count; ++i) {
+    result.push(name + i);
+  }
+  return result;
+}
+
+function pseudoRandom() {
+  randomSeed = 1103515245 * randomSeed + 12345 & 0x7fffffff;
+  return (randomSeed & 0x3fffffff) / 0x40000000;
+}
