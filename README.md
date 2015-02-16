@@ -70,19 +70,29 @@ Data schema:
 - structured/random events for agents: 
   - agent types: researchers, kitchen staff, administrators, janitors, ..
   - lunch, toilet-breaks, illness-leave, ..
+- udkast til aftale om driftssupport
+- udkast til aftale om driftsovervågning
 - ambient data - `/timeofday` day cycle - grants, su, etc.
 - (marcin? mapping between ucc-organism room id's and schedule room name)
 - repeat with recent non-empty data, if empty data
 - update rest-test
 - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
-- include warnings in status
 - integration/test with frontend
 - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
-- bus/train events as events instead of separate arrivals
 - refactor + eliminate dead code
+- seems like data-processing status are not preserved across api-server reboots, check up on that
 
 ## Release Log
 ### January-April 2015
+- week 7
+  - handle several locations, by distributing agents into locations
+  - creation of events and agents from calendar
+  - configuration of calendar behaviour in data/data.js
+- week 6
+  - include warnings in status, and propagate warnings from windows server to api-server
+  - bus/train events as uniform events instead of separate arrivals
+  - contact UCC about SSMLDATA-server is down
+  - some refactoring / dead code elimination
 - week 5
   - webservice to get current state of agents and locations, replaces old `/now/`
   - events emitted are from the new uniform api
@@ -160,6 +170,8 @@ Data schema:
           mssql: "0.4.1"
           request: "2.30.0"
           rrule: "2.0.0"
+          "js-beautify": "1.5.4"
+          "jshint": "2.6.0"
     
 
 ## Dependencies
@@ -177,13 +189,14 @@ Data schema:
 
 ## Utility functions
 
-Unique ID
+### uniqueId
 
     uniqueId = do ->
       prevId = 0
       return -> prevId += 1
+    
 
-
+### getDateTime
 Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
 
 
@@ -239,6 +252,14 @@ escape unicode as ascii
       req.end()
     
 
+## status
+
+    status =
+      bootTime: getDateTime()
+      warnings: {}
+    warn = (msg) ->
+      status.warnings[msg] = getDateTime()
+
 # data preparation - processing/extract running on the SSMLDATA-server
 
     dataPreparationServer = ->
@@ -250,6 +271,7 @@ escape unicode as ascii
         
         if config.prepare.icalDump && fs.existsSync config.prepare.icalDump
           fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
+            warn "icalDump error" if err
             throw err if err
             handleIcal content
         else
@@ -257,6 +279,7 @@ escape unicode as ascii
             fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
             if err
               console.log 'Error getting calendar data', config.prepare.icalUrl
+              warn 'Error getting calendar data ' + config.prepare.icalUrl
               console.log err
               throw err
             handleIcal content
@@ -317,6 +340,7 @@ If needed extract code from old-backend-code.js
             result = JSON.parse fs.readFileSync config.prepare.webuntisDump
             return callback?(result)
           catch e
+            warn "error loading webunits dump"
             console.log "Loading webuntis dump:", e
       
         do ->
@@ -333,6 +357,7 @@ webuntis - function for calling the webuntis api
                 url: url
                 rejectUnauthorized: false
               }, (err, result, content) ->
+                warn "webuntis request error #{name}" if err
                 return cb err if err
                 cb null, JSON.parse content
     
@@ -362,6 +387,7 @@ extract data, download data needed from webuntis
               dataDone err, result
       
           extractData (err, data) ->
+            warn "extractData error" if err
             throw err if err
             if config.prepare.webuntisDump
               fs.writeFileSync config.prepare.webuntisDump, (JSON.stringify data, null, 2)
@@ -504,6 +530,7 @@ assume 21st century if it is before today.
         for obj in sqlserver.StuderendeHold[0]
           if !groups[obj.Holdnavn]
             console.log 'Data error: Hold missing for StuderendeHold', obj
+            warn 'Data error: Hold missing for StuderendeHold ' + obj.Holdnavn
 
 Dummy hold
 
@@ -566,6 +593,7 @@ to make sure they are available if needed needed by calendar events
           console.log dtstart.toISOString(), JSON.stringify event
           activity =
             id: "cal#{++calId}"
+            kind: "calendar"
             start: dtstart.toISOString()
             end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
             locations: event.LOCATION.split(",").map (s) -> s.trim()
@@ -593,6 +621,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
           else if t.slice(-1) == "Z"
             d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
           else
+            warn "timezone bug in calendar data " + t + " " + d
             console.log "timezone bug in calendar data", t, d
           d
     
@@ -620,11 +649,13 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
         getSqlServerData (data2) ->
           getCalendarData (data3) ->
             processData data1, data2, data3, (result) ->
+              result.status = status
               if config.prepare.dest.dump
                 fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
               sendUpdate result, (err, data) ->
                 if err
                   console.log 'sendUpdate error:', err
+                  warn 'sendUpdate error'
                 console.log "submitted to api-server"
                 process.exit 0
     
@@ -638,9 +669,6 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
         location: {}
         teacher: {}
       eventsByAgent = {}
-      events = []
-      eventPos = 0
-      state = {}
 
 ## Handle data
 ### Pushed to the server from UCC daily.
@@ -649,6 +677,9 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
         console.log "handling data update from ucc-server"
         fs.writeFile config.apiserver.cachefile, JSON.stringify(input), ->
           data = input
+          if input.status and input.status.warnings
+            for key, val of input.status.warnings
+              status.warnings[key] = "data " + val
           enrichData()
           console.log "data replaced with new data from ucc-server"
           done()
@@ -673,19 +704,6 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
             arr.sort (a, b) -> a.end.localeCompare b.end
     
 
-#### Table with `events` (activity start/end)
-
-activity start/stop - ordered by time, - used for emitting events
-
-        now = getDateTime()
-        events = []
-        eventPos = 0
-        for _,activity of data.activities
-          events.push "#{activity.start} start #{activity.id}" if activity.start > now
-          events.push "#{activity.end} end #{activity.id}" if activity.end > now
-        events.sort()
-    
-
 #### add agent+events
 
         addAgentEvents()
@@ -695,10 +713,14 @@ activity start/stop - ordered by time, - used for emitting events
 
       try
         data = JSON.parse fs.readFileSync config.apiserver.cachefile
+        if data.status && data.status.warnings
+          for key, val of data.status.warnings
+            status.warnings[key] = "data " + val
         process.nextTick enrichData
       catch e
         console.log "reading cached data:", e
         data = {}
+        warn "couldn't read cached data"
       
       
 
@@ -744,40 +766,21 @@ no need to tell the world what server software we are running, - security best p
     
       app.all "/status", (req, res) ->
         fs.stat config.apiserver.cachefile, (err, stat) ->
-    
-          res.json
-            organismTime: getDateTime()
-            lastDataUpdate: stat.mtime
-            eventDetails:
-              count: events.length
-              pos: eventPos
-              first: events[0]
-              next: events[eventPos + 1]
-              last: events[events.length - 1]
-            connections: clientCount
+          status.organismTime = getDateTime()
+          status.lastDataUpdate = stat.mtime
+          status.eventDetails =
+              count: data.eventList.length
+              pos: data.eventPos
+              first: data.eventList[0]
+              next: data.eventList[data.eventPos + 1]
+              last: data.eventList[data.eventList.length - 1]
+          status.connections = clientCount
+          res.json status
           res.end()
     
       app.all "/now/:kind/:id", (req, res) ->
         res.json (data[req.params.kind + "Now"] || {})[req.params.id] || {}
         res.end()
-
-##
-
-        arr = activitiesBy[req.params.kind][req.params.id]
-        result = { current: [] }
-        if arr
-          now = getDateTime()
-          idx = binSearchFn arr, (activity) -> activity.end.localeCompare now
-          result.prev = arr[idx-1]
-          while arr[idx] && arr[idx].start < now
-            result.current.push arr[idx]
-            ++idx
-          result.next = arr[idx]
-        res.json result
-        res.end()
-
-##
-
     
       app.all "/arrivals", (req, res) ->
         arrivals (result) ->
@@ -824,16 +827,17 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 
 #### Events and event emitter
 
+      emitEvent = (event) ->
+        data.events[event.id] = event if !data.events[event.id]
+        console.log getDateTime(), event.id, event.description, event.location
+        updateState event
+        bayeux.getClient().publish "/events", event
+    
       eventEmitter = ->
         now = getDateTime()
         while data.eventPos < data.eventList.length and data.eventList[data.eventPos] <= now
           event = data.events[data.eventList[data.eventPos]]
-          console.log now, event.id, event.description, event.location
-
-event[1] = data.activities[event[1]] || event[1]
-
-          updateState event.id
-          bayeux.getClient().publish "/events", event
+          emitEvent event
           ++data.eventPos
       setInterval eventEmitter, 100
       
@@ -870,6 +874,34 @@ event[1] = data.activities[event[1]] || event[1]
 ### Emit events
 
       lastArrivalEmit = undefined
+    
+      doArrival = (arrival) ->
+        agentId = arrival.name + " " + arrival.origin
+        agent = data.agents[agentId]
+        if !agent
+          agent = data.agents[agentId] =
+            id: agentId
+            kind: "transport"
+            name: arrival.name
+            origin: arrival.origin
+        location = data.locations[arrival.type]
+        if !location
+          location = data.locations[arrival.type] =
+            id: arrival.type
+            kind: "transport"
+        emitEvent
+          id: getDateTime() + agentId + " arrive"
+          time: getDateTime()
+          description: "transport arrival"
+          agents: [agent.id]
+          location: arrival.type
+        sleep 2 + Math.random() * 60, ->
+          emitEvent
+            id: getDateTime() + agentId + " leave"
+            time: getDateTime()
+            description: "transport leaving"
+            agents: [agent.id]
+    
       arrivalEmitter = ->
         now = getDateTime().slice(0,-6) + "00"
     
@@ -881,7 +913,7 @@ event[1] = data.activities[event[1]] || event[1]
             return setTimeout arrivalEmitter, 60*60*1000
           for arrival in arrs
             if arrival.date == now
-              bayeux.getClient().publish "/arrival", arrival
+              doArrival arrival
           setTimeout arrivalEmitter, 30000
     
         if !arrivalCache.length || now >= arrivalCache[arrivalCache.length - 1].date
@@ -889,13 +921,12 @@ event[1] = data.activities[event[1]] || event[1]
         else
           doEmit arrivalCache
     
-      arrivalEmitter()
+      arrivalEmitter() if not config.test
     
 
 ## update global state (agents/events)
 
-      updateState = (eventId) ->
-        event = data.events[eventId]
+      updateState = (event) ->
         for agent in event.agents
           prevLocation = (data.agentNow[agent] || {}).location
           data.locationNow[prevLocation].agents = data.locationNow[prevLocation].agents.filter ( (a) -> a != agent) if prevLocation
@@ -935,6 +966,7 @@ event[1] = data.activities[event[1]] || event[1]
             data.agents[id] = agent = data.agents[id] || {}
             if agent.programme && group.programme != agent.programme
               console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
+              warn "warning: student in several programmes, ignoring " + id  + " " + group.programme + " " + agent.programme
             agent.kind = "student"
             agent.programme = group.programme
             agent.groups ?= []
@@ -945,6 +977,7 @@ event[1] = data.activities[event[1]] || event[1]
             agent.id = id
     
         data.events = {} # {{{3
+    
         addEvent = (agents, location, time, description) ->
           id = time + ' ' + uniqueId()
           data.events[id] =
@@ -954,6 +987,20 @@ event[1] = data.activities[event[1]] || event[1]
             time: time
             agents: agents
     
+        addEvents = (agents, locations, time, description) ->
+          len = locations.length
+          if len > 1
+
+distribute agents into locations for event
+
+            for i in [0..len-1] by 1
+              addEvent (agents[j] for j in [i..agents.length-1] by len),
+                locations[i], time, description
+          else
+            addEvent agents, activity.locations[0], activity.start, activity.subject
+    
+    
+        calendar = []
         for _, activity of data.activities
           agents = []
           for teacherId in activity.teachers
@@ -961,38 +1008,29 @@ event[1] = data.activities[event[1]] || event[1]
           for groupId in activity.groups
             for student in data.groups[groupId].students || []
               agents.push "student" + student.id
-
-TODO handle several locations per event
-
-          addEvent agents, activity.locations[0], activity.start, activity.subject
+    
+          addEvents agents, activity.locations, activity.start, activity.subject
           addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
-
-##
-
-        for id in events
-          data.events[id] = event = {}
-          [time, op, activityId] = id.split " "
-          activity = data.activities[activityId]
-          event.id = id
     
-          if op == "start"
-            event.locations = activity.locations
-            event.description = activity.subject
-            event.time = time
-          else
-            event.description = "end of activity"
-            event.time = (new Date(new Date(time.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19)
-            event.locations = []
+          if activity.kind == "calendar"
+            calendar.push
+              type: activity.subject
+              start: activity.start
+              end: activity.end
     
-          event.agents = []
-          for teacherId in activity.teachers
-            event.agents.push "teacher" + teacherId
-          for groupId in activity.groups
-            for student in data.groups[groupId].students || []
-              event.agents.push "student" + student.id
-
-##
-
+        behaviourApi =
+          addEvent: (o) ->
+            if Array.isArray o.location
+              addEvents o.agents, o.location, o.time, o.description
+            else
+              addEvent o.agents, o.location, o.time, o.description
+          addAgent: (agent) ->
+            agent.id = agent.id || uniqueId()
+            warn "missing agent kind #{agent.id}" if !agent.kind
+            warn "duplicate agent #{agent.id}" if data.agents[agent.id]
+            data.agents[agent.id] = agent
+    
+        (require "./data/data.js").calendarAgents calendar, behaviourApi, data
     
         data.eventPos = 0 #{{{3
         data.agentNow = {}
@@ -1001,21 +1039,8 @@ TODO handle several locations per event
         data.eventList.sort()
     
         while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
-          updateState(data.eventList[data.eventPos])
+          updateState(data.events[data.eventList[data.eventPos]])
           data.eventPos += 1
-    
-
-### ## eventsByAgent = {} #
-
-        allEvents = (event for _, event of data.events)
-        allEvents.sort((a,b) -> if a.time < b.time then -1 else 1)
-        for event in allEvents
-          for agent in event.agents
-            eventsByAgent[agent] = [] if !eventsByAgent[agent]
-            eventsByAgent[agent].push event
-
-##
-
     
 
 ## Test
@@ -1024,7 +1049,7 @@ TODO handle several locations per event
       if config.test
         testResult = ""
         testLog = (args...)->
-          testResult += JSON.stringify([args...]) + "\n"
+          testResult += (JSON.stringify([args...]) + "\n").replace(/("id":"2015[^ ]*)[^"]*/, '"id":"some-id')
         testDone = ->
           fs.writeFileSync config.test.outfile, testResult if config.test.outfile
           process.exit()

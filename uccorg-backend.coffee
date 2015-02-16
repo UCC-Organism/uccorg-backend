@@ -76,6 +76,7 @@
 # - integration/test with frontend
 # - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 # - refactor + eliminate dead code
+# - seems like data-processing status are not preserved across api-server reboots, check up on that
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
@@ -164,6 +165,8 @@ exports.about =
       mssql: "0.4.1"
       request: "2.30.0"
       rrule: "2.0.0"
+      "js-beautify": "1.5.4"
+      "jshint": "2.6.0"
 
 # {{{2 Dependencies
 

@@ -1,30 +1,30 @@
 {
-  "name": "uccorg-backend",
-  "version": "0.0.18",
-  "scripts": {
-    "test": "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected && js-beautify -r data/data.js && jshint data/data.js",
-    "start": "node ./node_modules/solapp/solapp.js start"
-  },
-  "dependencies": {
-    "async": "0.2.9",
-    "coffee-script": "1.6.3",
-    "express": "3.4.6",
-    "faye": "1.0.1",
-    "js-beautify": "^1.5.4",
-    "jshint": "^2.6.0",
-    "mssql": "0.4.1",
-    "platformenv": "*",
-    "request": "2.30.0",
-    "rrule": "2.0.0",
-    "solapp": "*"
-  },
-  "fullname": "UCC Organism Backend",
-  "description": "Backend for the UCC-organism",
-  "keywords": [],
-  "author": "Rasmus Erik Voel Jensen",
-  "main": "uccorg-backend.js",
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/UCC-Organism/uccorg-backend.git"
-  }
+    "name": "uccorg-backend",
+    "version": "0.0.18",
+    "scripts": {
+        "test": "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected",
+        "start": "node ./node_modules/solapp/solapp.js start"
+    },
+    "dependencies": {
+        "async": "0.2.9",
+        "coffee-script": "1.6.3",
+        "express": "3.4.6",
+        "faye": "1.0.1",
+        "mssql": "0.4.1",
+        "request": "2.30.0",
+        "rrule": "2.0.0",
+        "js-beautify": "1.5.4",
+        "jshint": "2.6.0",
+        "solapp": "*",
+        "platformenv": "*"
+    },
+    "fullname": "UCC Organism Backend",
+    "description": "Backend for the UCC-organism",
+    "keywords": [],
+    "author": "Rasmus Erik Voel Jensen",
+    "main": "uccorg-backend.js",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/UCC-Organism/uccorg-backend.git"
+    }
 }
