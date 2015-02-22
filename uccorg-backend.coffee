@@ -70,16 +70,16 @@
 # - udkast til aftale om driftsovervågning
 # - ambient data - `/timeofday` day cycle - grants, su, etc.
 # - (marcin? mapping between ucc-organism room id's and schedule room name)
-# - repeat with recent non-empty data, if empty data
 # - update rest-test
 # - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
 # - integration/test with frontend
 # - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 # - refactor + eliminate dead code
-# - seems like data-processing status are not preserved across api-server reboots, check up on that
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 8
+#   - repeat with old data, if we haven't gotten any updates from the data server recently
 # - week 7
 #   - handle several locations, by distributing agents into locations
 #   - creation of events and agents from calendar
@@ -189,7 +189,8 @@ uniqueId = do ->
 # {{{3 getDateTime
 # Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value if running test/dev)
 #
-getDateTime = -> (new Date(Date.now() - (new Date).getTimezoneOffset() * 60 * 1000)).toISOString().slice(0,-1)
+timeoffset = 0
+getDateTime = -> (new Date(Date.now() - (new Date).getTimezoneOffset() * 60 * 1000 + timeoffset)).toISOString().slice(0,-1)
 #
 # more comfortable syntax for set timeout: `sleep #seconds, -> ...`
 sleep = (t, fn) -> setTimeout fn, t*1000
@@ -598,6 +599,13 @@ apiServer = ->
     location: {}
     teacher: {}
   eventsByAgent = {}
+
+  #{{{2 calculate time offset once per hour, rewind clock a week, if more than eight days since last data update
+  setInterval (->
+    lastUpdate = new Date(status.lastDataUpdate)
+    while 8 < (new Date() - lastUpdate + timeoffset) / 1000 / 60 / 60 / 24
+      timeoffset -= 7 * 24 * 60 * 60 * 1000
+  ), 1000 * 60 * 60
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
@@ -675,7 +683,7 @@ apiServer = ->
     event: "events"
     agent: "agents"
 
-  app.all "/status", (req, res) ->
+  updateStatus = (cb) ->
     fs.stat config.apiserver.cachefile, (err, stat) ->
       status.organismTime = getDateTime()
       status.lastDataUpdate = stat.mtime
@@ -686,7 +694,12 @@ apiServer = ->
           next: data.eventList[data.eventPos + 1]
           last: data.eventList[data.eventList.length - 1]
       status.connections = clientCount
-      res.json status
+      cb? status
+  updateStatus()
+
+  app.all "/status", (req, res) ->
+    updateStatus (result) ->
+      res.json result
       res.end()
 
   app.all "/now/:kind/:id", (req, res) ->
