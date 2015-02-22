@@ -601,11 +601,12 @@ apiServer = ->
   eventsByAgent = {}
 
   #{{{2 calculate time offset once per hour, rewind clock a week, if more than eight days since last data update
-  setInterval (->
+  updateTimeOffset = ->
     lastUpdate = new Date(status.lastDataUpdate)
-    while 8 < (new Date() - lastUpdate + timeoffset) / 1000 / 60 / 60 / 24
+    if 8 < (new Date() - lastUpdate + timeoffset) / 1000 / 60 / 60 / 24
       timeoffset -= 7 * 24 * 60 * 60 * 1000
-  ), 1000 * 60 * 60
+      addAgentEvents()
+  setInterval updateTimeOffset, 1000 * 60
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
   handleUCCData = (input, done) ->
