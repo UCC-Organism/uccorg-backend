@@ -274,75 +274,6 @@ getCalendarData = (done) ->
       events.push event
     done events
 
-#{{{2 Handle input from iCal
-calendarData = (done) ->
-  icaldata = []
-  return done() if ! config.icalUrl
-  
-  request config.icalUrl, (err, result, ical) ->
-    if err
-      warn 'Error getting calendar data ' + config.icalUrl
-      ical = fs.readFileSync "cached-calendar.ical"
-      throw err
-    else
-      fs.writeFile "cached-calendar.ical", ical
-
-    icaldata = []
-    !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
-      props = e.split(/\r\n/).filter((x) -> x != "")
-      event = {}
-      for prop in props
-        pos = prop.indexOf ":"
-        pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
-        event[prop.slice(0,pos)] = prop.slice(pos+1)
-      icaldata.push event
-
-    calId = 0
-    result =
-      activities: {}
-    startTime = getDateTime()
-    endTime = +(new Date(getDateTime())) + 7 * 24 * 60 * 60 * 1000
-    console.log startTime, endTime
-    result.calendarEvents = []
-
-    handleEvent = (dtstart, event) ->
-      console.log dtstart.toISOString(), JSON.stringify event
-      activity =
-        id: "cal#{++calId}"
-        kind: "calendar"
-        start: dtstart.toISOString()
-        end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
-        subject: event.SUMMARY
-      result.activities[activity.id] = activity
-  
-    iCalDate = (t) ->
-      d = t.replace /.*:/, ""
-      # WARNING: here we assume that we are in Europe/Copenhagen-timezone
-      d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
-      d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-      if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
-        d
-      else if t.slice(-1) == "Z"
-        d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-      else
-        warn "timezone bug in calendar data " + t + " " + d
-        console.log "timezone bug in calendar data", t, d
-      d
-  
-    if icaldata then for event in icaldata
-      if event.RRULE
-        RRule = (require "rrule").RRule
-        opts = RRule.parseString event.RRULE
-        opts.dtstart = iCalDate event.DTSTART
-        rule = new RRule(opts)
-        occurences = rule.between(new Date(startTime), new Date(endTime), true)
-        for occurence in occurences
-          handleEvent occurence, event
-      else if startTime <= iCalDate(event.DTSTART).toISOString() < endTime
-        handleEvent iCalDate(event.DTSTART), event
-
-    done result
-  
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
   #{{{2 SQL Server data source
@@ -674,6 +605,74 @@ apiServer = ->
     teacher: {}
   eventsByAgent = {}
 
+  #{{{2 Calendar data
+  calendarData = (done) ->
+    icaldata = []
+    return done() if ! config.icalUrl
+    
+    request config.icalUrl, (err, result, ical) ->
+      if err
+        warn 'Error getting calendar data ' + config.icalUrl
+        ical = fs.readFileSync "cached-calendar.ical"
+        throw err
+      else
+        fs.writeFile "cached-calendar.ical", ical
+  
+      icaldata = []
+      !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
+        props = e.split(/\r\n/).filter((x) -> x != "")
+        event = {}
+        for prop in props
+          pos = prop.indexOf ":"
+          pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
+          event[prop.slice(0,pos)] = prop.slice(pos+1)
+        icaldata.push event
+  
+      calId = 0
+      result = []
+      startTime = getDateTime()
+      endTime = +(new Date(getDateTime())) + 7 * 24 * 60 * 60 * 1000
+      console.log startTime, endTime
+      result.calendarEvents = []
+  
+      handleEvent = (dtstart, event) ->
+        console.log dtstart.toISOString(), JSON.stringify event
+        activity =
+          id: "cal#{++calId}"
+          start: dtstart.toISOString()
+          end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
+          type: event.SUMMARY
+        result.push activity
+    
+      iCalDate = (t) ->
+        d = t.replace /.*:/, ""
+        # WARNING: here we assume that we are in Europe/Copenhagen-timezone
+        d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
+        d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+        if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
+          d
+        else if t.slice(-1) == "Z"
+          d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+        else
+          warn "timezone bug in calendar data " + t + " " + d
+          console.log "timezone bug in calendar data", t, d
+        d
+    
+      if icaldata then for event in icaldata
+        if event.RRULE
+          RRule = (require "rrule").RRule
+          opts = RRule.parseString event.RRULE
+          opts.dtstart = iCalDate event.DTSTART
+          rule = new RRule(opts)
+          occurences = rule.between(new Date(startTime), new Date(endTime), true)
+          for occurence in occurences
+            handleEvent occurence, event
+        else if startTime <= iCalDate(event.DTSTART).toISOString() < endTime
+          handleEvent iCalDate(event.DTSTART), event
+  
+      data.calendar = result if data?
+      done result
+    
   #{{{2 calculate time offset once per hour, rewind clock a week, if more than eight days since last data update
   updateTimeOffset = ->
     lastUpdate = new Date(status.lastDataUpdate)
@@ -992,14 +991,15 @@ apiServer = ->
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
 
-      addEvents agents, activity.locations, activity.start, activity.subject
-      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
-
       if activity.kind == "calendar"
         calendar.push
           type: activity.subject
           start: activity.start
           end: activity.end
+
+
+      addEvents agents, activity.locations, activity.start, activity.subject
+      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
 
     behaviourApi =
       addEvent: (o) ->
@@ -1013,6 +1013,7 @@ apiServer = ->
         warn "duplicate agent #{agent.id}" if data.agents[agent.id]
         data.agents[agent.id] = agent
 
+    (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
     (require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
 
     data.eventPos = 0 #{{{3
@@ -1025,10 +1026,7 @@ apiServer = ->
       updateState(data.events[data.eventList[data.eventPos]])
       data.eventPos += 1
 
-  #{{{2 experiments
-  console.log "config", config
-  calendarData (data) ->
-    console.log "calendarData", data
+  #calendarData addAgentEvents #{{{2
 
   #{{{2 Test
   #

@@ -5,7 +5,7 @@
   },
   "test": {
     "outfile": "test.out",
-    "startDate": "2015-02-11T07:20:00",
+    "startDate": "2015-02-11T03:00:00",
     "endDate": "2015-02-11T18:20:00",
     "xTime": 8000,
     "DISABLED restTestTime": "2015-01-22T09:35:00"
