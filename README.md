@@ -67,6 +67,7 @@ Data schema:
 
 ## Back Log - January-April 2015
 
+- api-server read calendar data, for easier development
 - structured/random events for agents: 
   - agent types: researchers, kitchen staff, administrators, janitors, ..
   - lunch, toilet-breaks, illness-leave, ..
