@@ -89,7 +89,7 @@ Data schema:
 - week 7
   - handle several locations, by distributing agents into locations
   - creation of events and agents from calendar
-  - configuration of calendar behaviour in data/data.js
+  - configuration of calendar behaviour in data/behaviour.js
 - week 6
   - include warnings in status, and propagate warnings from windows server to api-server
   - bus/train events as uniform events instead of separate arrivals
@@ -1048,7 +1048,7 @@ distribute agents into locations for event
             warn "duplicate agent #{agent.id}" if data.agents[agent.id]
             data.agents[agent.id] = agent
     
-        (require "./data/data.js").calendarAgents calendar, behaviourApi, data
+        (require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
     
         data.eventPos = 0 #{{{3
         data.agentNow = {}

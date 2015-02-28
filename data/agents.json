@@ -1,0 +1,13 @@
+{
+  "researcher": {
+    "count": 100,
+    "minAge": 20,
+    "maxAge": 60,
+    "genderBalance": 0.5
+  },
+  "janitor": {},
+  "kitchen staff": {},
+  "teacher": {},
+  "student": {},
+  "transport": {}
+}
