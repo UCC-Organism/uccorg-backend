@@ -63,6 +63,8 @@
 #
 # {{{2 Back Log - January-April 2015
 #
+# - opdel data/behavior.js i locations.json, agents.json, calendar.json, og behaviour.js
+# - api-server read calendar data for easier development
 # - structured/random events for agents: 
 #   - agent types: researchers, kitchen staff, administrators, janitors, ..
 #   - lunch, toilet-breaks, illness-leave, ..
