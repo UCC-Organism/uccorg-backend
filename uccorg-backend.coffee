@@ -274,6 +274,53 @@ getCalendarData = (done) ->
       events.push event
     done events
 
+#{{{2 Handle input from iCal
+processCalendarData = (icaldata) ->
+  calId = 0
+  result =
+    activities: {}
+  startTime = getDateTime()
+  endTime = +(new Date(getDateTime())) + 7 * 24 * 60 * 60 * 1000
+  console.log startTime, endTime
+
+  result.calendarEvents = []
+  handleEvent = (dtstart, event) ->
+    console.log dtstart.toISOString(), JSON.stringify event
+    activity =
+      id: "cal#{++calId}"
+      kind: "calendar"
+      start: dtstart.toISOString()
+      end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
+      subject: event.SUMMARY
+    result.activities[activity.id] = activity
+
+  iCalDate = (t) ->
+    d = t.replace /.*:/, ""
+    # WARNING: here we assume that we are in Europe/Copenhagen-timezone
+    d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
+    d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+    if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
+      d
+    else if t.slice(-1) == "Z"
+      d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+    else
+      warn "timezone bug in calendar data " + t + " " + d
+      console.log "timezone bug in calendar data", t, d
+    d
+
+  if icaldata then for event in icaldata
+    if event.RRULE
+      RRule = (require "rrule").RRule
+      opts = RRule.parseString event.RRULE
+      opts.dtstart = iCalDate event.DTSTART
+      rule = new RRule(opts)
+      occurences = rule.between(new Date(startTime), new Date(endTime), true)
+      for occurence in occurences
+        handleEvent occurence, event
+    else if startTime <= iCalDate(event.DTSTART).toISOString() < endTime
+      handleEvent iCalDate(event.DTSTART), event
+  result
+
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
   #{{{2 SQL Server data source
@@ -960,6 +1007,7 @@ apiServer = ->
   console.log "config", config
   getCalendarData (data) ->
     console.log "getCalendarData", data
+    console.log "process calendar data", processCalendarData (data)
   #{{{2 Test
   #
   if config.test
