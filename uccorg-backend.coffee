@@ -241,38 +241,41 @@ status =
   warnings: {}
 warn = (msg) ->
   status.warnings[msg] = getDateTime()
+#{{{1 calendar
+#{{{2 getCalendarData
+getCalendarData = (done) ->
+  config.icalUrl ?= config.prepare?.icalUrl
+  return done() if ! config.icalUrl
+  
+  if config.prepare?.icalDump && fs.existsSync config.prepare?.icalDump
+    fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
+      warn "icalDump error" if err
+      throw err if err
+      handleIcal content
+  else
+    request config.icalUrl, (err, result, content) ->
+      fs.writeFile config.prepare.icalDump, content if config.prepare?.icalDump
+      if err
+        console.log 'Error getting calendar data', config.icalUrl
+        warn 'Error getting calendar data ' + config.icalUrl
+        console.log err
+        throw err
+      handleIcal content
+
+  handleIcal = (ical)->
+    events = []
+    !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
+      props = e.split(/\r\n/).filter((x) -> x != "")
+      event = {}
+      for prop in props
+        pos = prop.indexOf ":"
+        pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
+        event[prop.slice(0,pos)] = prop.slice(pos+1)
+      events.push event
+    done events
+
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
-  #{{{2 getCalendarData
-  getCalendarData = (done) ->
-    return done() if ! config?.prepare?.icalUrl
-    
-    if config.prepare.icalDump && fs.existsSync config.prepare.icalDump
-      fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
-        warn "icalDump error" if err
-        throw err if err
-        handleIcal content
-    else
-      request config.prepare.icalUrl, (err, result, content) ->
-        fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
-        if err
-          console.log 'Error getting calendar data', config.prepare.icalUrl
-          warn 'Error getting calendar data ' + config.prepare.icalUrl
-          console.log err
-          throw err
-        handleIcal content
-
-    handleIcal = (ical)->
-      events = []
-      !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
-        props = e.split(/\r\n/).filter((x) -> x != "")
-        event = {}
-        for prop in props
-          pos = prop.indexOf ":"
-          pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
-          event[prop.slice(0,pos)] = prop.slice(pos+1)
-        events.push event
-      done events
   #{{{2 SQL Server data source
   getSqlServerData = (done) ->
     if config.prepare.mssqlDump
@@ -953,6 +956,10 @@ apiServer = ->
       updateState(data.events[data.eventList[data.eventPos]])
       data.eventPos += 1
 
+  #{{{2 experiments
+  console.log "config", config
+  getCalendarData (data) ->
+    console.log "getCalendarData", data
   #{{{2 Test
   #
   if config.test
