@@ -605,7 +605,7 @@ apiServer = ->
     teacher: {}
   eventsByAgent = {}
 
-  #{{{2 Calendar data
+  #{{{2 calendarData
   calendarData = (done) ->
     icaldata = []
     return done() if ! config.icalUrl
@@ -678,7 +678,7 @@ apiServer = ->
     lastUpdate = new Date(status.lastDataUpdate)
     if 8 < (new Date() - lastUpdate + timeoffset) / 1000 / 60 / 60 / 24
       timeoffset -= 7 * 24 * 60 * 60 * 1000
-      addAgentEvents()
+      enrichData()
   setInterval updateTimeOffset, 1000 * 60
   #{{{2 Handle data
   #{{{3 Pushed to the server from UCC daily. 
@@ -711,7 +711,107 @@ apiServer = ->
         arr.sort (a, b) -> a.end.localeCompare b.end
 
     #{{{4 add agent+events
-    addAgentEvents()
+
+  #{{{2 agent/event data structure
+    data.agents = {} #{{{3
+    for _, teacher of data.teachers
+      id = "teacher" + teacher.id
+      data.agents[id] = agent = {}
+      agent.kind = "teacher"
+      agent.gender = teacher.gender
+      agent.programme = teacher.programmeDesc
+      agent.id = id
+
+    data.agents.JamesBond =
+      kind: "yes"
+      gender: 1
+      license: "kill -9"
+      id: "007"
+      description: "undercover testagent"
+
+    for groupId, group of data.groups
+      continue if not group.students
+      for student in group.students
+        id = "student" + student.id
+        data.agents[id] = agent = data.agents[id] || {}
+        if agent.programme && group.programme != agent.programme
+          console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
+          warn "warning: student in several programmes, ignoring " + id  + " " + group.programme + " " + agent.programme
+        agent.kind = "student"
+        agent.programme = group.programme
+        agent.groups ?= []
+        agent.groups.push groupId
+        agent.age = student.age
+        agent.gender = student.gender
+        agent.end = student.end
+        agent.id = id
+
+    data.events = {} # {{{3
+
+    addEvent = (agents, location, time, description) ->
+      id = time + ' ' + uniqueId()
+      data.events[id] =
+        id: id
+        location: location || undefined
+        description: description
+        time: time
+        agents: agents
+
+    addEvents = (agents, locations, time, description) ->
+      len = locations.length
+      if len > 1
+        # distribute agents into locations for event
+        for i in [0..len-1] by 1
+          addEvent (agents[j] for j in [i..agents.length-1] by len),
+            locations[i], time, description
+      else
+        addEvent agents, activity.locations[0], activity.start, activity.subject
+
+
+    calendar = []
+    for _, activity of data.activities
+      agents = []
+      for teacherId in activity.teachers
+        agents.push "teacher" + teacherId
+      for groupId in activity.groups
+        for student in data.groups[groupId].students || []
+          agents.push "student" + student.id
+
+      if activity.kind == "calendar"
+        calendar.push
+          type: activity.subject
+          start: activity.start
+          end: activity.end
+
+
+      addEvents agents, activity.locations, activity.start, activity.subject
+      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
+
+    behaviourApi =
+      addEvent: (o) ->
+        if Array.isArray o.location
+          addEvents o.agents, o.location, o.time, o.description
+        else
+          addEvent o.agents, o.location, o.time, o.description
+      addAgent: (agent) ->
+        agent.id = agent.id || uniqueId()
+        warn "missing agent kind #{agent.id}" if !agent.kind
+        warn "duplicate agent #{agent.id}" if data.agents[agent.id]
+        data.agents[agent.id] = agent
+
+    (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
+    (require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
+
+    data.eventPos = 0 #{{{3
+    data.agentNow = {}
+    data.locationNow = {}
+    data.eventList = Object.keys data.events
+    data.eventList.sort()
+
+    while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
+      updateState(data.events[data.eventList[data.eventPos]])
+      data.eventPos += 1
+
   
   #{{{3 read cached data
   try
@@ -925,108 +1025,7 @@ apiServer = ->
       data.agentNow[agent].location = location if location
       data.agentNow[agent].activity = event.description if event.description
 
-  #{{{2 agent/event data structure
-  addAgentEvents = ->
-    data.agents = {} #{{{3
-    for _, teacher of data.teachers
-      id = "teacher" + teacher.id
-      data.agents[id] = agent = {}
-      agent.kind = "teacher"
-      agent.gender = teacher.gender
-      agent.programme = teacher.programmeDesc
-      agent.id = id
-
-    data.agents.JamesBond =
-      kind: "yes"
-      gender: 1
-      license: "kill -9"
-      id: "007"
-      description: "undercover testagent"
-
-    for groupId, group of data.groups
-      continue if not group.students
-      for student in group.students
-        id = "student" + student.id
-        data.agents[id] = agent = data.agents[id] || {}
-        if agent.programme && group.programme != agent.programme
-          console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
-          warn "warning: student in several programmes, ignoring " + id  + " " + group.programme + " " + agent.programme
-        agent.kind = "student"
-        agent.programme = group.programme
-        agent.groups ?= []
-        agent.groups.push groupId
-        agent.age = student.age
-        agent.gender = student.gender
-        agent.end = student.end
-        agent.id = id
-
-    data.events = {} # {{{3
-
-    addEvent = (agents, location, time, description) ->
-      id = time + ' ' + uniqueId()
-      data.events[id] =
-        id: id
-        location: location || undefined
-        description: description
-        time: time
-        agents: agents
-
-    addEvents = (agents, locations, time, description) ->
-      len = locations.length
-      if len > 1
-        # distribute agents into locations for event
-        for i in [0..len-1] by 1
-          addEvent (agents[j] for j in [i..agents.length-1] by len),
-            locations[i], time, description
-      else
-        addEvent agents, activity.locations[0], activity.start, activity.subject
-
-
-    calendar = []
-    for _, activity of data.activities
-      agents = []
-      for teacherId in activity.teachers
-        agents.push "teacher" + teacherId
-      for groupId in activity.groups
-        for student in data.groups[groupId].students || []
-          agents.push "student" + student.id
-
-      if activity.kind == "calendar"
-        calendar.push
-          type: activity.subject
-          start: activity.start
-          end: activity.end
-
-
-      addEvents agents, activity.locations, activity.start, activity.subject
-      addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
-
-    behaviourApi =
-      addEvent: (o) ->
-        if Array.isArray o.location
-          addEvents o.agents, o.location, o.time, o.description
-        else
-          addEvent o.agents, o.location, o.time, o.description
-      addAgent: (agent) ->
-        agent.id = agent.id || uniqueId()
-        warn "missing agent kind #{agent.id}" if !agent.kind
-        warn "duplicate agent #{agent.id}" if data.agents[agent.id]
-        data.agents[agent.id] = agent
-
-    (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
-    (require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
-
-    data.eventPos = 0 #{{{3
-    data.agentNow = {}
-    data.locationNow = {}
-    data.eventList = Object.keys data.events
-    data.eventList.sort()
-
-    while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
-      updateState(data.events[data.eventList[data.eventPos]])
-      data.eventPos += 1
-
-  #calendarData addAgentEvents #{{{2
+  #calendarData enrichData #{{{2
 
   #{{{2 Test
   #
