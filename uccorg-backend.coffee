@@ -183,6 +183,13 @@ request = require "request"
 
 # {{{2 Utility functions
 #
+# {{{3 djb2-hash
+hash = (str) ->
+  result = 5381
+  for i in [1..str.length-1]
+    result = 33 * result + str.charCodeAt(i) &0x7fffffff
+  result
+
 # {{{3 uniqueId
 uniqueId = do ->
   prevId = 0
@@ -749,7 +756,7 @@ apiServer = ->
     data.events = {} # {{{3
 
     addEvent = (agents, location, time, description) ->
-      id = time + ' ' + uniqueId()
+      id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
       data.events[id] =
         id: id
         location: location || undefined
