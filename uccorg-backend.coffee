@@ -639,11 +639,9 @@ apiServer = ->
       result = []
       startTime = getDateTime()
       endTime = +(new Date(getDateTime())) + 7 * 24 * 60 * 60 * 1000
-      console.log startTime, endTime
       result.calendarEvents = []
   
       handleEvent = (dtstart, event) ->
-        console.log dtstart.toISOString(), JSON.stringify event
         activity =
           id: "cal#{++calId}"
           start: dtstart.toISOString()
@@ -775,7 +773,7 @@ apiServer = ->
         addEvent agents, activity.locations[0], activity.start, activity.subject
 
 
-    calendar = []
+    #calendar = []
     for _, activity of data.activities
       agents = []
       for teacherId in activity.teachers
@@ -784,11 +782,13 @@ apiServer = ->
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
 
+          ###
       if activity.kind == "calendar"
         calendar.push
           type: activity.subject
           start: activity.start
           end: activity.end
+          ###
 
 
       addEvents agents, activity.locations, activity.start, activity.subject
@@ -807,7 +807,7 @@ apiServer = ->
         data.agents[agent.id] = agent
 
     (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
-    (require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
+    #(require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
 
     data.eventPos = 0 #{{{3
     data.agentNow = {}
@@ -1032,7 +1032,7 @@ apiServer = ->
       data.agentNow[agent].location = location if location
       data.agentNow[agent].activity = event.description if event.description
 
-  #calendarData enrichData #{{{2
+  calendarData enrichData #{{{2
 
   #{{{2 Test
   #
