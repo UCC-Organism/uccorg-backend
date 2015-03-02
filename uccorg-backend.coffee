@@ -773,7 +773,6 @@ apiServer = ->
         addEvent agents, activity.locations[0], activity.start, activity.subject
 
 
-    #calendar = []
     for _, activity of data.activities
       agents = []
       for teacherId in activity.teachers
@@ -781,15 +780,6 @@ apiServer = ->
       for groupId in activity.groups
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
-
-          ###
-      if activity.kind == "calendar"
-        calendar.push
-          type: activity.subject
-          start: activity.start
-          end: activity.end
-          ###
-
 
       addEvents agents, activity.locations, activity.start, activity.subject
       addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
@@ -807,7 +797,6 @@ apiServer = ->
         data.agents[agent.id] = agent
 
     (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
-    #(require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
 
     data.eventPos = 0 #{{{3
     data.agentNow = {}
