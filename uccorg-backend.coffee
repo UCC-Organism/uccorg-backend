@@ -63,8 +63,6 @@
 #
 # {{{2 Back Log - January-April 2015
 #
-# - opdel data/behavior.js i locations.json, agents.json, calendar.json, og behaviour.js
-# - api-server read calendar data for easier development
 # - structured/random events for agents: 
 #   - agent types: researchers, kitchen staff, administrators, janitors, ..
 #   - lunch, toilet-breaks, illness-leave, ..
@@ -77,9 +75,16 @@
 # - integration/test with frontend
 # - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 # - refactor + eliminate dead code
+# - support for rebooting the API-server remotely
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 10
+#   - calendar data retrieval in API-server
+#   - internal: preserve order of event-ids using hash function, to avoid test error due to changing order of events at same time.
+# - week 9
+#   - change structure of configuration files in data/ to make them easier to edit: data/behavior.js split up into locations.json, agents.json, calendar.js, og behaviour.js
+#   - begun moving calendar-retrieval from data-processing to API-server
 # - week 8
 #   - repeat with old data, if we haven't gotten any updates from the data server recently
 # - week 7
@@ -249,38 +254,6 @@ status =
 warn = (msg) ->
   status.warnings[msg] = getDateTime()
 #{{{1 calendar
-#{{{2 getCalendarData
-getCalendarData = (done) ->
-  config.icalUrl ?= config.prepare?.icalUrl
-  return done() if ! config.icalUrl
-  
-  if config.prepare?.icalDump && fs.existsSync config.prepare?.icalDump
-    fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
-      warn "icalDump error" if err
-      throw err if err
-      handleIcal content
-  else
-    request config.icalUrl, (err, result, content) ->
-      fs.writeFile config.prepare.icalDump, content if config.prepare?.icalDump
-      if err
-        console.log 'Error getting calendar data', config.icalUrl
-        warn 'Error getting calendar data ' + config.icalUrl
-        console.log err
-        throw err
-      handleIcal content
-
-  handleIcal = (ical)->
-    events = []
-    !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
-      props = e.split(/\r\n/).filter((x) -> x != "")
-      event = {}
-      for prop in props
-        pos = prop.indexOf ":"
-        pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
-        event[prop.slice(0,pos)] = prop.slice(pos+1)
-      events.push event
-    done events
-
 #{{{1 data preparation - processing/extract running on the SSMLDATA-server
 dataPreparationServer = ->
   #{{{2 SQL Server data source
@@ -376,7 +349,7 @@ dataPreparationServer = ->
   
   #{{{2 Transform data for the event/api-server
 
-  processData = (webuntis, sqlserver, icaldata, callback) ->
+  processData = (webuntis, sqlserver, callback) ->
     startTime = config.prepare.startDate || 0
     if typeof startTime == "number"
       startTime = (new Date(+(new Date()) + startTime * 24*60*60*1000)).toISOString()
@@ -536,72 +509,22 @@ dataPreparationServer = ->
           groups: activity.groups.map (untis_id) ->
             addGroup webuntis.groups[untis_id] || {untis_id: untis_id}
 
-    #{{{3 Handle input from iCal
-    calId = 0
-    result.calendarEvents = []
-    handleEvent = (dtstart, event) ->
-      console.log dtstart.toISOString(), JSON.stringify event
-      activity =
-        id: "cal#{++calId}"
-        kind: "calendar"
-        start: dtstart.toISOString()
-        end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
-        locations: event.LOCATION.split(",").map (s) -> s.trim()
-        teachers: []
-        groups: []
-        subject: event.SUMMARY
-        description: event.DESCRIPTION
-      activity.description = "#{activity.description}".replace /\\(.)/g, (_, c) -> ({n:"\n",r:"\r",t:"\t"}[c] || c)
-      try
-        for key, val of JSON.parse activity.description
-          activity[key] = val
-      catch e
-        undefined
-      result.activities[activity.id] = activity
-
-    iCalDate = (t) ->
-      d = t.replace /.*:/, ""
-      # WARNING: here we assume that we are in Europe/Copenhagen-timezone
-      d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
-      d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-      if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
-        d
-      else if t.slice(-1) == "Z"
-        d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-      else
-        warn "timezone bug in calendar data " + t + " " + d
-        console.log "timezone bug in calendar data", t, d
-      d
-
-    if icaldata then for event in icaldata
-      if event.RRULE
-        RRule = (require "rrule").RRule
-        opts = RRule.parseString event.RRULE
-        opts.dtstart = iCalDate event.DTSTART
-        rule = new RRule(opts)
-        occurences = rule.between(new Date(startTime), new Date(endTime), true)
-        for occurence in occurences
-          handleEvent occurence, event
-      else if startTime <= iCalDate(event.DTSTART).toISOString() < endTime
-        handleEvent iCalDate(event.DTSTART), event
-
     #{{{3 done
     callback result
   
   #{{{2 execute
   getWebUntisData (data1) ->
     getSqlServerData (data2) ->
-      getCalendarData (data3) ->
-        processData data1, data2, data3, (result) ->
-          result.status = status
-          if config.prepare.dest.dump
-            fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
-          sendUpdate result, (err, data) ->
-            if err
-              console.log 'sendUpdate error:', err
-              warn 'sendUpdate error'
-            console.log "submitted to api-server"
-            process.exit 0
+      processData data1, data2, (result) ->
+        result.status = status
+        if config.prepare.dest.dump
+          fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
+        sendUpdate result, (err, data) ->
+          if err
+            console.log 'sendUpdate error:', err
+            warn 'sendUpdate error'
+          console.log "submitted to api-server"
+          process.exit 0
 
 #{{{1 event/api-server
 apiServer = ->
@@ -621,7 +544,6 @@ apiServer = ->
       if err
         warn 'Error getting calendar data ' + config.icalUrl
         ical = fs.readFileSync "cached-calendar.ical"
-        throw err
       else
         fs.writeFile "cached-calendar.ical", ical
   
@@ -694,7 +616,7 @@ apiServer = ->
       if input.status and input.status.warnings
         for key, val of input.status.warnings
           status.warnings[key] = "data " + val
-      enrichData()
+      calendarData enrichData
       console.log "data replaced with new data from ucc-server"
       done()
   
