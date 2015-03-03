@@ -66,6 +66,8 @@
 # - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning o
 # - global stat - day cycle
 # - ambient data - `/timeofday` day cycle - grants, su, etc.
+#   - time-of-day agent, calendar for event: morning/day/evening/night
+#   - world agent, excited-su|grant event
 # - documentation of expectations of external data
 # - afklaring og udførsel af drifts-konfiguration
 # - udkast til aftale om driftssupport
@@ -81,6 +83,7 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 10
+#   - apiserver-script in version control
 #   - support for stopping/rebooting the API-server remotely
 #   - calendar data retrieval in API-server
 #   - internal: preserve order of event-ids using hash function, to avoid test error due to changing order of events at same time.
