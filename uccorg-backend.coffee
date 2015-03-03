@@ -63,23 +63,25 @@
 #
 # {{{2 Back Log - January-April 2015
 #
-# - structured/random events for agents: 
-#   - agent types: researchers, kitchen staff, administrators, janitors, ..
-#   - lunch, toilet-breaks, illness-leave, ..
+# - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning o
+# - global stat - day cycle
+# - ambient data - `/timeofday` day cycle - grants, su, etc.
+# - documentation of expectations of external data
+# - afklaring og udførsel af drifts-konfiguration
 # - udkast til aftale om driftssupport
 # - udkast til aftale om driftsovervågning
-# - ambient data - `/timeofday` day cycle - grants, su, etc.
-# - (marcin? mapping between ucc-organism room id's and schedule room name)
-# - update rest-test
-# - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
 # - integration/test with frontend
-# - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
-# - refactor + eliminate dead code
-# - support for rebooting the API-server remotely
+# - extra
+#   - (marcin? mapping between ucc-organism room id's and schedule room name)
+#   - update rest-test
+#   - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
+#   - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
+#   - refactor + eliminate dead code
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 10
+#   - support for stopping/rebooting the API-server remotely
 #   - calendar data retrieval in API-server
 #   - internal: preserve order of event-ids using hash function, to avoid test error due to changing order of events at same time.
 # - week 9
@@ -758,6 +760,10 @@ apiServer = ->
     # no need to tell the world what server software we are running, - security best practise
     res.removeHeader "X-Powered-By"
     next()
+
+  app.all "/stop-server", (req,res)->
+    res.end "ok, exiting"
+    setImmediate -> process.exit 0
   
   defRest = (name, member) ->
     app.all "/#{name}/:id", (req, res) ->
