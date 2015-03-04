@@ -22,6 +22,8 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                     gender: (pseudoRandom() > agentInfo.genderBalance) ? 0 : 1
                 });
             }
+        } else {
+          uccorg.addAgent({id:agentType});
         }
     }
 
@@ -36,11 +38,10 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                 description: o.type
             });
             uccorg.addEvent({
-                time: o.end,
+                time: (new Date(new Date(o.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19),
                 agents: activity.agents
             });
         }
-        console.log(o);
     }
 };
 

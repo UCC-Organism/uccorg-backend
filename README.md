@@ -67,23 +67,30 @@ Data schema:
 
 ## Back Log - January-April 2015
 
-- opdel data/behavior.js i locations.json, agents.json, calendar.json, og behaviour.js
-- api-server read calendar data for easier development
-- structured/random events for agents: 
-  - agent types: researchers, kitchen staff, administrators, janitors, ..
-  - lunch, toilet-breaks, illness-leave, ..
+- configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning o
+- documentation of expectations of external data
+- afklaring og udførsel af drifts-konfiguration
 - udkast til aftale om driftssupport
 - udkast til aftale om driftsovervågning
-- ambient data - `/timeofday` day cycle - grants, su, etc.
-- (marcin? mapping between ucc-organism room id's and schedule room name)
-- update rest-test
-- delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
 - integration/test with frontend
-- include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
-- refactor + eliminate dead code
+- extra
+  - (marcin? mapping between ucc-organism room id's and schedule room name)
+  - update rest-test
+  - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
+  - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
+  - refactor + eliminate dead code
 
 ## Release Log
 ### January-April 2015
+- week 10
+  - global state - day cycle etc. via agent -  ie. `/agent/time-of-day` day cycle - grants, su, etc. configurable
+  - apiserver-script in version control
+  - support for stopping/rebooting the API-server remotely
+  - calendar data retrieval in API-server
+  - internal: preserve order of event-ids using hash function, to avoid test error due to changing order of events at same time.
+- week 9
+  - change structure of configuration files in data/ to make them easier to edit: data/behavior.js split up into locations.json, agents.json, calendar.js, og behaviour.js
+  - begun moving calendar-retrieval from data-processing to API-server
 - week 8
   - repeat with old data, if we haven't gotten any updates from the data server recently
 - week 7
@@ -191,6 +198,15 @@ Data schema:
 
 ## Utility functions
 
+### djb2-hash
+
+    hash = (str) ->
+      result = 5381
+      for i in [1..str.length-1]
+        result = 33 * result + str.charCodeAt(i) &0x7fffffff
+      result
+    
+
 ### uniqueId
 
     uniqueId = do ->
@@ -263,41 +279,10 @@ escape unicode as ascii
     warn = (msg) ->
       status.warnings[msg] = getDateTime()
 
+# calendar
 # data preparation - processing/extract running on the SSMLDATA-server
 
     dataPreparationServer = ->
-
-## getCalendarData
-
-      getCalendarData = (done) ->
-        return done() if ! config?.prepare?.icalUrl
-        
-        if config.prepare.icalDump && fs.existsSync config.prepare.icalDump
-          fs.readFile config.prepare.icalDump, "utf8", (err, content) ->
-            warn "icalDump error" if err
-            throw err if err
-            handleIcal content
-        else
-          request config.prepare.icalUrl, (err, result, content) ->
-            fs.writeFile config.prepare.icalDump, content if config.prepare.icalDump
-            if err
-              console.log 'Error getting calendar data', config.prepare.icalUrl
-              warn 'Error getting calendar data ' + config.prepare.icalUrl
-              console.log err
-              throw err
-            handleIcal content
-    
-        handleIcal = (ical)->
-          events = []
-          !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
-            props = e.split(/\r\n/).filter((x) -> x != "")
-            event = {}
-            for prop in props
-              pos = prop.indexOf ":"
-              pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
-              event[prop.slice(0,pos)] = prop.slice(pos+1)
-            events.push event
-          done events
 
 ## SQL Server data source
 
@@ -401,7 +386,7 @@ extract data, download data needed from webuntis
 ## Transform data for the event/api-server
 
     
-      processData = (webuntis, sqlserver, icaldata, callback) ->
+      processData = (webuntis, sqlserver, callback) ->
         startTime = config.prepare.startDate || 0
         if typeof startTime == "number"
           startTime = (new Date(+(new Date()) + startTime * 24*60*60*1000)).toISOString()
@@ -588,59 +573,6 @@ to make sure they are available if needed needed by calendar events
                 addGroup webuntis.groups[untis_id] || {untis_id: untis_id}
     
 
-### Handle input from iCal
-
-        calId = 0
-        result.calendarEvents = []
-        handleEvent = (dtstart, event) ->
-          console.log dtstart.toISOString(), JSON.stringify event
-          activity =
-            id: "cal#{++calId}"
-            kind: "calendar"
-            start: dtstart.toISOString()
-            end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
-            locations: event.LOCATION.split(",").map (s) -> s.trim()
-            teachers: []
-            groups: []
-            subject: event.SUMMARY
-            description: event.DESCRIPTION
-          activity.description = "#{activity.description}".replace /\\(.)/g, (_, c) -> ({n:"\n",r:"\r",t:"\t"}[c] || c)
-          try
-            for key, val of JSON.parse activity.description
-              activity[key] = val
-          catch e
-            undefined
-          result.activities[activity.id] = activity
-    
-        iCalDate = (t) ->
-          d = t.replace /.*:/, ""
-
-WARNING: here we assume that we are in Europe/Copenhagen-timezone
-
-          d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
-          d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-          if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
-            d
-          else if t.slice(-1) == "Z"
-            d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
-          else
-            warn "timezone bug in calendar data " + t + " " + d
-            console.log "timezone bug in calendar data", t, d
-          d
-    
-        if icaldata then for event in icaldata
-          if event.RRULE
-            RRule = (require "rrule").RRule
-            opts = RRule.parseString event.RRULE
-            opts.dtstart = iCalDate event.DTSTART
-            rule = new RRule(opts)
-            occurences = rule.between(new Date(startTime), new Date(endTime), true)
-            for occurence in occurences
-              handleEvent occurence, event
-          else if startTime <= iCalDate(event.DTSTART).toISOString() < endTime
-            handleEvent iCalDate(event.DTSTART), event
-    
-
 ### done
 
         callback result
@@ -650,17 +582,16 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 
       getWebUntisData (data1) ->
         getSqlServerData (data2) ->
-          getCalendarData (data3) ->
-            processData data1, data2, data3, (result) ->
-              result.status = status
-              if config.prepare.dest.dump
-                fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
-              sendUpdate result, (err, data) ->
-                if err
-                  console.log 'sendUpdate error:', err
-                  warn 'sendUpdate error'
-                console.log "submitted to api-server"
-                process.exit 0
+          processData data1, data2, (result) ->
+            result.status = status
+            if config.prepare.dest.dump
+              fs.writeFile config.prepare.dest.dump, JSON.stringify(result, null, 2)
+            sendUpdate result, (err, data) ->
+              if err
+                console.log 'sendUpdate error:', err
+                warn 'sendUpdate error'
+              console.log "submitted to api-server"
+              process.exit 0
     
 
 # event/api-server
@@ -674,13 +605,82 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
       eventsByAgent = {}
     
 
+## calendarData
+
+      calendarData = (done) ->
+        icaldata = []
+        return done() if ! config.icalUrl
+        
+        request config.icalUrl, (err, result, ical) ->
+          if err
+            warn 'Error getting calendar data ' + config.icalUrl
+            ical = fs.readFileSync "cached-calendar.ical"
+          else
+            fs.writeFile "cached-calendar.ical", ical
+      
+          icaldata = []
+          !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
+            props = e.split(/\r\n/).filter((x) -> x != "")
+            event = {}
+            for prop in props
+              pos = prop.indexOf ":"
+              pos = Math.min(pos, prop.indexOf ";") if prop.indexOf(";") != -1
+              event[prop.slice(0,pos)] = prop.slice(pos+1)
+            icaldata.push event
+      
+          calId = 0
+          result = []
+          startTime = getDateTime()
+          endTime = +(new Date(getDateTime())) + 7 * 24 * 60 * 60 * 1000
+          result.calendarEvents = []
+      
+          handleEvent = (dtstart, event) ->
+            activity =
+              id: "cal#{++calId}"
+              start: dtstart.toISOString()
+              end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
+              type: event.SUMMARY
+            result.push activity
+        
+          iCalDate = (t) ->
+            d = t.replace /.*:/, ""
+
+WARNING: here we assume that we are in Europe/Copenhagen-timezone
+
+            d = new Date(+d.slice(0,4), +d.slice(4,6) - 1, + d.slice(6,8), +d.slice(9,11), +d.slice(11,13), +d.slice(13,15), 0)
+            d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+            if (t.slice(0, 23) == "TZID=Europe/Copenhagen:") || (t.slice(0,11) == "VALUE=DATE:")
+              d
+            else if t.slice(-1) == "Z"
+              d = new Date(+d - d.getTimezoneOffset() * 60 * 1000)
+            else
+              warn "timezone bug in calendar data " + t + " " + d
+              console.log "timezone bug in calendar data", t, d
+            d
+        
+          if icaldata then for event in icaldata
+            if event.RRULE
+              RRule = (require "rrule").RRule
+              opts = RRule.parseString event.RRULE
+              opts.dtstart = iCalDate event.DTSTART
+              rule = new RRule(opts)
+              occurences = rule.between(new Date(startTime), new Date(endTime), true)
+              for occurence in occurences
+                handleEvent occurence, event
+            else if startTime <= iCalDate(event.DTSTART).toISOString() < endTime
+              handleEvent iCalDate(event.DTSTART), event
+      
+          data.calendar = result if data?
+          done result
+        
+
 ## calculate time offset once per hour, rewind clock a week, if more than eight days since last data update
 
       updateTimeOffset = ->
         lastUpdate = new Date(status.lastDataUpdate)
         if 8 < (new Date() - lastUpdate + timeoffset) / 1000 / 60 / 60 / 24
           timeoffset -= 7 * 24 * 60 * 60 * 1000
-          addAgentEvents()
+          enrichData()
       setInterval updateTimeOffset, 1000 * 60
 
 ## Handle data
@@ -693,7 +693,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
           if input.status and input.status.warnings
             for key, val of input.status.warnings
               status.warnings[key] = "data " + val
-          enrichData()
+          calendarData enrichData
           console.log "data replaced with new data from ucc-server"
           done()
       
@@ -719,7 +719,105 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 
 #### add agent+events
 
-        addAgentEvents()
+    
+
+## agent/event data structure
+
+        data.agents = {} #{{{3
+        for _, teacher of data.teachers
+          id = "teacher" + teacher.id
+          data.agents[id] = agent = {}
+          agent.kind = "teacher"
+          agent.gender = teacher.gender
+          agent.programme = teacher.programmeDesc
+          agent.id = id
+    
+        data.agents.JamesBond =
+          kind: "yes"
+          gender: 1
+          license: "kill -9"
+          id: "007"
+          description: "undercover testagent"
+    
+        for groupId, group of data.groups
+          continue if not group.students
+          for student in group.students
+            id = "student" + student.id
+            data.agents[id] = agent = data.agents[id] || {}
+            if agent.programme && group.programme != agent.programme
+              console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
+              warn "warning: student in several programmes, ignoring " + id  + " " + group.programme + " " + agent.programme
+            agent.kind = "student"
+            agent.programme = group.programme
+            agent.groups ?= []
+            agent.groups.push groupId
+            agent.age = student.age
+            agent.gender = student.gender
+            agent.end = student.end
+            agent.id = id
+    
+        data.events = {} # {{{3
+    
+        addEvent = (agents, location, time, description) ->
+
+id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
+
+          id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
+          data.events[id] =
+            id: id
+            location: location || undefined
+            description: description
+            time: time
+            agents: agents
+    
+        addEvents = (agents, locations, time, description) ->
+          len = locations.length
+          if len > 1
+
+distribute agents into locations for event
+
+            for i in [0..len-1] by 1
+              addEvent (agents[j] for j in [i..agents.length-1] by len),
+                locations[i], time, description
+          else
+            addEvent agents, locations[0], time, description
+    
+    
+        for _, activity of data.activities
+          agents = []
+          for teacherId in activity.teachers
+            agents.push "teacher" + teacherId
+          for groupId in activity.groups
+            for student in data.groups[groupId].students || []
+              agents.push "student" + student.id
+    
+          addEvents agents, activity.locations, activity.start, activity.subject
+          addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
+    
+        behaviourApi =
+          addEvent: (o) ->
+            if Array.isArray o.location
+              addEvents o.agents, o.location, o.time, o.description
+            else
+              addEvent o.agents, o.location, o.time, o.description
+          addAgent: (agent) ->
+            agent.id = agent.id || uniqueId()
+            warn "missing agent kind #{agent.id}" if !agent.kind
+            warn "duplicate agent #{agent.id}" if data.agents[agent.id]
+            data.agents[agent.id] = agent
+    
+        (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
+    
+        data.eventPos = 0 #{{{3
+        data.agentNow = {}
+        data.locationNow = {}
+        data.eventList = Object.keys data.events
+        data.eventList.sort()
+    
+        while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
+          updateState(data.events[data.eventList[data.eventPos]])
+          data.eventPos += 1
+    
       
 
 ### read cached data
@@ -760,6 +858,10 @@ no need to tell the world what server software we are running, - security best p
 
         res.removeHeader "X-Powered-By"
         next()
+    
+      app.all "/stop-server", (req,res)->
+        res.end "ok, exiting"
+        setImmediate -> process.exit 0
       
       defRest = (name, member) ->
         app.all "/#{name}/:id", (req, res) ->
@@ -957,108 +1059,7 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
           data.agentNow[agent].location = location if location
           data.agentNow[agent].activity = event.description if event.description
     
-
-## agent/event data structure
-
-      addAgentEvents = ->
-        data.agents = {} #{{{3
-        for _, teacher of data.teachers
-          id = "teacher" + teacher.id
-          data.agents[id] = agent = {}
-          agent.kind = "teacher"
-          agent.gender = teacher.gender
-          agent.programme = teacher.programmeDesc
-          agent.id = id
-    
-        data.agents.JamesBond =
-          kind: "yes"
-          gender: 1
-          license: "kill -9"
-          id: "007"
-          description: "undercover testagent"
-    
-        for groupId, group of data.groups
-          continue if not group.students
-          for student in group.students
-            id = "student" + student.id
-            data.agents[id] = agent = data.agents[id] || {}
-            if agent.programme && group.programme != agent.programme
-              console.log "warning: student in several programmes, ignoring", id, group.programme, agent.programme
-              warn "warning: student in several programmes, ignoring " + id  + " " + group.programme + " " + agent.programme
-            agent.kind = "student"
-            agent.programme = group.programme
-            agent.groups ?= []
-            agent.groups.push groupId
-            agent.age = student.age
-            agent.gender = student.gender
-            agent.end = student.end
-            agent.id = id
-    
-        data.events = {} # {{{3
-    
-        addEvent = (agents, location, time, description) ->
-          id = time + ' ' + uniqueId()
-          data.events[id] =
-            id: id
-            location: location || undefined
-            description: description
-            time: time
-            agents: agents
-    
-        addEvents = (agents, locations, time, description) ->
-          len = locations.length
-          if len > 1
-
-distribute agents into locations for event
-
-            for i in [0..len-1] by 1
-              addEvent (agents[j] for j in [i..agents.length-1] by len),
-                locations[i], time, description
-          else
-            addEvent agents, activity.locations[0], activity.start, activity.subject
-    
-    
-        calendar = []
-        for _, activity of data.activities
-          agents = []
-          for teacherId in activity.teachers
-            agents.push "teacher" + teacherId
-          for groupId in activity.groups
-            for student in data.groups[groupId].students || []
-              agents.push "student" + student.id
-    
-          addEvents agents, activity.locations, activity.start, activity.subject
-          addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
-    
-          if activity.kind == "calendar"
-            calendar.push
-              type: activity.subject
-              start: activity.start
-              end: activity.end
-    
-        behaviourApi =
-          addEvent: (o) ->
-            if Array.isArray o.location
-              addEvents o.agents, o.location, o.time, o.description
-            else
-              addEvent o.agents, o.location, o.time, o.description
-          addAgent: (agent) ->
-            agent.id = agent.id || uniqueId()
-            warn "missing agent kind #{agent.id}" if !agent.kind
-            warn "duplicate agent #{agent.id}" if data.agents[agent.id]
-            data.agents[agent.id] = agent
-    
-        (require "./data/behaviour.js").calendarAgents calendar, behaviourApi, data
-    
-        data.eventPos = 0 #{{{3
-        data.agentNow = {}
-        data.locationNow = {}
-        data.eventList = Object.keys data.events
-        data.eventList.sort()
-    
-        while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
-          updateState(data.events[data.eventList[data.eventPos]])
-          data.eventPos += 1
+      calendarData enrichData #{{{2
     
 
 ## Test

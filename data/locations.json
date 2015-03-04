@@ -42,6 +42,7 @@
 { "id": "Titangade", "name": "Titangade" }, 
 { "id": "Ude af huset", "name": "Ude af huset" }, 
 { "id": "Reservér selv flexru", "name": "Flexrum" }, 
+{ "id": "global-state", "name": "global-state" }, 
 { "id": "BUS", "categories": ["public transport"] }, 
 { "id": "EXB", "categories": ["public transport"]  }, 
 { "id": "S", "categories": ["public transport"]  }, 

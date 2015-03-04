@@ -64,10 +64,6 @@
 # {{{2 Back Log - January-April 2015
 #
 # - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning o
-# - global stat - day cycle
-# - ambient data - `/timeofday` day cycle - grants, su, etc.
-#   - time-of-day agent, calendar for event: morning/day/evening/night
-#   - world agent, excited-su|grant event
 # - documentation of expectations of external data
 # - afklaring og udførsel af drifts-konfiguration
 # - udkast til aftale om driftssupport
@@ -83,6 +79,7 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 10
+#   - global state - day cycle etc. via agent -  ie. `/agent/time-of-day` day cycle - grants, su, etc. configurable
 #   - apiserver-script in version control
 #   - support for stopping/rebooting the API-server remotely
 #   - calendar data retrieval in API-server
@@ -168,7 +165,7 @@ exports.about =
     solapp: "*"
   package:
     scripts:
-      test: "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
+      test: "solapp build; rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
     dependencies:
       async: "0.2.9"
       "coffee-script": "1.6.3"
@@ -681,6 +678,7 @@ apiServer = ->
     data.events = {} # {{{3
 
     addEvent = (agents, location, time, description) ->
+      #id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
       id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
       data.events[id] =
         id: id
@@ -697,7 +695,7 @@ apiServer = ->
           addEvent (agents[j] for j in [i..agents.length-1] by len),
             locations[i], time, description
       else
-        addEvent agents, activity.locations[0], activity.start, activity.subject
+        addEvent agents, locations[0], time, description
 
 
     for _, activity of data.activities
