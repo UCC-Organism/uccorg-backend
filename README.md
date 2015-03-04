@@ -1112,9 +1112,12 @@ Factor by which the time will run by during the test
 
 Date corresponds to the test data set, and a clock that runs very fast
 
-        startTime = Date.now()
         testTime = + (new Date testStart)
-        getDateTime = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
+        getDateTime = -> testTime
+        setTimeout ( ->
+          startTime = Date.now()
+          getDateTime = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString() 
+        ), 3000
       
       
 

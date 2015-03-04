@@ -995,9 +995,12 @@ apiServer = ->
     #{{{3 Mock getDateTime, 
     #
     # Date corresponds to the test data set, and a clock that runs very fast
-    startTime = Date.now()
     testTime = + (new Date testStart)
-    getDateTime = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString()
+    getDateTime = -> testTime
+    setTimeout ( ->
+      startTime = Date.now()
+      getDateTime = -> (new Date(testTime + (Date.now() - startTime) * testSpeed)).toISOString() 
+    ), 3000
   
   
     #{{{3 run the test - current test client just emits "/events" back as "/test"
