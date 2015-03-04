@@ -170,7 +170,7 @@ Data schema:
         solapp: "*"
       package:
         scripts:
-          test: "rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
+          test: "solapp build; rm -f test.out ; ./node_modules/coffee-script/bin/coffee uccorg-backend.coffee test ; diff test.out test.expected"
         dependencies:
           async: "0.2.9"
           "coffee-script": "1.6.3"
