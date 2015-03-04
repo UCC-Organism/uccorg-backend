@@ -3,9 +3,11 @@
     "port": 8080,
     "cachefile": "sample-data.json"
   },
+  "icalCacheFile": "cached-calendar.ical",
+  "icalUrl": "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics",
   "test": {
-    "startDate": "2013-09-20T06:20:00",
-    "endDate": "2013-09-20T18:20:00",
-    "xTime": 300
+    "startDate": "2015-02-11T07:20:00",
+    "endDate": "2015-02-11T18:20:00",
+    "xTime": 100
   }
 }
