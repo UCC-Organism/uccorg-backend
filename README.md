@@ -3,60 +3,6 @@
 
 Backend for the UCC-organism
 
-# Info
-
-The server is run with `coffee uccorg-backend.coffee configfile.json`, where `configfile.json` contains the actual configuration of the server. 
-Depending on the configuration, this runs as:
-
-- production data preparation server(windows), which is responsible for getting the data from ucc/webuntis/calendar/..., anonymising them, and sending them onwards to the api server
-- production api server(debian on macmini), which gets the anonymised data from the data preparation server, makes them available via an api, and emits events using the Bayeux protocol
-- development server for backend, which uses real data dumps instead of talking with external services
-- automated test, which runs automatically using travis, uses sample data dumps, and mocks the time to run very fast.
-- development server for frontend, - which runs of sample data dump and mocks the time, - to be able to get events without having to wait for real-world activities 
-
-## Configuration
-
-All configuration options are listed in `config.json.sample`. Also see `test.json` for an actual configuration, the content of this configuration wille also be a good choice for a frontend development server, - just remove `"outfile"`, and reduce the time speed factor `"xTime"` - which tells how much faster the mocked clock should run.
-
-## API
-
-The api delivers JSON objects, and is available through http, with JSONP and CORS enabled. The endpoints are:
-
-- `/(agents|locations|events)` returns list of ids. NOTICE: some events/agents will be created on the fly and may not be in the list yet
-- `/(agent|location|event)/$ID` returns info about the particular entity
-- `/now/(agent|location)/$ID` returns an object with status for the moment, NOTICE: this varies over time
-
-Old api:
-- `/(teacher|group|activity)/$ID` returns info about the particular entity
-- `/(teachers|groups|activities)` returns list of ids
-
-Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
-
-### uniform agent scheduling notes
-
-Data schema:
-- agents: (teachers, or students member of groups)
-  - id
-  - kind: teacher | student | researcher | janitor | bus | train | ...
-  - ?gender: 0/1 (for teacher/student)
-  - ?groups of ids (for students)
-  - ?programme:
-  - ?age (for student)
-  - ?end (for student)
-  - ?name (for train/bus)
-  - ?origin (for train/bus)
-- events - from activities, train arrivals, etc.
-  - time
-  - TODO kind: activity-start, activity-end, bus-arrival, train-arrival, 
-  - agents
-  - ?description: activity-subject, etc.
-  - ?location
-  - TODO ?activity - link to ucc-activity for debugging
-- locations
-  - id
-  - name
-  - ?capacity
-  
 # Status
 ## Data Issues
 
@@ -64,6 +10,7 @@ Data schema:
 - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
 - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
 - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
+- navngivning af lokaler er måske ikke konsistent
 
 ## Back Log - January-April 2015
 
@@ -156,6 +103,60 @@ Data schema:
 - automatic test on macmini with fast time for development
 - deprecated solsort.com running webuntis-based webservice for development
 
+# Info
+
+The server is run with `coffee uccorg-backend.coffee configfile.json`, where `configfile.json` contains the actual configuration of the server. 
+Depending on the configuration, this runs as:
+
+- production data preparation server(windows), which is responsible for getting the data from ucc/webuntis/calendar/..., anonymising them, and sending them onwards to the api server
+- production api server(debian on macmini), which gets the anonymised data from the data preparation server, makes them available via an api, and emits events using the Bayeux protocol
+- development server for backend, which uses real data dumps instead of talking with external services
+- automated test, which runs automatically using travis, uses sample data dumps, and mocks the time to run very fast.
+- development server for frontend, - which runs of sample data dump and mocks the time, - to be able to get events without having to wait for real-world activities 
+
+## Configuration
+
+All configuration options are listed in `config.json.sample`. Also see `test.json` for an actual configuration, the content of this configuration wille also be a good choice for a frontend development server, - just remove `"outfile"`, and reduce the time speed factor `"xTime"` - which tells how much faster the mocked clock should run.
+
+## API
+
+The api delivers JSON objects, and is available through http, with JSONP and CORS enabled. The endpoints are:
+
+- `/(agents|locations|events)` returns list of ids. NOTICE: some events/agents will be created on the fly and may not be in the list yet
+- `/(agent|location|event)/$ID` returns info about the particular entity
+- `/now/(agent|location)/$ID` returns an object with status for the moment, NOTICE: this varies over time
+
+Old api:
+- `/(teacher|group|activity)/$ID` returns info about the particular entity
+- `/(teachers|groups|activities)` returns list of ids
+
+Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
+
+### uniform agent scheduling notes
+
+Data schema:
+- agents: (teachers, or students member of groups)
+  - id
+  - kind: teacher | student | researcher | janitor | bus | train | ...
+  - ?gender: 0/1 (for teacher/student)
+  - ?groups of ids (for students)
+  - ?programme:
+  - ?age (for student)
+  - ?end (for student)
+  - ?name (for train/bus)
+  - ?origin (for train/bus)
+- events - from activities, train arrivals, etc.
+  - time
+  - TODO kind: activity-start, activity-end, bus-arrival, train-arrival, 
+  - agents
+  - ?description: activity-subject, etc.
+  - ?location
+  - TODO ?activity - link to ucc-activity for debugging
+- locations
+  - id
+  - name
+  - ?capacity
+  
 # Common stuff
 ## About
 
