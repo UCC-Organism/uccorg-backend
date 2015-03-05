@@ -615,7 +615,7 @@ to make sure they are available if needed needed by calendar events
         request config.icalUrl, (err, result, ical) ->
           if err
             warn 'Error getting calendar data ' + config.icalUrl
-            ical = fs.readFileSync "cached-calendar.ical"
+            ical = fs.readFileSync "cached-calendar.ical", "utf8"
           else
             fs.writeFile "cached-calendar.ical", ical
       
