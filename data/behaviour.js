@@ -23,7 +23,7 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                 });
             }
         } else {
-          uccorg.addAgent({id:agentType});
+          uccorg.addAgent({id:agentType, kind: agentType});
         }
     }
 
