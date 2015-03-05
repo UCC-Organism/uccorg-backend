@@ -1,16 +1,8 @@
 #!/usr/bin/env coffee
 # {{{1 Status
-# {{{2 Data Issues
-#
-# - some teachers on webuntis missing from mssql (thus missing gender non-critical)
-# - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
-# - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
-# - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
-# - navngivning af lokaler er måske ikke konsistent
-#
 # {{{2 Back Log - January-April 2015
 #
-# - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning o
+# - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning etc.
 # - documentation of expectations of external data
 # - afklaring og udførsel af drifts-konfiguration
 # - udkast til aftale om driftssupport
@@ -98,6 +90,14 @@
 # - dummy data-set for automatic test
 # - automatic test on macmini with fast time for development
 # - deprecated solsort.com running webuntis-based webservice for development
+#
+# {{{2 Data Issues
+#
+# - some teachers on webuntis missing from mssql (thus missing gender non-critical)
+# - *mapning mellem de enkelte kurser og hold mangler, har kun information på årgangsniveau, og hvilke årgange der følger hvert kursus*
+# - *Info følgende grupper mangler via mssql: fss12b, fss11A, fss11B, fsf10a, fss10, fss10b, fss12a, norF14.1, norF14.2, norF14.3, nore12.1, samt "SPL M5 - F13A og F13B"*
+# - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
+# - navngivning af lokaler er måske ikke konsistent
 #
 # {{{1 Info
 #
