@@ -2,6 +2,11 @@
 # {{{1 Status
 # {{{2 Back Log - January-April 2015
 #
+# - server fejlbesked hvis fejl i json
+# - placering af random - multible locations
+# - kategorier på lokationer i konfigurationen
+# - evt. splitningsfunktion flyttet til js
+# - case insensitive+trim calendar events
 # - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning etc.
 # - documentation of expectations of external data
 # - afklaring og udførsel af drifts-konfiguration
