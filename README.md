@@ -6,6 +6,7 @@ Backend for the UCC-organism
 # Status
 ## Back Log - January-April 2015
 
+
 - server fejlbesked hvis fejl i json
 - placering af random - multible locations
 - kategorier på lokationer i konfigurationen
@@ -23,9 +24,21 @@ Backend for the UCC-organism
   - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
   - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
   - refactor + eliminate dead code
+- overordnet aftale
+  - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
+  - (TODO)tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
+  - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
+  - •mulighed for at konfigurere tilfældig opførsel og events
+  - •løbende tilpasninger af backend efter ønsker fra A&K og frontendudviklingen frem til idiftsættelsen
+  - √håndtering af at systemet kører videre, selv hvis de eksterne datakilder fejler
+  - •afklaring af driftskonfiguration, - skal vi sætte en separat linux-server op, eller køre det parallelt på mac'en der også driver skærmen
+  - (eventult konfiguration og opsætning af linux-server)
+  - •proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
+  - (TODO)dokumentation af forventninger og krav til de eksterne datakilder
 
 ## Release Log
 ### January-April 2015
+- week 12
 - week 10
   - global state - day cycle etc. via agent -  ie. `/agent/time-of-day` day cycle - grants, su, etc. configurable
   - apiserver-script in version control
