@@ -38,6 +38,7 @@ Backend for the UCC-organism
 ## Release Log
 ### January-April 2015
 - week 12
+  - add random roaming/away state for agents - needed for random events for agents at campus not doing anything in particular
   - server fejlbesked hvis fejl i json
 - week 10
   - global state - day cycle etc. via agent -  ie. `/agent/time-of-day` day cycle - grants, su, etc. configurable
@@ -216,6 +217,15 @@ Data schema:
     
 
 ## Utility functions
+
+### pseudorandom
+
+
+    randomSeed = 0
+    pseudoRandom = ->
+      randomSeed = 1103515245 * randomSeed + 12345 & 0x7fffffff
+      (randomSeed & 0x3fffffff) / 0x40000000
+    
 
 ### djb2-hash
 
@@ -811,7 +821,9 @@ distribute agents into locations for event
               agents.push "student" + student.id
     
           addEvents agents, activity.locations, activity.start, activity.subject
-          addEvent agents, null,  (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), undefined
+          addEvent agents, undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), "roaming"
+          for agent in agents
+            addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (0.1 + 0.9 * pseudoRandom()) * 60 |0) * 60 * 1000)).toISOString().slice(0,19), "away"
     
         behaviourApi =
           addEvent: (o) ->
@@ -969,6 +981,8 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 #### Events and event emitter
 
       emitEvent = (event) ->
+        if event.description == "away" and data.agentNow[event.agents[0]].activity != "roaming"
+          return
         data.events[event.id] = event if !data.events[event.id]
         console.log getDateTime(), event.id, event.description, event.location
         updateState event

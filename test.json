@@ -8,7 +8,7 @@
     "outfile": "test.out",
     "startDate": "2015-02-11T05:10:00",
     "endDate": "2015-02-11T18:20:00",
-    "xTime": 8000,
+    "xTime": 1000,
     "DISABLED restTestTime": "2015-01-22T09:35:00"
   }
 }
