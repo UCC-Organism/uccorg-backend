@@ -7,7 +7,6 @@ Backend for the UCC-organism
 ## Back Log - January-April 2015
 
 
-- server fejlbesked hvis fejl i json
 - placering af random - multible locations
 - kategorier på lokationer i konfigurationen
 - evt. splitningsfunktion flyttet til js
@@ -39,6 +38,7 @@ Backend for the UCC-organism
 ## Release Log
 ### January-April 2015
 - week 12
+  - server fejlbesked hvis fejl i json
 - week 10
   - global state - day cycle etc. via agent -  ie. `/agent/time-of-day` day cycle - grants, su, etc. configurable
   - apiserver-script in version control
@@ -825,7 +825,9 @@ distribute agents into locations for event
             warn "duplicate agent #{agent.id}" if data.agents[agent.id]
             data.agents[agent.id] = agent
     
-        (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
+        try (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
+        catch e
+          warn "Error in configuration in data/ " + e
     
         data.eventPos = 0 #{{{3
         data.agentNow = {}
