@@ -6,7 +6,7 @@ Backend for the UCC-organism
 # Status
 ## Back Log - January-April 2015
 
-
+- next event for agents
 - placering af random - multible locations
 - kategorier på lokationer i konfigurationen
 - evt. splitningsfunktion flyttet til js
@@ -39,6 +39,7 @@ Backend for the UCC-organism
 ### January-April 2015
 - week 12
   - add random roaming/away state for agents - needed for random events for agents at campus not doing anything in particular
+    - configurable in data/general-settings.json
   - server fejlbesked hvis fejl i json
 - week 10
   - global state - day cycle etc. via agent -  ie. `/agent/time-of-day` day cycle - grants, su, etc. configurable
@@ -307,6 +308,18 @@ escape unicode as ascii
       warnings: {}
     warn = (msg) ->
       status.warnings[msg] = getDateTime()
+
+## 
+
+    generalSettings =
+      try (require "./data/general-settings.json")
+      catch e
+        warn "Error in configuration in data/ " + e
+        {}
+    generalSettings.minRoam ?= 1
+    generalSettings.maxRoam ?= 20
+    
+    
 
 # calendar
 # data preparation - processing/extract running on the SSMLDATA-server
@@ -823,7 +836,7 @@ distribute agents into locations for event
           addEvents agents, activity.locations, activity.start, activity.subject
           addEvent agents, undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), "roaming"
           for agent in agents
-            addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (0.1 + 0.9 * pseudoRandom()) * 60 |0) * 60 * 1000)).toISOString().slice(0,19), "away"
+            addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
     
         behaviourApi =
           addEvent: (o) ->
