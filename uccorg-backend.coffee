@@ -34,7 +34,8 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 13
-#   - implement /next
+#   - have events also bring along a likely end time
+#   - implement `/next` api endpoint
 # - week 12
 #   - add random roaming/away state for agents - needed for random events for agents at campus not doing anything in particular
 #     - configurable in data/general-settings.json
@@ -717,7 +718,7 @@ apiServer = ->
 
     data.events = {} # {{{3
 
-    addEvent = (agents, location, time, description) ->
+    addEvent = (agents, location, time, description, misc) ->
       #id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
       id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
       data.events[id] =
@@ -726,16 +727,19 @@ apiServer = ->
         description: description
         time: time
         agents: agents
+      if misc
+        for key, val of misc
+          data.events[id][key] = val
 
-    addEvents = (agents, locations, time, description) ->
+    addEvents = (agents, locations, time, description, misc) ->
       len = locations.length
       if len > 1
         # distribute agents into locations for event
         for i in [0..len-1] by 1
           addEvent (agents[j] for j in [i..agents.length-1] by len),
-            locations[i], time, description
+            locations[i], time, description, misc
       else
-        addEvent agents, locations[0], time, description
+        addEvent agents, locations[0], time, description, misc
 
 
     for _, activity of data.activities
@@ -746,7 +750,7 @@ apiServer = ->
         for student in data.groups[groupId].students || []
           agents.push "student" + student.id
 
-      addEvents agents, activity.locations, activity.start, activity.subject
+      addEvents agents, activity.locations, activity.start, activity.subject, { likelyEndTime: activity.end}
       addEvent agents, undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), "roaming"
       for agent in agents
         addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
