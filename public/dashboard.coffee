@@ -8,6 +8,7 @@ explore = (url, cb) ->
   $.get url,  (x) ->
     result = "<h3>#{url}</h3>"
     type = url.split("/")[1]
+    id = url.split("/")[2]
     if type in ["teachers", "groups", "activities", "locations", "agents", "events"]
       result += "<ul>#{
         (for elem in x
@@ -20,6 +21,11 @@ explore = (url, cb) ->
     if type in ["teacher", "group", "location", "agent"]
       $.get "/now" + url,  (x) ->
         result += "<h3>/now#{url}</h3>"
+        result += "<pre>#{JSON.stringify x, null, 2}</pre>"
+        ($ "#apiResult").html result
+    if type in ["location", "agent"]
+      $.get "/next/" + id,  (x) ->
+        result += "<h3>/next/#{id}</h3>"
         result += "<pre>#{JSON.stringify x, null, 2}</pre>"
         ($ "#apiResult").html result
 

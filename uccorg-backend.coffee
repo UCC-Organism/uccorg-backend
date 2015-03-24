@@ -33,6 +33,8 @@
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 13
+#   - implement /next
 # - week 12
 #   - add random roaming/away state for agents - needed for random events for agents at campus not doing anything in particular
 #     - configurable in data/general-settings.json
@@ -775,6 +777,17 @@ apiServer = ->
       updateState(data.events[data.eventList[data.eventPos]])
       data.eventPos += 1
 
+    data.next = {}
+    for event in data.eventList
+      e = data.events[event]
+      if e.location
+        data.next[e.location] ?= []
+        data.next[e.location].push event
+      for agent in e.agents
+        data.next[agent] ?= []
+        data.next[agent].push event
+    for id, events of data.next
+      data.next[id] = events.reverse()
   
   #{{{3 read cached data
   try
@@ -808,7 +821,17 @@ apiServer = ->
     res.end "ok, exiting"
     setImmediate -> process.exit 0
   
+
   defRest = (name, member) ->
+    app.all "/next/:id", (req, res) ->
+      events = data.next[req.params.id]
+      if !events
+        res.json {}
+        return res.end()
+      events.pop() while events.length && (events[events.length - 1] < getDateTime())
+      res.json {event: events[events.length - 1]}
+      res.end()
+
     app.all "/#{name}/:id", (req, res) ->
       res.json data[member][req.params.id]
       res.end()
