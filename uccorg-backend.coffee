@@ -1017,9 +1017,11 @@ apiServer = ->
         data.locationNow[location] = data.locationNow[location] || {}
         data.locationNow[location].agents = data.locationNow[location].agents || []
         data.locationNow[location].agents.push agent
+        data.locationNow[location].event = event.id
       data.agentNow[agent] = {}
       data.agentNow[agent].location = location if location
       data.agentNow[agent].activity = event.description if event.description
+      data.agentNow[agent].event = event.id
 
   calendarData enrichData #{{{2
 
