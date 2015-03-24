@@ -1,4 +1,4 @@
 {
-  minRoam: 10,
-  maxRoam: 60
+  "minRoam": 10,
+  "maxRoam": 60
 }
