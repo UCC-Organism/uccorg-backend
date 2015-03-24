@@ -977,6 +977,10 @@ no need to tell the world what server software we are running, - security best p
         res.json (data[req.params.kind + "Now"] || {})[req.params.id] || {}
         res.end()
     
+      app.all "/current-state", (req, res) ->
+        res.json data.agentNow
+        res.end()
+    
       app.all "/arrivals", (req, res) ->
         arrivals (result) ->
           res.json result
