@@ -38,6 +38,8 @@ Backend for the UCC-organism
 ## Release Log
 ### January-April 2015
 - week 13
+  - more url-friendly event-ids (with "_" instead of " ")
+  - event-id in /now
   - have events also bring along a likely end time
   - implement `/next` api endpoint
 - week 12
@@ -807,7 +809,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 
 id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
 
-          id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
+          id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
           data.events[id] =
             id: id
             location: location || undefined
@@ -1145,7 +1147,7 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
       if config.test
         testResult = ""
         testLog = (args...)->
-          testResult += (JSON.stringify([args...]) + "\n").replace(/("id":"2015[^ ]*)[^"]*/, '"id":"some-id')
+          testResult += (JSON.stringify([args...]) + "\n").replace(/("id":"2015[^_]*)[^"]*/, '"id":"some-id')
         testDone = ->
           fs.writeFileSync config.test.outfile, testResult if config.test.outfile
           process.exit()
