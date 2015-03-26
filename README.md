@@ -272,12 +272,6 @@ Data schema:
 
     random = prand(0)
     pseudoRandom = -> random.next()
-
-randomSeed = 0
-pseudoRandom = ->
- randomSeed = 1103515245 * randomSeed + 12345 & 0x7fffffff
- (randomSeed & 0x3fffffff) / 0x40000000
-
     
 
 ### uniqueId
@@ -845,9 +839,9 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
     
         addEvent = (agents, location, time, description, misc) ->
 
-id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
+id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
 
-          id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId() # + "_" + description
+          id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()  + "_" + ((description || "").split " ")[0]
           data.events[id] =
             id: id
             location: location || undefined
