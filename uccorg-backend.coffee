@@ -44,6 +44,12 @@
 #   - •proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
 #   - (TODO)dokumentation af forventninger og krav til de eksterne datakilder
 #
+# {{{2 current tasks
+#
+# - random events
+#   - prefix for events from schedule + isScheduled
+#   - √refactor next to be a function
+#
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 13
@@ -840,15 +846,16 @@ apiServer = ->
     res.end "ok, exiting"
     setImmediate -> process.exit 0
   
+  nextEvent = (agentOrLocation) ->
+    events = data.next[agentOrLocation]
+    return null if !events
+    events.pop() while events.length && (events[events.length - 1] < getDateTime())
+    events[events.length - 1]
 
   defRest = (name, member) ->
     app.all "/next/:id", (req, res) ->
-      events = data.next[req.params.id]
-      if !events
-        res.json {}
-        return res.end()
-      events.pop() while events.length && (events[events.length - 1] < getDateTime())
-      res.json {event: events[events.length - 1]}
+      event = nextEvent req.params.id
+      res.json(if event then {event: event} else {})
       res.end()
 
     app.all "/#{name}/:id", (req, res) ->

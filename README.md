@@ -26,6 +26,19 @@ Backend for the UCC-organism
 - overordnet aftale
   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
   - (TODO)tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
+    - notes
+      - configuration call initiate event-creation
+      - hash+pseudorand event+agent to check probability + choose time and then add event
+      - configuration
+        - agent types
+        - probability
+        - timeend
+        - min length
+        - max duration
+        - allowed-activities (all,roaming)
+      - when random event happens, only let it occur iff agent is doing allowed activity
+      - special random-end-event, that restores current state, if the agent is in the random state, and otherwise doesn't occur
+      - NB: activity types should be simplified
   - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
   - •mulighed for at konfigurere tilfældig opførsel og events
   - •løbende tilpasninger af backend efter ønsker fra A&K og frontendudviklingen frem til idiftsættelsen
@@ -34,6 +47,12 @@ Backend for the UCC-organism
   - (eventult konfiguration og opsætning af linux-server)
   - •proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
   - (TODO)dokumentation af forventninger og krav til de eksterne datakilder
+
+## current tasks
+
+- random events
+  - prefix for events from schedule + isScheduled
+  - √refactor next to be a function
 
 ## Release Log
 ### January-April 2015
@@ -928,15 +947,16 @@ no need to tell the world what server software we are running, - security best p
         res.end "ok, exiting"
         setImmediate -> process.exit 0
       
+      nextEvent = (agentOrLocation) ->
+        events = data.next[agentOrLocation]
+        return null if !events
+        events.pop() while events.length && (events[events.length - 1] < getDateTime())
+        events[events.length - 1]
     
       defRest = (name, member) ->
         app.all "/next/:id", (req, res) ->
-          events = data.next[req.params.id]
-          if !events
-            res.json {}
-            return res.end()
-          events.pop() while events.length && (events[events.length - 1] < getDateTime())
-          res.json {event: events[events.length - 1]}
+          event = nextEvent req.params.id
+          res.json(if event then {event: event} else {})
           res.end()
     
         app.all "/#{name}/:id", (req, res) ->
