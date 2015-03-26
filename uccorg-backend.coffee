@@ -22,6 +22,19 @@
 # - overordnet aftale
 #   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
 #   - (TODO)tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
+#     - notes
+#       - configuration call initiate event-creation
+#       - hash+pseudorand event+agent to check probability + choose time and then add event
+#       - configuration
+#         - agent types
+#         - probability
+#         - timeend
+#         - min length
+#         - max duration
+#         - allowed-activities (all,roaming)
+#       - when random event happens, only let it occur iff agent is doing allowed activity
+#       - special random-end-event, that restores current state, if the agent is in the random state, and otherwise doesn't occur
+#       - NB: activity types should be simplified
 #   - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
 #   - •mulighed for at konfigurere tilfældig opførsel og events
 #   - •løbende tilpasninger af backend efter ønsker fra A&K og frontendudviklingen frem til idiftsættelsen
