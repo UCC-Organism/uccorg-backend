@@ -762,6 +762,7 @@ apiServer = ->
       if misc
         for key, val of misc
           data.events[id][key] ?= val
+      id
 
     addEvents = (agents, locations, time, description, misc) ->
       len = locations.length
@@ -787,7 +788,21 @@ apiServer = ->
       for agent in agents
         addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
 
-    behaviourApi =
+    randomEvents = (start, end, o) -> #{{{3
+      console.log "random-events", start, end, o
+      # for agent
+      #   if agent.type in o.agentTypes
+      #      t = start
+      #      random = prand(hash(agent + start + o.descripion))
+      #      loop
+      #        t += 2*random.next() * 60*60*1000  / o.frequencyPerHour
+      #        break unless t > end
+      #        location = o.locations[random.nextN(o.locations.length)]
+      #        startEvent = addEvent [agent], location, start, "random " + o.description, {during: o.during}
+      #        endTime = start + (minDuration || 1) + ((maxDurtion ||1)-minDuration) * random.next() 
+      #        addEvent [agent], location, endTime, "random-end " + o.description, {ends: startEvent}
+
+    behaviourApi = #{{{3
       addEvent: (o) ->
         if Array.isArray o.location
           addEvents o.agents, o.location, o.time, o.description, o
@@ -798,6 +813,7 @@ apiServer = ->
         warn "missing agent kind #{agent.id}" if !agent.kind
         warn "duplicate agent #{agent.id}" if data.agents[agent.id]
         data.agents[agent.id] = agent
+      randomEvents: randomEvents
 
     try (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
     catch e
