@@ -27,7 +27,7 @@
 #       - hash+pseudorand event+agent to check probability + choose time and then add event
 #       - configuration
 #         - agent types
-#         - probability
+#         - frequencyPerHour - wait 2*rand*hour/frequencyPerHour in between
 #         - timeend
 #         - min length
 #         - max duration
@@ -47,7 +47,11 @@
 # {{{2 current tasks
 #
 # - random events
-#   - prefix for events from schedule + isScheduled
+#   - random event emission - background and restore other events
+#   - generate random events
+#   - random-hash-evenly-distributed
+#   - √sample random configuration passed into the system
+#   - √prefix for events from schedule + isScheduled
 #   - √refactor next to be a function
 #
 # {{{2 Release Log
@@ -235,19 +239,30 @@ request = require "request"
 
 # {{{2 Utility functions
 #
-# {{{3 pseudorandom
-#
-randomSeed = 0
-pseudoRandom = ->
-  randomSeed = 1103515245 * randomSeed + 12345 & 0x7fffffff
-  (randomSeed & 0x3fffffff) / 0x40000000
-
 # {{{3 djb2-hash
 hash = (str) ->
   result = 5381
   for i in [1..str.length-1]
     result = 33 * result + str.charCodeAt(i) &0x7fffffff
   result
+
+# {{{3 pseudoRandom utility functions
+prand = (i) ->
+  i ?= 0
+  next = -> i = 1103515245 * i + 12345 & 0x7fffffff
+  return {
+    next: -> next(); (i & 0x3fffffff) / 0x40000000
+    nextN: (n) -> next(); i % n
+  }
+
+# {{{3 pseudorandom
+#
+random = prand(0)
+pseudoRandom = -> random.next()
+#randomSeed = 0
+#pseudoRandom = ->
+#  randomSeed = 1103515245 * randomSeed + 12345 & 0x7fffffff
+#  (randomSeed & 0x3fffffff) / 0x40000000
 
 # {{{3 uniqueId
 uniqueId = do ->
@@ -741,7 +756,7 @@ apiServer = ->
 
     addEvent = (agents, location, time, description, misc) ->
       #id = time + ' ' + hash("" + agents + location + description) + " "+ uniqueId()
-      id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
+      id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId() # + "_" + description
       data.events[id] =
         id: id
         location: location || undefined
@@ -750,7 +765,7 @@ apiServer = ->
         agents: agents
       if misc
         for key, val of misc
-          data.events[id][key] = val
+          data.events[id][key] ?= val
 
     addEvents = (agents, locations, time, description, misc) ->
       len = locations.length
@@ -779,9 +794,9 @@ apiServer = ->
     behaviourApi =
       addEvent: (o) ->
         if Array.isArray o.location
-          addEvents o.agents, o.location, o.time, o.description
+          addEvents o.agents, o.location, o.time, o.description, o
         else
-          addEvent o.agents, o.location, o.time, o.description
+          addEvent o.agents, o.location, o.time, o.description, o
       addAgent: (agent) ->
         agent.id = agent.id || uniqueId()
         warn "missing agent kind #{agent.id}" if !agent.kind

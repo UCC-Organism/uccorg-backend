@@ -33,6 +33,7 @@ exports.calendarAgents = function(calendar, uccorg, data) {
         if (activity) {
             uccorg.addEvent({
                 time: o.start,
+                likelyEndTime: o.end.slice(0,19),
                 agents: activity.agents,
                 location: activity.location,
                 description: o.type
@@ -41,6 +42,15 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                 time: (new Date(new Date(o.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19),
                 agents: activity.agents
             });
+        if (activity.random) {
+          uccorg.addEvent({
+            time: o.start,
+            likelyEndTime: o.end.slice(0,19),
+            description: "random " + activity.random.description,
+            info: activity.random,
+            agents: ["random"]
+          });
+        }
         }
     }
 };
