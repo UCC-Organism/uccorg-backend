@@ -13,7 +13,7 @@ module.exports = {
         "minDuration": 1,
         "maxDuration": 10,
         "description": "toilet",
-        "locations": ["toilet1", "toilet2", "toilet3"],
+        "locations": ["toilet"],
         "during": ["scheduled", "roaming"],
         "frequencyPerHour": 0.01
       }
