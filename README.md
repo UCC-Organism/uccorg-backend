@@ -25,7 +25,7 @@ Backend for the UCC-organism
   - refactor + eliminate dead code
 - overordnet aftale
   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
-  - (TODO)tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
+  - •tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
     - notes
       - configuration call initiate event-creation
       - hash+pseudorand event+agent to check probability + choose time and then add event
@@ -903,6 +903,7 @@ distribute agents into locations for event
             catch e
               console.log e
               warn "error creating random events for #{JSON.stringify o}: #{String(e)}"
+        data.beforeRandom = {}
     
         behaviourApi = #{{{3
           addEvent: (o) ->
@@ -1087,10 +1088,32 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 #### Events and event emitter
 
       emitEvent = (event) ->
+
+TODO: fix bug update-status instead of emitEvent by extracting to filte-function
+
+        currentEvent = data.events[data.agentNow[event.agents[0]]?.event] || {}
+        if eventType(event) == "random"
+
+only emit random events if they are happening during an activity where they can occur
+return if not eventType(currentEvent) in event.during
+remember the previous event, to be able to restore it, - but only if it isn't a random event
+
+          if eventType(currentEvent) != "random"
+            data.beforeRandom[event.agents[0]] = currentEvent.id
+    
         if eventType(event) == "random-end"
-          console.log "TODO: restore eventtype from previous event"
-          return if data.agentNow[event.agents[0]].event != event.ends
-          event.description = "roaming"
+          if data.agentNow[event.agents[0]].event != event.ends
+            data.beforeRandom[event.agents[0]] = undefined
+            return
+          prevEvent = data.events[data.beforeRandom[event.agents[0]] ]
+          if prevEvent
+            event.description = prevEvent.description
+            event.location = prevEvent.location
+            event.clonedId = prevEvent.id
+          else
+            event.description = "roaming"
+          data.beforeRandom[event.agents[0]] = undefined
+    
         if event.description == "away" and data.agentNow[event.agents[0]].activity != "roaming"
 
 TODO also go away if doing random stuff
