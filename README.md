@@ -25,20 +25,7 @@ Backend for the UCC-organism
   - refactor + eliminate dead code
 - overordnet aftale
   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
-  - •tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
-    - notes
-      - configuration call initiate event-creation
-      - hash+pseudorand event+agent to check probability + choose time and then add event
-      - configuration
-        - agent types
-        - frequencyPerHour - wait 2*rand*hour/frequencyPerHour in between
-        - timeend
-        - min length
-        - max duration
-        - allowed-activities (all,roaming)
-      - when random event happens, only let it occur iff agent is doing allowed activity
-      - special random-end-event, that restores current state, if the agent is in the random state, and otherwise doesn't occur
-      - NB: activity types should be simplified
+  - √tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
   - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
   - •mulighed for at konfigurere tilfældig opførsel og events
   - •løbende tilpasninger af backend efter ønsker fra A&K og frontendudviklingen frem til idiftsættelsen
@@ -50,10 +37,13 @@ Backend for the UCC-organism
 
 ## current tasks
 
+- document how to configure, and more up to date
+- configurable directory for behaviour configuration
 - random events
-  - random event emission - background and restore other events
-  - generate random events
-  - random-hash-evenly-distributed
+  - √only random events on agents present
+  - √random event emission - background and restore other events
+  - √generate random events
+  - √random-hash-evenly-distributed
   - √sample random configuration passed into the system
   - √prefix for events from schedule + isScheduled
   - √refactor next to be a function
@@ -61,6 +51,7 @@ Backend for the UCC-organism
 ## Release Log
 ### January-April 2015
 - week 13
+  - random behaviour
   - more url-friendly event-ids (with "_" instead of " ")
   - event-id in /now
   - have events also bring along a likely end time
@@ -249,7 +240,7 @@ Data schema:
 
 ### evenType
 
-    eventType = (eventObject) -> (eventObject.description || "").split(" ")[0]
+    eventType = (eventObject) -> (eventObject.description || "undefined").split(" ")[0]
 
 ### djb2-hash
 
@@ -1088,21 +1079,20 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 #### Events and event emitter
 
       filterEvent = (event) ->
-
-TODO: fix bug update-status instead of emitEvent by extracting to filte-function
-
         currentEvent = data.events[data.agentNow[event.agents[0]]?.event] || {}
         if eventType(event) == "random"
 
 only emit random events if they are happening during an activity where they can occur
-return if not eventType(currentEvent) in event.during
+
+          return if not (eventType(currentEvent) in event.during)
+
 remember the previous event, to be able to restore it, - but only if it isn't a random event
 
           if eventType(currentEvent) != "random"
             data.beforeRandom[event.agents[0]] = currentEvent.id
     
         if eventType(event) == "random-end"
-          if data.agentNow[event.agents[0]].event != event.ends
+          if (data.agentNow[event.agents[0]]?.event) != event.ends
             data.beforeRandom[event.agents[0]] = undefined
             return
           prevEvent = data.events[data.beforeRandom[event.agents[0]] ]
