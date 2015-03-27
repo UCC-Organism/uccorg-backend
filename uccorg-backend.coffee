@@ -1087,6 +1087,7 @@ apiServer = ->
 
   #{{{2 update global state (agents/events)
   updateState = (event) ->
+    return if not event
     for agent in event.agents
       prevLocation = (data.agentNow[agent] || {}).location
       data.locationNow[prevLocation].agents = data.locationNow[prevLocation].agents.filter ( (a) -> a != agent) if prevLocation
