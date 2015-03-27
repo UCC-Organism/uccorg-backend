@@ -739,7 +739,8 @@ apiServer = ->
     data.events = {} # {{{3
 
     addEvent = (agents, location, time, description, misc) ->
-      return if !agents || !agents.length
+      if !agents || !agents.length
+        return
       #id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
       id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()  + "_" + ((description || "").split " ")[0]
       data.events[id] =

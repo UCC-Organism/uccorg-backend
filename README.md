@@ -828,6 +828,8 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
         data.events = {} # {{{3
     
         addEvent = (agents, location, time, description, misc) ->
+          if !agents || !agents.length
+            return
 
 id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
 
@@ -893,7 +895,6 @@ distribute agents into locations for event
     
         behaviourApi = #{{{3
           addEvent: (o) ->
-            return if !o.agents || !o.agents.length
             if Array.isArray o.location
               addEvents o.agents, o.location, o.time, o.description, o
             else
