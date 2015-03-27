@@ -739,6 +739,7 @@ apiServer = ->
     data.events = {} # {{{3
 
     addEvent = (agents, location, time, description, misc) ->
+      return if !agents || !agents.length
       #id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
       id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()  + "_" + ((description || "").split " ")[0]
       data.events[id] =
@@ -800,7 +801,6 @@ apiServer = ->
 
     behaviourApi = #{{{3
       addEvent: (o) ->
-        return if !o.agents || !o.agents.length
         if Array.isArray o.location
           addEvents o.agents, o.location, o.time, o.description, o
         else
