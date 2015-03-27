@@ -893,6 +893,7 @@ distribute agents into locations for event
     
         behaviourApi = #{{{3
           addEvent: (o) ->
+            return if !o.agents || !o.agents.length
             if Array.isArray o.location
               addEvents o.agents, o.location, o.time, o.description, o
             else
@@ -924,7 +925,7 @@ distribute agents into locations for event
           if e.location
             data.next[e.location] ?= []
             data.next[e.location].push event
-          for agent in e.agents
+          for agent in (e.agents || [])
             data.next[agent] ?= []
             data.next[agent].push event
         for id, events of data.next

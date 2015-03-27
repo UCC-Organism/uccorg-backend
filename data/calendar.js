@@ -19,6 +19,19 @@ module.exports = {
       }
     ]
   },
+  "frokost": {
+    "random": [
+      {
+        "agentTypes": ["student", "teacher", "researcher"],
+        "minDuration": 10,
+        "maxDuration": 30,
+        "description": "lunch",
+        "locations": ["canteen"],
+        "during": ["roaming"],
+        "frequencyPerHour": 4
+      }
+    ]
+  },
   "eftermiddag": { "agents": ["time-of-day"], "location": ["global-state"]},
   "morgen": { "agents": ["time-of-day"], "location": ["global-state"]},
   "nat": { "agents": ["time-of-day"], "location": ["global-state"]}
