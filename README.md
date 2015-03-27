@@ -929,7 +929,7 @@ distribute agents into locations for event
         data.eventList.sort()
     
         while data.eventPos < data.eventList.length && data.eventList[data.eventPos] < getDateTime()
-          updateState(data.events[data.eventList[data.eventPos]])
+          updateState(filterEvent(data.events[data.eventList[data.eventPos]]))
           data.eventPos += 1
     
         data.next = {}
