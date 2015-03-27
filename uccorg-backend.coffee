@@ -976,7 +976,7 @@ apiServer = ->
   bayeux.attach server
   
   #{{{4 Events and event emitter
-  emitEvent = (event) ->
+  filterEvent = (event) ->
     # TODO: fix bug update-status instead of emitEvent by extracting to filte-function
     currentEvent = data.events[data.agentNow[event.agents[0]]?.event] || {}
     if eventType(event) == "random"
@@ -1002,6 +1002,11 @@ apiServer = ->
     if event.description == "away" and data.agentNow[event.agents[0]].activity != "roaming"
       # TODO also go away if doing random stuff
       return
+    return event
+
+  emitEvent = (event) ->
+    event = filterEvent event
+    return if not event
     data.events[event.id] = event if !data.events[event.id]
     console.log getDateTime(), event.id, event.description, event.location
     updateState event

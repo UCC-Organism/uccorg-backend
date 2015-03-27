@@ -1087,7 +1087,7 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 
 #### Events and event emitter
 
-      emitEvent = (event) ->
+      filterEvent = (event) ->
 
 TODO: fix bug update-status instead of emitEvent by extracting to filte-function
 
@@ -1119,6 +1119,11 @@ remember the previous event, to be able to restore it, - but only if it isn't a 
 TODO also go away if doing random stuff
 
           return
+        return event
+    
+      emitEvent = (event) ->
+        event = filterEvent event
+        return if not event
         data.events[event.id] = event if !data.events[event.id]
         console.log getDateTime(), event.id, event.description, event.location
         updateState event
