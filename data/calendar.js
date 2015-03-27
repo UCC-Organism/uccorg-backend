@@ -11,7 +11,7 @@ module.exports = {
       {
         "agentTypes": ["student", "teacher", "researcher"],
         "minDuration": 1,
-        "maxDuration": 20,
+        "maxDuration": 10,
         "description": "toilet",
         "locations": ["toilet1", "toilet2", "toilet3"],
         "during": ["scheduled", "roaming"],

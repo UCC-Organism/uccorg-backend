@@ -247,6 +247,10 @@ Data schema:
 
 ## Utility functions
 
+### evenType
+
+    eventType = (eventObject) -> (eventObject.description || "").split(" ")[0]
+
 ### djb2-hash
 
     hash = (str) ->
@@ -879,21 +883,26 @@ distribute agents into locations for event
           for agent in agents
             addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
     
-        randomEvents = (start, end, o) -> #{{{3
-          console.log "random-events", start, end, o
-
-for agent
-  if agent.type in o.agentTypes
-     t = start
-     random = prand(hash(agent + start + o.descripion))
-     loop
-       t += 2*random.next() * 60*60*1000  / o.frequencyPerHour
-       break unless t > end
-       location = o.locations[random.nextN(o.locations.length)]
-       startEvent = addEvent [agent], location, start, "random " + o.description, {during: o.during}
-       endTime = start + (minDuration || 1) + ((maxDurtion ||1)-minDuration) * random.next() 
-       addEvent [agent], location, endTime, "random-end " + o.description, {ends: startEvent}
-
+        randomEvents = (start, end, events) -> #{{{3
+          for o in events
+            o.minDuration ?= 0.1
+            o.maxDuration ?= 10
+            try
+              for agentId, agent of data.agents
+                if agent.kind in o.agentTypes
+                  time = +(new Date(start))
+                  end = +(new Date(end))
+                  random = prand(hash(agentId + start + o.description))
+                  time += 2 * random.next() * 60 * 60 * 1000 / o.frequencyPerHour
+                  while time < end
+                    location = o.locations[random.nextN o.locations.length]
+                    startEvent = addEvent [agentId], location, (new Date(time)).toISOString(), "random " + o.description, {during: o.during}
+                    endTime = time + 1000*60* (o.minDuration  + (o.maxDuration - o.minDuration) * random.next())
+                    addEvent [agentId], null, (new Date(endTime)).toISOString(), "random-end " + o.description, {ends: startEvent}
+                    time += 2 * random.next() * 60 * 60 * 1000 / o.frequencyPerHour
+            catch e
+              console.log e
+              warn "error creating random events for #{JSON.stringify o}: #{String(e)}"
     
         behaviourApi = #{{{3
           addEvent: (o) ->
@@ -1078,7 +1087,14 @@ For example upload with: curl -X POST -H "Content-Type: application/json" -d @da
 #### Events and event emitter
 
       emitEvent = (event) ->
+        if eventType(event) == "random-end"
+          console.log "TODO: restore eventtype from previous event"
+          return if data.agentNow[event.agents[0]].event != event.ends
+          event.description = "roaming"
         if event.description == "away" and data.agentNow[event.agents[0]].activity != "roaming"
+
+TODO also go away if doing random stuff
+
           return
         data.events[event.id] = event if !data.events[event.id]
         console.log getDateTime(), event.id, event.description, event.location
