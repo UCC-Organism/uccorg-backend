@@ -2,52 +2,47 @@
 # {{{1 Status
 # {{{2 Back Log - January-April 2015
 #
-# - next event for agents
-# - placering af random - multible locations
-# - kategorier på lokationer i konfigurationen
-# - evt. splitningsfunktion flyttet til js
-# - case insensitive+trim calendar events
-# - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning etc.
-# - documentation of expectations of external data
-# - afklaring og udførsel af drifts-konfiguration
-# - udkast til aftale om driftssupport
-# - udkast til aftale om driftsovervågning
-# - integration/test with frontend
-# - extra
+# - next
+#
+# - misc backlog
+#   - forskudt tid (håndterer skævt ur på mac)
+#   - kategorier på lokationer i konfigurationen
+#   - evt. splitningsfunktion flyttet til js
+#   - case insensitive+trim calendar events
+#   - udkast til aftale om driftssupport
+#   - udkast til aftale om driftsovervågning
+#   - integration/test with frontend
+#   - document how to configure, and more up to date
+#   - configurable directory for behaviour configuration
 #   - (marcin? mapping between ucc-organism room id's and schedule room name)
 #   - update rest-test
 #   - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
-#   - delivered data: document expectations, check if workarounds are still needed, and more verbose reporting + erroring when not ok
 #   - refactor + eliminate dead code
+#
 # - overordnet aftale
 #   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
 #   - √tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
 #   - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
-#   - •mulighed for at konfigurere tilfældig opførsel og events
-#   - •løbende tilpasninger af backend efter ønsker fra A&K og frontendudviklingen frem til idiftsættelsen
+#   - √mulighed for at konfigurere tilfældig opførsel og events
+#   - √løbende tilpasninger af backend efter ønsker fra A&K og frontendudviklingen frem til idiftsættelsen
 #   - √håndtering af at systemet kører videre, selv hvis de eksterne datakilder fejler
 #   - •afklaring af driftskonfiguration, - skal vi sætte en separat linux-server op, eller køre det parallelt på mac'en der også driver skærmen
 #   - (eventult konfiguration og opsætning af linux-server)
-#   - •proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
+#   - √proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
 #   - (TODO)dokumentation af forventninger og krav til de eksterne datakilder
-#
-# {{{2 current tasks
-#
-# - document how to configure, and more up to date
-# - configurable directory for behaviour configuration
-# - random events
-#   - √only random events on agents present
-#   - √random event emission - background and restore other events
-#   - √generate random events
-#   - √random-hash-evenly-distributed
-#   - √sample random configuration passed into the system
-#   - √prefix for events from schedule + isScheduled
-#   - √refactor next to be a function
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 13
 #   - random behaviour
+#     - only random events on agents present
+#     - random event emission - background and restore other events
+#     - generate random events
+#     - configurable random behaviour - lunch, toilet-break, illness-leave, pauser mellem undervisning etc.
+#     - random-hash-evenly-distributed
+#     - sample random configuration passed into the system
+#     - prefix for events from schedule + isScheduled
+#     - refactor next to be a function
 #   - more url-friendly event-ids (with "_" instead of " ")
 #   - event-id in /now
 #   - have events also bring along a likely end time
