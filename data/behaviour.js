@@ -7,7 +7,7 @@ var config = {
 var randomSeed;
 
 exports.calendarAgents = function(calendar, uccorg, data) {
-    var id, i, o, researchers, activity;
+    var id, i, j, o, researchers, activity, activities;
     randomSeed = 0;
 
     for (var agentType in config.agents) {
@@ -23,27 +23,34 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                 });
             }
         } else {
-          uccorg.addAgent({id:agentType, kind: agentType});
+            uccorg.addAgent({
+                id: agentType,
+                kind: agentType
+            });
         }
     }
 
     for (i = 0; i < calendar.length; ++i) {
         o = calendar[i];
-        activity = config.calendar[o.type];
-        if (activity) {
-            uccorg.addEvent({
-                time: o.start,
-                likelyEndTime: o.end.slice(0,19),
-                agents: activity.agents,
-                location: activity.location,
-                description: activity.activity || o.type
-            });
-            uccorg.addEvent({
-                time: (new Date(new Date(o.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19),
-                agents: activity.agents
-            });
-            if (activity.random) {
-                uccorg.randomEvents( o.start, o.end.slice(0,19), activity.random);
+        activities = config.calendar[o.type];
+        if (activities) {
+            for (j = 0; j < activities.length; ++j) {
+                activity = activities[j];
+                if (activity.frequencyPerHour) {
+                    uccorg.randomEvents(o.start, o.end.slice(0, 19), [activity]);
+                } else {
+                    uccorg.addEvent({
+                        time: o.start,
+                        likelyEndTime: o.end.slice(0, 19),
+                        agents: activity.agents,
+                        location: activity.location,
+                        description: activity.activity || o.type
+                    });
+                    uccorg.addEvent({
+                        time: (new Date(new Date(o.end.slice(0, 19) + 'Z') - 1000)).toISOString().slice(0, 19),
+                        agents: activity.agents
+                    });
+                }
             }
         }
     }
@@ -55,9 +62,9 @@ function pseudoRandom() {
 }
 
 function agentNames(name, count) {
-  var result = [];
-  for (var i = 1; i <= count; ++i) {
-    result.push(name + i);
-  }
-  return result;
+    var result = [];
+    for (var i = 1; i <= count; ++i) {
+        result.push(name + i);
+    }
+    return result;
 }
