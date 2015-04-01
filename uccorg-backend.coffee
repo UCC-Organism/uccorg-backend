@@ -33,6 +33,7 @@
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 14
 # - week 13
 #   - random behaviour
 #     - only random events on agents present
@@ -225,6 +226,13 @@ request = require "request"
 
 # {{{2 Utility functions
 #
+# {{{3 Math.imul
+Math.imul ?= (a,b)->
+  _ah = (a >>> 16) & 0xffff
+  _al = a & 0xffff
+  _bh = (b >>> 16) & 0xffff
+  _bl = b & 0xffff
+  (_al * _bl) + (((_ah * _bl + _al * _bh) << 16) >>> 0)|0
 # {{{3 evenType
 eventType = (eventObject) -> (eventObject.description || "undefined").split(" ")[0]
 # {{{3 djb2-hash
@@ -237,16 +245,17 @@ hash = (str) ->
 # {{{3 pseudoRandom utility functions
 prand = (i) ->
   i ?= 0
-  next = -> i = 1103515245 * i + 12345 & 0x7fffffff
+  next = -> 
+    i = Math.imul(1103515245, i) + 12345 & 0x7fffffff
   return {
     next: -> next(); (i & 0x3fffffff) / 0x40000000
-    nextN: (n) -> next(); i % n
+    nextN: (n) -> next(); n * (i & 0x3fffffff) / 0x40000000 | 0
   }
 
 # {{{3 pseudorandom
 #
-random = prand(0)
-pseudoRandom = -> random.next()
+prng = prand(0)
+pseudoRandom = -> prng.next()
 
 # {{{3 uniqueId
 uniqueId = do ->

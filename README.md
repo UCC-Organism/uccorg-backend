@@ -37,6 +37,7 @@ Backend for the UCC-organism
 
 ## Release Log
 ### January-April 2015
+- week 14
 - week 13
   - random behaviour
     - only random events on agents present
@@ -233,6 +234,15 @@ Data schema:
 
 ## Utility functions
 
+### Math.imul
+
+    Math.imul ?= (a,b)->
+      _ah = (a >>> 16) & 0xffff
+      _al = a & 0xffff
+      _bh = (b >>> 16) & 0xffff
+      _bl = b & 0xffff
+      (_al * _bl) + (((_ah * _bl + _al * _bh) << 16) >>> 0)|0
+
 ### evenType
 
     eventType = (eventObject) -> (eventObject.description || "undefined").split(" ")[0]
@@ -250,18 +260,19 @@ Data schema:
 
     prand = (i) ->
       i ?= 0
-      next = -> i = 1103515245 * i + 12345 & 0x7fffffff
+      next = -> 
+        i = Math.imul(1103515245, i) + 12345 & 0x7fffffff
       return {
         next: -> next(); (i & 0x3fffffff) / 0x40000000
-        nextN: (n) -> next(); i % n
+        nextN: (n) -> next(); n * (i & 0x3fffffff) / 0x40000000 | 0
       }
     
 
 ### pseudorandom
 
 
-    random = prand(0)
-    pseudoRandom = -> random.next()
+    prng = prand(0)
+    pseudoRandom = -> prng.next()
     
 
 ### uniqueId
@@ -1210,6 +1221,7 @@ TODO also go away if doing random stuff
 ## update global state (agents/events)
 
       updateState = (event) ->
+        return if not event
         for agent in event.agents
           prevLocation = (data.agentNow[agent] || {}).location
           data.locationNow[prevLocation].agents = data.locationNow[prevLocation].agents.filter ( (a) -> a != agent) if prevLocation
