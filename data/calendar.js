@@ -26,7 +26,7 @@ module.exports = {
         "minDuration": 10,
         "maxDuration": 30,
         "description": "lunch",
-        "locations": ["canteen"],
+        "locations": ["canteen", "canteen", "canteen", "cafe"],
         "during": ["roaming"],
         "frequencyPerHour": 4
       }
