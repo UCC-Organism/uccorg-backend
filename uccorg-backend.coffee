@@ -18,6 +18,8 @@
 #   - update rest-test
 #   - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 #   - refactor + eliminate dead code
+#   - configurable directory for extra config / `data/`
+#   - bugfix: missing roaming-end for random elements
 #
 # - overordnet aftale
 #   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
@@ -34,6 +36,9 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 14
+#   - configure events for administrators, janitors, kitchenstaff, and cafe/canteen
+#   - fix pseudorandom - bug due to imul
+#   - (frontend running on linux)
 # - week 13
 #   - random behaviour
 #     - only random events on agents present
