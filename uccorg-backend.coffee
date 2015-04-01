@@ -242,6 +242,17 @@ hash = (str) ->
     result = 33 * result + str.charCodeAt(i) &0x7fffffff
   result
 
+# {{{3 uniqueHash
+uniqueHashes = {}
+uniqueHash = (s) ->
+  h = hash(s)
+  s2 = uniqueHashes[h]
+  while s2 && s2 != s
+    h += 1
+    s2 = uniqueHashes[h]
+  uniqueHashes[h] = s
+  h
+
 # {{{3 pseudoRandom utility functions
 prand = (i) ->
   i ?= 0
@@ -751,7 +762,7 @@ apiServer = ->
       if !agents || !agents.length
         return
       #id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
-      id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()  + "_" + ((description || "").split " ")[0]
+      id = time + '_' + uniqueHash("" + agents + location + description) + '_'+ ((description || "").split " ")[0]
       data.events[id] =
         id: id
         location: location || undefined

@@ -256,6 +256,19 @@ Data schema:
       result
     
 
+### uniqueHash
+
+    uniqueHashes = {}
+    uniqueHash = (s) ->
+      h = hash(s)
+      s2 = uniqueHashes[h]
+      while s2 && s2 != s
+        h += 1
+        s2 = uniqueHashes[h]
+      uniqueHashes[h] = s
+      h
+    
+
 ### pseudoRandom utility functions
 
     prand = (i) ->
@@ -844,7 +857,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 
 id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()
 
-          id = time + '_' + hash("" + agents + location + description) + '_'+ uniqueId()  + "_" + ((description || "").split " ")[0]
+          id = time + '_' + uniqueHash("" + agents + location + description) + '_'+ ((description || "").split " ")[0]
           data.events[id] =
             id: id
             location: location || undefined
