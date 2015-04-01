@@ -3,17 +3,25 @@ module.exports = {
     "agents": agentNames("researcher", 10),
     "location": ["B.103", "B.105", "B.104", "B.109", "A.104", "A.106"]
   },
-  "anitors": {
+  "janitors": {
     "agents": agentNames("janitor", 2),
     "activity": "roaming",
     "random": [ {
       "agentTypes": ["janitor"],
         "minDuration": 1,
-        "maxDuration": 10,
+        "maxDuration": 3,
         "description": "toilet",
-        "locations": ["toilet"],
+        "locations": ["random toilet"],
         "during": ["scheduled", "roaming"],
-        "frequencyPerHour": 1
+        "frequencyPerHour": 0.1
+    },{
+      "agentTypes": ["janitor"],
+        "minDuration": 1,
+        "maxDuration": 10,
+        "description": "closet",
+        "locations": ["random closet"],
+        "during": ["scheduled", "roaming"],
+        "frequencyPerHour": 0.5 
     }]
   },
   "aften": { "agents": ["time-of-day"], "location": ["global-state"]},

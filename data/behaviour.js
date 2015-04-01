@@ -36,7 +36,7 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                 likelyEndTime: o.end.slice(0,19),
                 agents: activity.agents,
                 location: activity.location,
-                description: o.type
+                description: activity.activity || o.type
             });
             uccorg.addEvent({
                 time: (new Date(new Date(o.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19),
