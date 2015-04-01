@@ -1,4 +1,8 @@
 module.exports = {
+  "cooking": [{
+    "agents": agentNames("kitchen staff", 10),
+    "location": ["cafe", "canteen", "kitchen", "kitchen", "kitchen", "canteen"]
+  }],
   "workers": [{
     "agents": agentNames("researcher", 10),
     "activity": "researchers",

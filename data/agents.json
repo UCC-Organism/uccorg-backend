@@ -17,7 +17,12 @@
     "maxAge": 60,
     "genderBalance": 0.5
   },
-  "kitchen staff": {},
+  "kitchen staff": {
+    "count": 10,
+    "minAge": 20,
+    "maxAge": 60,
+    "genderBalance": 0.5
+  },
   "teacher": {},
   "student": {},
   "transport": {},
