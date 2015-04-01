@@ -1,7 +1,12 @@
 module.exports = {
-  "researchers": [{
+  "workers": [{
     "agents": agentNames("researcher", 10),
+    "activity": "researchers",
     "location": ["B.103", "B.105", "B.104", "B.109", "A.104", "A.106"]
+  }, {
+    "agents": agentNames("administrator", 10),
+    "activity": "administrators",
+    "location": ["C.103", "C.105", "C.104", "C.109", "B.104", "B.106"]
   }],
   "janitors": [{
     "agents": agentNames("janitor", 2),
