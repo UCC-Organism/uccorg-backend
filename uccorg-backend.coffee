@@ -254,8 +254,8 @@ prand = (i) ->
 
 # {{{3 pseudorandom
 #
-prng = prand(0)
-pseudoRandom = -> prng.next()
+seed = prand(0)
+pseudoRandom = -> seed.next()
 
 # {{{3 uniqueId
 uniqueId = do ->
@@ -774,6 +774,7 @@ apiServer = ->
         addEvent agents, locations[0], time, description, misc
 
 
+    seed = prand(0)
     for _, activity of data.activities
       agents = []
       for teacherId in activity.teachers

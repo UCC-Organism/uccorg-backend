@@ -271,8 +271,8 @@ Data schema:
 ### pseudorandom
 
 
-    prng = prand(0)
-    pseudoRandom = -> prng.next()
+    seed = prand(0)
+    pseudoRandom = -> seed.next()
     
 
 ### uniqueId
@@ -869,6 +869,7 @@ distribute agents into locations for event
             addEvent agents, locations[0], time, description, misc
     
     
+        seed = prand(0)
         for _, activity of data.activities
           agents = []
           for teacherId in activity.teachers
