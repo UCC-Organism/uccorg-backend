@@ -1,11 +1,14 @@
 #!/usr/bin/env coffee
 # {{{1 Status
-# {{{2 Back Log - January-April 2015
+# {{{2 Back Log 
 #
 # - next
 #
 # - misc backlog
 #   - forskudt tid (håndterer skævt ur på mac)
+#   - intensity level 0-1+random for globale events
+#   - pauser mellem timerne
+#   - to tilfældige farver fra colorrange+fagretning per agent.
 #   - kategorier på lokationer i konfigurationen
 #   - evt. splitningsfunktion flyttet til js
 #   - case insensitive+trim calendar events
