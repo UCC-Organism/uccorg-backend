@@ -861,8 +861,8 @@ apiServer = ->
       breakTime = 1000*60*(minBreak+breakRandom.next() * (maxBreak - minBreak))
       endTime = (new Date(new Date(activity.end.slice(0,19)+'Z') - breakTime)).toISOString().slice(0,19)
       addEvent agents, undefined, endTime, "roaming", {autoLeave: leaveTime(endTime + agents)}
-      for agent in agents
-        addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
+      #for agent in agents
+      #  addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
 
     randomEvents = (start, end, events) -> #{{{3
       for o in events
@@ -1081,6 +1081,30 @@ apiServer = ->
 
   autoLeave = []
   nextAutoLeave = "0"
+  addAutoLeave = (event) ->
+    autoLeave.push event
+    nextAutoLeave = event.autoLeave if event.autoLeave < nextAutoLeave
+  handleAutoLeave = (now) ->
+    events = []
+    if nextAutoLeave <= now
+      list = autoLeave
+      autoLeave = []
+      nextAutoLeave = "9999"
+      for event in list
+        if event.autoLeave <= now
+          for agent in event.agents
+            if data.agentNow[agent].event == event.id
+              id = event.autoLeave + '_' + uniqueHash(agent + event.id) + '_away'
+              data.events[id] =
+                id: id
+                description: "away"
+                time: event.autoLeave
+                agents: [agent]
+              events.push id
+        else
+          addAutoLeave event
+    events
+
   leaveTime = (t) ->
     prng = prand(hash(t))
     (new Date(new Date(t.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * prng.next())|0) * 60 * 1000)).toISOString().slice(0,19)
@@ -1088,6 +1112,7 @@ apiServer = ->
   emitEvent = (event) ->
     event = filterEvent event
     return if not event
+    addAutoLeave(event) if event.autoLeave
     data.events[event.id] = event if !data.events[event.id]
     console.log getDateTime(), event.id, event.description, event.location
     updateState event
@@ -1095,10 +1120,14 @@ apiServer = ->
 
   eventEmitter = ->
     now = getDateTime()
+    events = handleAutoLeave now
     while data.eventPos < data.eventList.length and data.eventList[data.eventPos] <= now
-      event = data.events[data.eventList[data.eventPos]]
-      emitEvent event
+      events.push data.eventList[data.eventPos]
       ++data.eventPos
+    events.sort()
+    for event in events
+      emitEvent data.events[event]
+
   setInterval eventEmitter, 100
   
   
