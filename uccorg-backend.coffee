@@ -1067,6 +1067,7 @@ apiServer = ->
       if prevEvent
         event.description = prevEvent.description
         event.location = prevEvent.location
+        event.autoLeave = prevEvent.autoLeave
         event.clonedId = prevEvent.id
       else
         event.description = "roaming"

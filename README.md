@@ -1190,6 +1190,7 @@ remember the previous event, to be able to restore it, - but only if it isn't a 
           if prevEvent
             event.description = prevEvent.description
             event.location = prevEvent.location
+            event.autoLeave = prevEvent.autoLeave
             event.clonedId = prevEvent.id
           else
             event.description = "roaming"
