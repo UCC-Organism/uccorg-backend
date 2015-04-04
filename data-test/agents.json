@@ -1,0 +1,30 @@
+{
+  "researcher": {
+    "count": 100,
+    "minAge": 20,
+    "maxAge": 60,
+    "genderBalance": 0.5
+  },
+  "administrator": {
+    "count": 100,
+    "minAge": 20,
+    "maxAge": 60,
+    "genderBalance": 0.5
+  },
+  "janitor": {
+    "count": 10,
+    "minAge": 20,
+    "maxAge": 60,
+    "genderBalance": 0.5
+  },
+  "kitchen staff": {
+    "count": 10,
+    "minAge": 20,
+    "maxAge": 60,
+    "genderBalance": 0.5
+  },
+  "teacher": {},
+  "student": {},
+  "transport": {},
+  "time-of-day": {}
+}
