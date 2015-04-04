@@ -1064,10 +1064,9 @@ apiServer = ->
         data.beforeRandom[event.agents[0]] = undefined
         return
       prevEvent = data.events[data.beforeRandom[event.agents[0]] ]
-      if prevEvent
+      if prevEvent and !(prevEvent.description == "roaming" && prevEvent.autoLeave)
         event.description = prevEvent.description
         event.location = prevEvent.location
-        event.autoLeave = prevEvent.autoLeave
         event.clonedId = prevEvent.id
       else
         event.description = "roaming"
@@ -1126,6 +1125,7 @@ apiServer = ->
       events.push data.eventList[data.eventPos]
       ++data.eventPos
     events.sort()
+    console.log events
     for event in events
       emitEvent data.events[event]
 
