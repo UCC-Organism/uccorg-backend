@@ -3,26 +3,22 @@
 # {{{2 Back Log 
 #
 # - next
-#
-# - misc backlog
 #   - forskudt tid (håndterer skævt ur på mac)
 #   - intensity level 0-1+random for globale events
-#   - pauser mellem timerne
 #   - to tilfældige farver fra colorrange+fagretning per agent.
-#   - kategorier på lokationer i konfigurationen
-#   - evt. splitningsfunktion flyttet til js
 #   - case insensitive+trim calendar events
+#   - integration/test with frontend
+# - backlog
 #   - udkast til aftale om driftssupport
 #   - udkast til aftale om driftsovervågning
-#   - integration/test with frontend
 #   - document how to configure, and more up to date
-#   - configurable directory for behaviour configuration
+# - backlog 2
+#   - evt. splitningsfunktion flyttet til js
+#   - kategorier på lokationer i konfigurationen
 #   - (marcin? mapping between ucc-organism room id's and schedule room name)
+#   - refactor + eliminate dead code
 #   - update rest-test
 #   - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
-#   - refactor + eliminate dead code
-#   - configurable directory for extra config / `data/`
-#   - bugfix: missing roaming-end for random elements
 #
 # - overordnet aftale
 #   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
@@ -31,14 +27,18 @@
 #   - √mulighed for at konfigurere tilfældig opførsel og events
 #   - √løbende tilpasninger af backend efter ønsker fra A&K og frontendudviklingen frem til idiftsættelsen
 #   - √håndtering af at systemet kører videre, selv hvis de eksterne datakilder fejler
-#   - •afklaring af driftskonfiguration, - skal vi sætte en separat linux-server op, eller køre det parallelt på mac'en der også driver skærmen
-#   - (eventult konfiguration og opsætning af linux-server)
+#   - √afklaring af driftskonfiguration, - skal vi sætte en separat linux-server op, eller køre det parallelt på mac'en der også driver skærmen
+#   - √not-needed (eventult konfiguration og opsætning af linux-server)
 #   - √proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
 #   - (TODO)dokumentation af forventninger og krav til de eksterne datakilder
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 14
+#   - bugfix: neverending roaming
+#   - decide-on/document production setup
+#   - configurable shortening of classes to create breaks
+#   - configurable configuration+calendar + static data for repeatable unit test, when system configuration changes
 #   - configure events for administrators, janitors, kitchenstaff, and cafe/canteen
 #   - fix pseudorandom - bug due to imul
 #   - (frontend running on linux)
