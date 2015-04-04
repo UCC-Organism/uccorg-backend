@@ -629,14 +629,15 @@ apiServer = ->
   #{{{2 calendarData
   calendarData = (done) ->
     icaldata = []
-    return done() if ! config.icalUrl
     
-    request config.icalUrl, (err, result, ical) ->
+    request config.icalUrl || "http://no-ical-url-in-config/", (err, result, ical) ->
       if err
         warn 'Error getting calendar data ' + config.icalUrl
-        ical = fs.readFileSync "cached-calendar.ical", "utf8"
+        ical = fs.readFileSync config.icalCacheFile, "utf8"
       else
-        fs.writeFile "cached-calendar.ical", ical
+        fs.writeFile config.icalCacheFile, ical
+
+      return done() if !ical
   
       icaldata = []
       !ical.replace /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g, (_,e) ->
@@ -1212,6 +1213,8 @@ if require.main == module then do ->
   catch e
     console.log "reading config #{configfile}:", e
     process.exit 1
+
+  config.icalCacheFile ?= "cached-calendar.ical"
 
   if config.prepare then dataPreparationServer() else apiServer()
 

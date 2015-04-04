@@ -3,7 +3,8 @@
     "port": 8080,
     "cachefile": "sample-data.json"
   },
-  "icalUrl": "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics",
+  "icalCacheFile": "calendar-test.ical",
+  "XicalUrl": "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics",
   "test": {
     "outfile": "test.out",
     "startDate": "2015-02-11T05:10:00",
