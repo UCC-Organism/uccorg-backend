@@ -200,6 +200,29 @@ Data schema:
   - name
   - ?capacity
   
+# Main
+
+See sample file in `config.json-sample`, and `test.json`.
+
+
+    config = {}
+    if require.main == module then do ->
+      try
+        configfile = process.argv[2]
+        configfile = "config" if !configfile
+        configfile += ".json" if configfile.slice(-5) != ".json"
+        config = JSON.parse (require "fs").readFileSync configfile, "utf8"
+      catch e
+        console.log "reading config #{configfile}:", e
+        process.exit 1
+    
+      config.icalCacheFile ?= "cached-calendar.ical"
+      config.configData ?= "data/"
+    
+      process.nextTick ->
+        if config.prepare then dataPreparationServer() else apiServer()
+    
+
 # Common stuff
 ## About
 
@@ -371,9 +394,9 @@ escape unicode as ascii
 ## 
 
     generalSettings =
-      try (require "./data/general-settings.json")
+      try (require "./#{config.configData}/general-settings.json")
       catch e
-        warn "Error in configuration in data/ " + e
+        warn "Error in configuration in #{config.configData}/ " + e
         {}
     generalSettings.minRoam ?= 1
     generalSettings.maxRoam ?= 20
@@ -1337,26 +1360,7 @@ Date corresponds to the test data set, and a clock that runs very fast
         ), 100000 / testSpeed
 
 sendUpdate data, -> undefined
-# Main
 
-See sample file in `config.json-sample`, and `test.json`.
-
-
-    config = undefined
-    if require.main == module then do ->
-      try
-        configfile = process.argv[2]
-        configfile = "config" if !configfile
-        configfile += ".json" if configfile.slice(-5) != ".json"
-        config = JSON.parse fs.readFileSync configfile, "utf8"
-      catch e
-        console.log "reading config #{configfile}:", e
-        process.exit 1
-    
-      config.icalCacheFile ?= "cached-calendar.ical"
-    
-      if config.prepare then dataPreparationServer() else apiServer()
-    
     
 
 

@@ -13,5 +13,6 @@
     "DISABLED restTestTime": "2015-01-22T09:35:00"
   },
   "minBreak": 2,
-  "maxBreak": 7
+  "maxBreak": 7,
+  "configData": "data-test"
 }
