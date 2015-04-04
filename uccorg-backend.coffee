@@ -803,7 +803,11 @@ apiServer = ->
           agents.push "student" + student.id
 
       addEvents agents, activity.locations, activity.start, "scheduled " + activity.subject, { likelyEndTime: activity.end}
-      addEvent agents, undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - 1000)).toISOString().slice(0,19), "roaming"
+      minBreak = config.minBreak || 1 / 59
+      maxBreak = config.maxBreak || 1 / 59
+      breakRandom = prand(hash("" + activity.start + activity.locations + activity.agents))
+      breakTime = 1000*60*(minBreak+breakRandom.next() * (maxBreak - minBreak))
+      addEvent agents, undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - breakTime)).toISOString().slice(0,19), "roaming"
       for agent in agents
         addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
 

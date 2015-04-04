@@ -1,6 +1,8 @@
 {
   "icalUrl": "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics",
   "icalCacheFile": "cached-calendar.ical",
+  "minBreak": 2,
+  "maxBreak": 7,
   "apiserver": {
     "protocol": "http",
     "port": 8080,

@@ -3,6 +3,8 @@
     "port": 8080,
     "cachefile": "sample-data.json"
   },
+  "minBreak": 2,
+  "maxBreak": 7,
   "icalCacheFile": "cached-calendar.ical",
   "icalUrl": "http://www.google.com/calendar/ical/solsort.dk_74uhjebvm79isucb9j9n4eba6o%40group.calendar.google.com/public/basic.ics",
   "test": {
