@@ -200,6 +200,36 @@ Data schema:
   - name
   - ?capacity
   
+## Production server setup
+
+For the production system we choose to use a virtual linux server on the existing mac.
+
+Requirements for the server for the api-server:
+
+- boots automatically on power failure etc.
+- runs linux (other operating systems should also work, but I will not give any support on it)
+- when running a http service on port `8080`, it will be available as `http://10.251.26.11:8080` on the internal network
+- some way of rebooting it, and accessing it, remotely 
+
+
+The immediate options are either 
+
+- to set up a dedicated server on the UCC network
+- run a virtual server on the mac that will drive one of displays
+
+As there already is a virtual server configured on the mac, and under assumption that it is being kept running in production, we choose the latter.
+
+Server setup on linux, as user `uccorganism` with home `/home/uccorganism`. Assumes `git`/`nc` is installed via package manager, and  `node`/`npm`/`coffee` is installed in `/usr/local/bin`. Installation of the server is done with:
+
+    cd
+    git clone https://github.com/UCC-Organism/uccorg-backend.git
+    cd uccorg-backend
+    npm install
+    (crontab -l; echo @reboot /home/uccorganism/uccorg-backend/apiserver-start.sh) | sort | uniq | crontab -
+
+Then the api-server should then run after a reboot
+
+
 # Main
 
 See sample file in `config.json-sample`, and `test.json`.
@@ -398,8 +428,8 @@ escape unicode as ascii
       catch e
         warn "Error in configuration in #{config.configData}/ " + e
         {}
-    generalSettings.minRoam ?= 1
-    generalSettings.maxRoam ?= 20
+    generalSettings.minRoam ?= 15
+    generalSettings.maxRoam ?= 30
     
     
 
@@ -928,7 +958,8 @@ distribute agents into locations for event
           maxBreak = config.maxBreak || 1 / 59
           breakRandom = prand(hash("" + activity.start + activity.locations + activity.agents))
           breakTime = 1000*60*(minBreak+breakRandom.next() * (maxBreak - minBreak))
-          addEvent agents, undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - breakTime)).toISOString().slice(0,19), "roaming"
+          endTime = (new Date(new Date(activity.end.slice(0,19)+'Z') - breakTime)).toISOString().slice(0,19)
+          addEvent agents, undefined, endTime, "roaming", {autoLeave: leaveTime(endTime + agents)}
           for agent in agents
             addEvent [agent], undefined, (new Date(new Date(activity.end.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * pseudoRandom())|0) * 60 * 1000)).toISOString().slice(0,19), "away"
     
@@ -1160,6 +1191,8 @@ remember the previous event, to be able to restore it, - but only if it isn't a 
             event.clonedId = prevEvent.id
           else
             event.description = "roaming"
+            event.autoLeave = leaveTime(event.id)
+    
           data.beforeRandom[event.agents[0]] = undefined
     
         if event.description == "away" and data.agentNow[event.agents[0]].activity != "roaming"
@@ -1168,6 +1201,12 @@ TODO also go away if doing random stuff
 
           return
         return event
+    
+      autoLeave = []
+      nextAutoLeave = "0"
+      leaveTime = (t) ->
+        prng = prand(hash(t))
+        (new Date(new Date(t.slice(0,19)+'Z') - (- (generalSettings.minRoam + (generalSettings.maxRoam - generalSettings.minRoam) * prng.next())|0) * 60 * 1000)).toISOString().slice(0,19)
     
       emitEvent = (event) ->
         event = filterEvent event
