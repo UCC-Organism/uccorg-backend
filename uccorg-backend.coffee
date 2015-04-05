@@ -550,6 +550,7 @@ dataPreparationServer = ->
     addTeacher = (obj) ->
       id = obj.untis_id
       name = obj.name
+      warn "missing teacher in mssql: " + name if !teachers[name]
       result.teachers[id] =
         id: id
         gender: teachers[name]?["Køn"]
@@ -622,6 +623,7 @@ dataPreparationServer = ->
       grp.id = obj.untis_id
       grp.group = obj.name
       dept = webuntis.departments[obj.department]
+      warn "Department missing: #{obj.department}" if !dept
       grp.programme = "#{dept?.name} - #{dept?.longname}"
       grp.id
 
