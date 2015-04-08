@@ -5,7 +5,6 @@
 # - next
 #   - forskudt tid (håndterer skævt ur på mac)
 #   - intensity level 0-1+random for globale events
-#   - to tilfældige farver fra colorrange+fagretning per agent.
 #   - case insensitive+trim calendar events
 #   - integration/test with frontend
 # - near-future
@@ -34,6 +33,8 @@
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 15
+#   - to tilfældige farver fra colorrange+fagretning per agent.
 # - week 14
 #   - bugfix: neverending roaming
 #   - decide-on/document production setup
@@ -391,6 +392,7 @@ generalSettings =
   catch e
     warn "Error in configuration in #{config.configData}/ " + e
     {}
+
 generalSettings.minRoam ?= 15
 generalSettings.maxRoam ?= 30
 
@@ -785,6 +787,28 @@ apiServer = ->
     #{{{4 add agent+events
 
   #{{{2 agent/event data structure
+    assignAgentColors = (agent) ->
+      seed = prand(hash(agent.id))
+
+      randomComponent = (a, b) ->
+         a = parseInt a, 16
+         b = parseInt b, 16
+         n = 0x100 + a + seed.next() * (b - a) | 0
+         n.toString(16).slice(1)
+
+      randomColor = (c1, c2) ->
+        r = randomComponent(c1.slice(1,3),c2.slice(1,3))
+        g = randomComponent(c1.slice(3,5),c2.slice(3,5))
+        b = randomComponent(c1.slice(5,7),c2.slice(5,7))
+        "#" + r + g + b
+
+      colors = generalSettings.agentColors?[agent.programme]
+      colors = generalSettings.agentColors?.default if !colors
+      return if !(colors?.color1min and colors.color2min and colors.color1max and colors.color2max)
+
+      agent.color1 = randomColor(colors.color1min, colors.color1max)
+      agent.color2 = randomColor(colors.color2min, colors.color2max)
+
     data.agents = {} #{{{3
     for _, teacher of data.teachers
       id = "teacher" + teacher.id
@@ -793,6 +817,7 @@ apiServer = ->
       agent.gender = teacher.gender
       agent.programme = teacher.programmeDesc
       agent.id = id
+      assignAgentColors(agent)
 
     data.agents.JamesBond =
       kind: "yes"
@@ -817,6 +842,7 @@ apiServer = ->
         agent.gender = student.gender
         agent.end = student.end
         agent.id = id
+        assignAgentColors(agent)
 
     data.events = {} # {{{3
 
@@ -899,6 +925,7 @@ apiServer = ->
         warn "missing agent kind #{agent.id}" if !agent.kind
         warn "duplicate agent #{agent.id}" if data.agents[agent.id]
         data.agents[agent.id] = agent
+        assignAgentColors(agent)
       randomEvents: randomEvents
 
     try (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data

@@ -12,19 +12,19 @@ Backend for the UCC-organism
   - to tilfældige farver fra colorrange+fagretning per agent.
   - case insensitive+trim calendar events
   - integration/test with frontend
-- backlog
+- near-future
   - udkast til aftale om driftssupport
   - udkast til aftale om driftsovervågning
   - document how to configure, and more up to date
-- backlog 2
+- other
   - evt. splitningsfunktion flyttet til js
-  - kategorier på lokationer i konfigurationen
-  - (marcin? mapping between ucc-organism room id's and schedule room name)
-  - refactor + eliminate dead code
-  - update rest-test
-  - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
+  - evt. kategorier på lokationer i konfigurationen
+  - evt. mapping between ucc-organism room id's and schedule room name
+  - evt. refactor + eliminate dead code
+  - evt. update rest-test
+  - evt. include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 
-- overordnet aftale
+- contractual
   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
   - √tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
   - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
@@ -428,6 +428,7 @@ escape unicode as ascii
       catch e
         warn "Error in configuration in #{config.configData}/ " + e
         {}
+    
     generalSettings.minRoam ?= 15
     generalSettings.maxRoam ?= 30
     
@@ -611,6 +612,7 @@ For each kind of data there is a mapping from id to individual object
         addTeacher = (obj) ->
           id = obj.untis_id
           name = obj.name
+          warn "missing teacher in mssql" if !teachers[name]
           result.teachers[id] =
             id: id
             gender: teachers[name]?["Køn"]
@@ -693,6 +695,7 @@ Buggy data: sometimes the same group has several untis_id, which is why we make 
           grp.id = obj.untis_id
           grp.group = obj.name
           dept = webuntis.departments[obj.department]
+          warn "Department missing: #{obj.department}" if !dept and obj.department
           grp.programme = "#{dept?.name} - #{dept?.longname}"
           grp.id
     
@@ -878,6 +881,29 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
 
 ## agent/event data structure
 
+        assignAgentColors = (agent) ->
+          seed = prand(hash(agent.id))
+    
+          randomComponent = (a, b) ->
+             a = parseInt a, 16
+             b = parseInt b, 16
+             n = 0x100 + a + seed.next() * (b - a) | 0
+             n.toString(16).slice(1)
+    
+          randomColor = (c1, c2) ->
+            r = randomComponent(c1.slice(1,3),c2.slice(1,3))
+            g = randomComponent(c1.slice(3,5),c2.slice(3,5))
+            b = randomComponent(c1.slice(5,7),c2.slice(5,7))
+            "#" + r + g + b
+    
+          colors = generalSettings.agentColors?[agent.programme]
+          colors = generalSettings.agentColors?.default if !colors
+          console.log colors, generalSettings
+          return if !(colors?.color1min and colors.color2min and colors.color1max and colors.color2max)
+    
+          agent.color1 = randomColor(colors.color1min, colors.color1max)
+          agent.color2 = randomColor(colors.color2min, colors.color2max)
+    
         data.agents = {} #{{{3
         for _, teacher of data.teachers
           id = "teacher" + teacher.id
@@ -886,6 +912,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
           agent.gender = teacher.gender
           agent.programme = teacher.programmeDesc
           agent.id = id
+          assignAgentColors(agent)
     
         data.agents.JamesBond =
           kind: "yes"
@@ -910,6 +937,7 @@ WARNING: here we assume that we are in Europe/Copenhagen-timezone
             agent.gender = student.gender
             agent.end = student.end
             agent.id = id
+            assignAgentColors(agent)
     
         data.events = {} # {{{3
     
@@ -998,6 +1026,7 @@ for agent in agents
             warn "missing agent kind #{agent.id}" if !agent.kind
             warn "duplicate agent #{agent.id}" if data.agents[agent.id]
             data.agents[agent.id] = agent
+            assignAgentColors(agent)
           randomEvents: randomEvents
     
         try (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
