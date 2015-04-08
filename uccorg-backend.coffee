@@ -8,19 +8,19 @@
 #   - to tilfældige farver fra colorrange+fagretning per agent.
 #   - case insensitive+trim calendar events
 #   - integration/test with frontend
-# - backlog
+# - near-future
 #   - udkast til aftale om driftssupport
 #   - udkast til aftale om driftsovervågning
 #   - document how to configure, and more up to date
-# - backlog 2
+# - other
 #   - evt. splitningsfunktion flyttet til js
-#   - kategorier på lokationer i konfigurationen
-#   - (marcin? mapping between ucc-organism room id's and schedule room name)
-#   - refactor + eliminate dead code
-#   - update rest-test
-#   - include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
+#   - evt. kategorier på lokationer i konfigurationen
+#   - evt. mapping between ucc-organism room id's and schedule room name
+#   - evt. refactor + eliminate dead code
+#   - evt. update rest-test
+#   - evt. include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
 #
-# - overordnet aftale
+# - contractual
 #   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
 #   - √tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
 #   - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
