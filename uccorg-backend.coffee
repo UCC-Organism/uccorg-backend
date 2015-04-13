@@ -5,7 +5,6 @@
 # - next
 #   - forskudt tid (håndterer skævt ur på mac)
 #   - intensity level 0-1+random for globale events
-#   - case insensitive+trim calendar events
 #   - integration/test with frontend
 #   - expand on documentations
 #   - go through/refactor/reread documentation
@@ -36,6 +35,7 @@
 # {{{2 Release Log
 # {{{3 January-April 2015
 # - week 15
+#   - case insensitive+trim calendar events
 #   - documentation of used data sources in README
 #   - to tilfældige farver fra colorrange+fagretning per agent.
 # - week 14
@@ -726,7 +726,7 @@ apiServer = ->
           id: "cal#{++calId}"
           start: dtstart.toISOString()
           end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
-          type: event.SUMMARY
+          type: String(event.SUMMARY).trim().toLowerCase()
         result.push activity
     
       iCalDate = (t) ->
