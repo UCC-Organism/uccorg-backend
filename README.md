@@ -7,7 +7,6 @@ Backend for the UCC-organism
 ## Back Log
 
 - next
-  - forskudt tid (håndterer skævt ur på mac)
   - integration/test with frontend
   - go through/refactor/reread/expand documentation, including how to configure
 - near-future
@@ -37,6 +36,7 @@ Backend for the UCC-organism
 ### January-April 2015
 - week 16
   - intensity level 0-1+random for globale events
+  - forskudt tid (håndterer skævt ur på mac)
 - week 15
   - case insensitive+trim calendar events
   - documentation of used data sources in README
@@ -388,9 +388,41 @@ Get the current time as yyyy-mm-ddThh:mm:ss (local timezone, - or mocked value i
 
 
     timeoffset = 0
-    getDateTime = -> (new Date(Date.now() - (new Date).getTimezoneOffset() * 60 * 1000 + timeoffset)).toISOString().slice(0,-1)
+    timecorrection = 0
+    getDateTime = -> (new Date(Date.now() + timecorrection - (new Date).getTimezoneOffset() * 60 * 1000 + timeoffset)).toISOString().slice(0,-1)
+    
+
+#### Correct time if very wrong
+
+Get time from http. Notice this is very imprecise, and the server setup should find the correct time via NTP. Unfortunately we seem to be behind a restrictive firewall, so if we can see that the local clock is drifting way wrong, we try to work around it.
 
 
+    
+    if require.main == module then setImmediate ->
+      (http.get "http://www.google.com", (o) ->
+        requestTime = Date.now()
+        remoteTime = new Date(o?.headers?.date)
+        return warn "error getting date from www.google.com for clock sanity check" if String(remoteTime) == "Invalid Date"
+    
+
+This is very imprecise, requestTime occured at remoteTime + network latency
+and we do not know the network latency (and http-request include handshake,
+so it is also difficult to estimate).
+
+Anyhow remoteTime has precision in seconds, and network latency also
+shouldn't be many seconds, so the offset should be precise within
+a couple of seconds, - and we only apply it if we can observe a drift
+of more than ½ minute :(
+
+        timeOffset = (+remoteTime) - requestTime
+    
+        if Math.abs(timeOffset) > 30*1000
+          warn "servertime is more the 30s off (#{timeOffset / 1000}), compared to google webservers + network latency, - local clock is probably very drifting, and thus we apply imprecise corrections"
+          timecorrection = timeOffset
+      ).on("error", (-> warn "error connecting to www.google.com for clock sanity check"))
+    
+
+### sleep
 more comfortable syntax for set timeout: `sleep #seconds, -> ...`
 
     sleep = (t, fn) -> setTimeout fn, t*1000
@@ -447,6 +479,7 @@ escape unicode as ascii
       warnings: {}
     warn = (msg) ->
       status.warnings[msg] = getDateTime()
+    
 
 ## 
 
