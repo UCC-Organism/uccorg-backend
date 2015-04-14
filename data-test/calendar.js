@@ -32,11 +32,13 @@ module.exports = {
     "during": ["scheduled", "roaming"],
     "frequencyPerHour": 0.5 
   }],
-  "aften": [{ "agents": ["time-of-day"], "location": ["global-state"]}],
-  "formiddag": [{ 
-    "agents": ["time-of-day"], 
-    "location": ["global-state"]
-  }, {
+  "formiddag": [
+  { "agents": ["time-of-day"], 
+    "location": ["global-state"],
+    "minIntensity": 0.3,
+    "maxIntensity": 0.5
+  }, 
+  {
     "agentTypes": ["student", "teacher", "researcher"],
     "minDuration": 1,
     "maxDuration": 10,
@@ -55,9 +57,28 @@ module.exports = {
     "during": ["roaming"],
     "frequencyPerHour": 4
   }],
-  "eftermiddag": [{ "agents": ["time-of-day"], "location": ["global-state"]}],
-  "morgen": [{ "agents": ["time-of-day"], "location": ["global-state"]}],
-  "nat": [{ "agents": ["time-of-day"], "location": ["global-state"]}]
+  "aften": [{ 
+    "agents": ["time-of-day"], 
+    "location": ["global-state"],
+    "minIntensity": 0.0,
+    "maxIntensity": 0.1
+  }],
+  "eftermiddag": [{ 
+    "agents": ["time-of-day"], 
+    "location": ["global-state"],
+    "minIntensity": 0.6,
+    "maxIntensity": 0.9
+  }],
+  "morgen": [{ 
+    "agents": ["time-of-day"], 
+    "location": ["global-state"],
+    "minIntensity": 0.0,
+    "maxIntensity": 1
+  }],
+  "nat": [{ 
+    "agents": ["time-of-day"], 
+    "location": ["global-state"]
+  }]
 };
 
 function agentNames(name, count) {

@@ -1,4 +1,18 @@
 {
   "minRoam": 10,
-  "maxRoam": 60
+  "maxRoam": 60,
+  "agentColors": {
+    "PMU - Psykomotorikuddannelsen": {
+      "color1min": "#C00001",
+      "color1max": "#C00001",
+      "color2min": "#BA1B0A",
+      "color2max": "#BABEEE"
+    },
+    "default": {
+      "color1min": "#F00BAB",
+      "color1max": "#FAB1AB",
+      "color2min": "#C0CA00",
+      "color2max": "#C0FFEE"
+    }
+  }
 }

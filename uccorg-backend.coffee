@@ -268,7 +268,7 @@ if require.main == module then do ->
     process.exit 1
 
   config.icalCacheFile ?= "cached-calendar.ical"
-  config.configData ?= "data/"
+  config.configData ?= "data"
 
   process.nextTick ->
     if config.prepare then dataPreparationServer() else apiServer()
@@ -937,7 +937,7 @@ apiServer = ->
         assignAgentColors(agent)
       randomEvents: randomEvents
 
-    try (require "./data/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
+    try (require "./#{config.configData}/behaviour.js").calendarAgents (data.calendar || []), behaviourApi, data
     catch e
       warn "Error in configuration in data/ " + e
 

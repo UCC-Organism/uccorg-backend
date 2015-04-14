@@ -39,13 +39,17 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                 if (activity.frequencyPerHour) {
                     uccorg.randomEvents(o.start, o.end.slice(0, 19), [activity]);
                 } else {
-                    uccorg.addEvent({
+                    var event = {
                         time: o.start,
                         likelyEndTime: o.end.slice(0, 19),
                         agents: activity.agents,
                         location: activity.location,
                         description: activity.activity || o.type
-                    });
+                    };
+                    if(activity.minIntensity !== undefined && activity.maxIntensity !== undefined) {
+                      event.intensity = activity.minIntensity + pseudoRandom() * (activity.maxIntensity - activity.minIntensity);
+                    }
+                    uccorg.addEvent(event);
                     uccorg.addEvent({
                         time: (new Date(new Date(o.end.slice(0, 19) + 'Z') - 1000)).toISOString().slice(0, 19),
                         agents: activity.agents
