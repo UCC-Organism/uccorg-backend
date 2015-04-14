@@ -9,12 +9,11 @@ Backend for the UCC-organism
 - next
   - forskudt tid (håndterer skævt ur på mac)
   - intensity level 0-1+random for globale events
-  - case insensitive+trim calendar events
   - integration/test with frontend
+  - go through/refactor/reread/expand documentation, including how to configure
 - near-future
   - udkast til aftale om driftssupport
   - udkast til aftale om driftsovervågning
-  - document how to configure, and more up to date
 - other
   - evt. splitningsfunktion flyttet til js
   - evt. kategorier på lokationer i konfigurationen
@@ -33,11 +32,13 @@ Backend for the UCC-organism
   - √afklaring af driftskonfiguration, - skal vi sætte en separat linux-server op, eller køre det parallelt på mac'en der også driver skærmen
   - √not-needed (eventult konfiguration og opsætning af linux-server)
   - √proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
-  - (TODO)dokumentation af forventninger og krav til de eksterne datakilder
+  - √dokumentation af forventninger og krav til de eksterne datakilder
 
 ## Release Log
 ### January-April 2015
 - week 15
+  - case insensitive+trim calendar events
+  - documentation of used data sources in README
   - to tilfældige farver fra colorrange+fagretning per agent.
 - week 14
   - bugfix: neverending roaming
@@ -804,7 +805,7 @@ to make sure they are available if needed needed by calendar events
               id: "cal#{++calId}"
               start: dtstart.toISOString()
               end: new Date(+dtstart + (+iCalDate(event.DTEND) - +iCalDate(event.DTSTART))).toISOString()
-              type: event.SUMMARY
+              type: String(event.SUMMARY).trim().toLowerCase()
             result.push activity
         
           iCalDate = (t) ->

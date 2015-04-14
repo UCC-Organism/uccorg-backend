@@ -6,12 +6,10 @@
 #   - forskudt tid (håndterer skævt ur på mac)
 #   - intensity level 0-1+random for globale events
 #   - integration/test with frontend
-#   - expand on documentations
-#   - go through/refactor/reread documentation
+#   - go through/refactor/reread/expand documentation, including how to configure
 # - near-future
 #   - udkast til aftale om driftssupport
 #   - udkast til aftale om driftsovervågning
-#   - document how to configure, and more up to date
 # - other
 #   - evt. splitningsfunktion flyttet til js
 #   - evt. kategorier på lokationer i konfigurationen
