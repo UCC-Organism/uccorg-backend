@@ -4,7 +4,6 @@
 #
 # - next
 #   - forskudt tid (håndterer skævt ur på mac)
-#   - intensity level 0-1+random for globale events
 #   - integration/test with frontend
 #   - go through/refactor/reread/expand documentation, including how to configure
 # - near-future
@@ -32,6 +31,8 @@
 #
 # {{{2 Release Log
 # {{{3 January-April 2015
+# - week 16
+#   - intensity level 0-1+random for globale events
 # - week 15
 #   - case insensitive+trim calendar events
 #   - documentation of used data sources in README

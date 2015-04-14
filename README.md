@@ -8,7 +8,6 @@ Backend for the UCC-organism
 
 - next
   - forskudt tid (håndterer skævt ur på mac)
-  - intensity level 0-1+random for globale events
   - integration/test with frontend
   - go through/refactor/reread/expand documentation, including how to configure
 - near-future
@@ -36,6 +35,8 @@ Backend for the UCC-organism
 
 ## Release Log
 ### January-April 2015
+- week 16
+  - intensity level 0-1+random for globale events
 - week 15
   - case insensitive+trim calendar events
   - documentation of used data sources in README
