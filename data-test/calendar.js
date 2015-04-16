@@ -1,16 +1,16 @@
 module.exports = {
   "cooking": [{
     "agents": agentNames("kitchen staff", 10),
-    "location": ["cafe", "canteen", "kitchen", "kitchen", "kitchen", "canteen"]
+    "locations": ["cafe", "canteen", "kitchen", "kitchen", "kitchen", "canteen"]
   }],
   "workers": [{
     "agents": agentNames("researcher", 10),
     "activity": "researchers",
-    "location": ["B.103", "B.105", "B.104", "B.109", "A.104", "A.106"]
+    "locations": ["B.103", "B.105", "B.104", "B.109", "A.104", "A.106"]
   }, {
     "agents": agentNames("administrator", 10),
     "activity": "administrators",
-    "location": ["C.103", "C.105", "C.104", "C.109", "B.104", "B.106"]
+    "locations": ["C.103", "C.105", "C.104", "C.109", "B.104", "B.106"]
   }],
   "janitors": [{
     "agents": agentNames("janitor", 2),
@@ -34,7 +34,7 @@ module.exports = {
   }],
   "formiddag": [
   { "agents": ["time-of-day"], 
-    "location": ["global-state"],
+    "locations": ["global-state"],
     "minIntensity": 0.3,
     "maxIntensity": 0.5
   }, 
@@ -59,25 +59,25 @@ module.exports = {
   }],
   "aften": [{ 
     "agents": ["time-of-day"], 
-    "location": ["global-state"],
+    "locations": ["global-state"],
     "minIntensity": 0.0,
     "maxIntensity": 0.1
   }],
   "eftermiddag": [{ 
     "agents": ["time-of-day"], 
-    "location": ["global-state"],
+    "locations": ["global-state"],
     "minIntensity": 0.6,
     "maxIntensity": 0.9
   }],
   "morgen": [{ 
     "agents": ["time-of-day"], 
-    "location": ["global-state"],
+    "locations": ["global-state"],
     "minIntensity": 0.0,
     "maxIntensity": 1
   }],
   "nat": [{ 
     "agents": ["time-of-day"], 
-    "location": ["global-state"]
+    "locations": ["global-state"]
   }]
 };
 

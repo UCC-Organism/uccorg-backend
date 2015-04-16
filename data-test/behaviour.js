@@ -43,7 +43,7 @@ exports.calendarAgents = function(calendar, uccorg, data) {
                         time: o.start,
                         likelyEndTime: o.end.slice(0, 19),
                         agents: activity.agents,
-                        location: activity.location,
+                        location: activity.locations,
                         description: activity.activity || o.type
                     };
                     if(activity.minIntensity !== undefined && activity.maxIntensity !== undefined) {
