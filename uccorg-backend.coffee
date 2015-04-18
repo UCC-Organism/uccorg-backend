@@ -1,22 +1,118 @@
 #!/usr/bin/env coffee
+# {{{1 Info
+#
+# The server is run with `coffee uccorg-backend.coffee configfile.json`, where `configfile.json` contains the actual configuration of the server. 
+# Depending on the configuration, this runs as:
+# 
+# - production data preparation server(windows), which is responsible for getting the data from ucc/webuntis/calendar/..., anonymising them, and sending them onwards to the api server
+# - production api server(debian on macmini), which gets the anonymised data from the data preparation server, makes them available via an api, and emits events using the Bayeux protocol
+# - development server for backend, which uses real data dumps instead of talking with external services
+# - automated test, which runs automatically using travis, uses sample data dumps, and mocks the time to run very fast.
+# - development server for frontend, - which runs of sample data dump and mocks the time, - to be able to get events without having to wait for real-world activities 
+#
+#{{{2 Configuration
+#
+# All configuration options are listed in `config.json.sample`. Also see `test.json` for an actual configuration, the content of this configuration wille also be a good choice for a frontend development server, - just remove `"outfile"`, and reduce the time speed factor `"xTime"` - which tells how much faster the mocked clock should run.
+#
+#{{{2 API
+#
+# The api delivers JSON objects, and is available through http, with JSONP and CORS enabled. The endpoints are:
+#
+# - `/(agent|location|event)/$ID` returns info about the particular entity
+# - `/now/(agent|location)/$ID` returns an object with status for the moment, NOTICE: this varies over time
+# - `/current-state` returns active agents+activities
+#
+# Old api:
+# - `/(agents|locations|events)` returns list of ids. NOTICE: This is meant for development/exploration, and not expected to be used in production, as some events/agents will be created on the fly and may not be in the list yet
+# - `/(teacher|group|activity)/$ID` returns info about the particular entity
+# - `/(teachers|groups|activities)` returns list of ids
+#
+# Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
+#
+# {{{3 uniform agent scheduling notes
+# 
+# Data schema:
+# - agents: (teachers, or students member of groups)
+#   - id
+#   - kind: teacher | student | researcher | janitor | bus | train | ...
+#   - ?gender: 0/1 (for teacher/student)
+#   - ?groups of ids (for students)
+#   - ?programme:
+#   - ?age (for student)
+#   - ?end (for student)
+#   - ?name (for train/bus)
+#   - ?origin (for train/bus)
+# - events - from activities, train arrivals, etc.
+#   - time
+#   - TODO kind: activity-start, activity-end, bus-arrival, train-arrival, 
+#   - agents
+#   - ?description: activity-subject, etc.
+#   - ?location
+#   - TODO ?activity - link to ucc-activity for debugging
+# - locations
+#   - id
+#   - name
+#   - ?capacity
+#   
+# {{{2 Production server setup
+#
+# For the production system we choose to use a virtual linux server on the existing mac.
+#
+# Requirements for the server for the api-server:
+#
+# - boots automatically on power failure etc.
+# - runs linux (other operating systems should also work, but I will not give any support on it)
+# - when running a http service on port `8080`, it will be available as `http://10.251.26.11:8080` on the internal network
+# - some way of rebooting it, and accessing it, remotely 
+#
+#
+# The immediate options are either 
+#
+# - to set up a dedicated server on the UCC network
+# - run a virtual server on the mac that will drive one of displays
+#
+# As there already is a virtual server configured on the mac, and under assumption that it is being kept running in production, we choose the latter.
+#
+# Server setup on linux, as user `uccorganism` with home `/home/uccorganism`. Assumes `git`/`nc` is installed via package manager, and  `node`/`npm`/`coffee` is installed in `/usr/local/bin`. Installation of the server is done with:
+#
+#     cd
+#     git clone https://github.com/UCC-Organism/uccorg-backend.git
+#     cd uccorg-backend
+#     npm install
+#     (crontab -l; echo @reboot /home/uccorganism/uccorg-backend/apiserver-start.sh) | sort | uniq | crontab -
+#
+# Then the api-server should then run after a reboot
+#
+#
+# {{{1 Assumptions about external data sources
+# 
+# Data sources
+# 
+# - webuntis access via an API-key
+#   - `/api/[locations|subjects|lessons|groups|teachers|departments]` returns json array of ids
+#   - `/api/locations/$ID` returns json object with: untis_id, capacity, longname
+#   - `/api/subjects/$ID` returns json object with: untis_id, name, longname, alias
+#   - `/api/lessons/$ID` returns json object with: untis_id, start, end, subjects, teachers, groups, locations, course
+#   - `/api/groups/$ID` returns json object with: untis_id, name, alias, schoolyear, longname, department
+#     - The alias must match the "Holdnavn" in  the mssql database
+#   - `/api/teachers/$ID` returns json object with: untis_id, name, forename, longname, departments
+#     - The name must match "Initialer" in the mssql-database
+#   - `/api/departments/$ID` returns json object with: untis_id, name, longname
+# - ucc mssql database - accessible via stored procedures on the server: 
+#   - GetStuderendeHoldCampusNord: Holdnavn (=groups.alias), Studienummer
+#   - GetAnsatteHoldCampusNord: Holdnavn, Initialer
+#   - GetAnsatteCampusNord: Initialer, Afdeling, Køn
+#     - There must be an entry for each teacher from webuntis, with Initialer the same as teacher.name
+#   - GetStuderendeCampusNord: Studienummer, Afdeling, Køn(0/1 -> agent.gender), Fødselsdag(DDMMYY -> agent.gender)
+#   - GetHoldCampusNord: Afdeling, Holdnavn, Beskrivelse, StartDato, SlutDato
+#     - There should be a hold for each Holdnavn for ansatte/studerende, and also one matching the every `groups.alias` from webuntis
+# - google-calendar returns ical data parseable by rrule, with `SUMMARY` as the title of the event
+# - rejseplanen-api `http://xmlopen.rejseplanen.dk/bin/rest.exe/arrivalBoard?id=8600683&date=...` returns schedule with arrivals in the form `<Arrival name="..." type="..." date="..." origin="...">`.
 # {{{1 Status
-# {{{2 Back Log 
+# {{{2 Release Log
+# {{{3 January-April 2015
 #
-# - next
-#   - integration/test with frontend
-#   - go through/refactor/reread/expand documentation, including how to configure
-# - near-future
-#   - udkast til aftale om driftssupport
-#   - udkast til aftale om driftsovervågning
-# - other
-#   - evt. splitningsfunktion flyttet til js
-#   - evt. kategorier på lokationer i konfigurationen
-#   - evt. mapping between ucc-organism room id's and schedule room name
-#   - evt. refactor + eliminate dead code
-#   - evt. update rest-test
-#   - evt. include extra data for debugging, ie. link back to activity id, etc. so it is possible to debug missing data
-#
-# - contractual
+# - Overordnet
 #   - √homogen repræsentation af alle agent-typer, så eksempelvis forskere, undervisere, pedeller, køkkenersonale etc. repæsenteres på samme måde som studerende: tilknyttes grupper, bevæger sig mellem lokaler etc.
 #   - √tilfældig opførsel af agenter, såsom pauser mellem undervisning, toiletbesøg, frokost etc.
 #   - √globale tilstande såsom: dagscyklus, udbetaling af su og lignende
@@ -28,8 +124,6 @@
 #   - √proaktiv løbende kommunikation med frontendudviklingen, for at sikre at backend matcher ønsker og forventninger i forhold til frontend
 #   - √dokumentation af forventninger og krav til de eksterne datakilder
 #
-# {{{2 Release Log
-# {{{3 January-April 2015
 # - week 16
 #   - intensity level 0-1+random for globale events
 #   - forskudt tid (håndterer skævt ur på mac)
@@ -145,114 +239,6 @@
 # - activity is not necessarily unique for group/location at a particular time, this slightly messes up current/next activity api, which just returns a singlura next/previous
 # - navngivning af lokaler er måske ikke konsistent
 #
-# {{{1 Info
-#
-# The server is run with `coffee uccorg-backend.coffee configfile.json`, where `configfile.json` contains the actual configuration of the server. 
-# Depending on the configuration, this runs as:
-# 
-# - production data preparation server(windows), which is responsible for getting the data from ucc/webuntis/calendar/..., anonymising them, and sending them onwards to the api server
-# - production api server(debian on macmini), which gets the anonymised data from the data preparation server, makes them available via an api, and emits events using the Bayeux protocol
-# - development server for backend, which uses real data dumps instead of talking with external services
-# - automated test, which runs automatically using travis, uses sample data dumps, and mocks the time to run very fast.
-# - development server for frontend, - which runs of sample data dump and mocks the time, - to be able to get events without having to wait for real-world activities 
-#
-#{{{2 Configuration
-#
-# All configuration options are listed in `config.json.sample`. Also see `test.json` for an actual configuration, the content of this configuration wille also be a good choice for a frontend development server, - just remove `"outfile"`, and reduce the time speed factor `"xTime"` - which tells how much faster the mocked clock should run.
-#
-#{{{2 API
-#
-# The api delivers JSON objects, and is available through http, with JSONP and CORS enabled. The endpoints are:
-#
-# - `/(agents|locations|events)` returns list of ids. NOTICE: some events/agents will be created on the fly and may not be in the list yet
-# - `/(agent|location|event)/$ID` returns info about the particular entity
-# - `/now/(agent|location)/$ID` returns an object with status for the moment, NOTICE: this varies over time
-#
-# Old api:
-# - `/(teacher|group|activity)/$ID` returns info about the particular entity
-# - `/(teachers|groups|activities)` returns list of ids
-#
-# Events are pushed on `/events` as they happens through faye (http://faye.jcoglan.com/), ie. `(new Faye.Client('http://localhost:8080/')).subscribe('/events', function(msg) { ... })`
-#
-# {{{3 uniform agent scheduling notes
-# 
-# Data schema:
-# - agents: (teachers, or students member of groups)
-#   - id
-#   - kind: teacher | student | researcher | janitor | bus | train | ...
-#   - ?gender: 0/1 (for teacher/student)
-#   - ?groups of ids (for students)
-#   - ?programme:
-#   - ?age (for student)
-#   - ?end (for student)
-#   - ?name (for train/bus)
-#   - ?origin (for train/bus)
-# - events - from activities, train arrivals, etc.
-#   - time
-#   - TODO kind: activity-start, activity-end, bus-arrival, train-arrival, 
-#   - agents
-#   - ?description: activity-subject, etc.
-#   - ?location
-#   - TODO ?activity - link to ucc-activity for debugging
-# - locations
-#   - id
-#   - name
-#   - ?capacity
-#   
-# {{{2 Production server setup
-#
-# For the production system we choose to use a virtual linux server on the existing mac.
-#
-# Requirements for the server for the api-server:
-#
-# - boots automatically on power failure etc.
-# - runs linux (other operating systems should also work, but I will not give any support on it)
-# - when running a http service on port `8080`, it will be available as `http://10.251.26.11:8080` on the internal network
-# - some way of rebooting it, and accessing it, remotely 
-#
-#
-# The immediate options are either 
-#
-# - to set up a dedicated server on the UCC network
-# - run a virtual server on the mac that will drive one of displays
-#
-# As there already is a virtual server configured on the mac, and under assumption that it is being kept running in production, we choose the latter.
-#
-# Server setup on linux, as user `uccorganism` with home `/home/uccorganism`. Assumes `git`/`nc` is installed via package manager, and  `node`/`npm`/`coffee` is installed in `/usr/local/bin`. Installation of the server is done with:
-#
-#     cd
-#     git clone https://github.com/UCC-Organism/uccorg-backend.git
-#     cd uccorg-backend
-#     npm install
-#     (crontab -l; echo @reboot /home/uccorganism/uccorg-backend/apiserver-start.sh) | sort | uniq | crontab -
-#
-# Then the api-server should then run after a reboot
-#
-#
-# {{{1 Assumptions about external data sources
-# 
-# Data sources
-# 
-# - webuntis access via an API-key
-#   - `/api/[locations|subjects|lessons|groups|teachers|departments]` returns json array of ids
-#   - `/api/locations/$ID` returns json object with: untis_id, capacity, longname
-#   - `/api/subjects/$ID` returns json object with: untis_id, name, longname, alias
-#   - `/api/lessons/$ID` returns json object with: untis_id, start, end, subjects, teachers, groups, locations, course
-#   - `/api/groups/$ID` returns json object with: untis_id, name, alias, schoolyear, longname, department
-#     - The alias must match the "Holdnavn" in  the mssql database
-#   - `/api/teachers/$ID` returns json object with: untis_id, name, forename, longname, departments
-#     - The name must match "Initialer" in the mssql-database
-#   - `/api/departments/$ID` returns json object with: untis_id, name, longname
-# - ucc mssql database - accessible via stored procedures on the server: 
-#   - GetStuderendeHoldCampusNord: Holdnavn (=groups.alias), Studienummer
-#   - GetAnsatteHoldCampusNord: Holdnavn, Initialer
-#   - GetAnsatteCampusNord: Initialer, Afdeling, Køn
-#     - There must be an entry for each teacher from webuntis, with Initialer the same as teacher.name
-#   - GetStuderendeCampusNord: Studienummer, Afdeling, Køn(0/1 -> agent.gender), Fødselsdag(DDMMYY -> agent.gender)
-#   - GetHoldCampusNord: Afdeling, Holdnavn, Beskrivelse, StartDato, SlutDato
-#     - There should be a hold for each Holdnavn for ansatte/studerende, and also one matching the every `groups.alias` from webuntis
-# - google-calendar returns ical data parseable by rrule, with `SUMMARY` as the title of the event
-# - rejseplanen-api `http://xmlopen.rejseplanen.dk/bin/rest.exe/arrivalBoard?id=8600683&date=...` returns schedule with arrivals in the form `<Arrival name="..." type="..." date="..." origin="...">`.
 # {{{1 Main
 #
 # See sample file in `config.json-sample`, and `test.json`.
