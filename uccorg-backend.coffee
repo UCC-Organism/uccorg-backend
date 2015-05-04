@@ -13,6 +13,8 @@
 #{{{2 Configuration
 #
 # All configuration options are listed in `config.json.sample`. Also see `test.json` for an actual configuration, the content of this configuration wille also be a good choice for a frontend development server, - just remove `"outfile"`, and reduce the time speed factor `"xTime"` - which tells how much faster the mocked clock should run.
+# 
+# Client config pushed on deman to the Odroids / Screens is in client-config/default.js
 #
 #{{{2 API
 #
@@ -21,6 +23,7 @@
 # - `/(agent|location|event)/$ID` returns info about the particular entity
 # - `/now/(agent|location)/$ID` returns an object with status for the moment, NOTICE: this varies over time
 # - `/current-state` returns active agents+activities
+# - `/client-config` returns client config
 #
 # Old api:
 # - `/(agents|locations|events)` returns list of ids. NOTICE: This is meant for development/exploration, and not expected to be used in production, as some events/agents will be created on the fly and may not be in the list yet
@@ -295,6 +298,7 @@ faye = require "faye"
 async = require "async"
 mssql = require "mssql"
 request = require "request"
+clientConfig = require("./client-config/default")
 
 # {{{2 Utility functions
 #
@@ -1063,6 +1067,10 @@ apiServer = ->
 
   app.all "/current-state", (req, res) ->
     res.json data.agentNow
+    res.end()
+
+  app.all "/client-config", (req, res) ->
+    res.json clientConfig
     res.end()
 
   app.all "/arrivals", (req, res) ->
