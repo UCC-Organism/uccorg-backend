@@ -45,12 +45,12 @@
     { "from": "student", "to": "janitor", "energy": "social" },
     { "from": "cook", "to": "cook", "energy": "social" },
     { "from": "janitor", "to": "janitor", "energy": "social" },
-    { "from": "admin", "to": "student", "energy": "social" },
-    { "from": "admin", "to": "teacher", "energy": "social" },
-    { "from": "admin", "to": "researcher", "energy": "social" },
-    { "from": "admin", "to": "cook", "energy": "social" },
-    { "from": "admin", "to": "janitor", "energy": "social" },
-    { "from": "admin", "to": "admin", "energy": "social" }
+    { "from": "admin", "to": "student", "energy": "power" },
+    { "from": "admin", "to": "teacher", "energy": "power" },
+    { "from": "admin", "to": "researcher", "energy": "power" },
+    { "from": "admin", "to": "cook", "energy": "power" },
+    { "from": "admin", "to": "janitor", "energy": "power" },
+    { "from": "admin", "to": "admin", "energy": "power" }
   ],
   "roomTypes": {
     "other"         : { "label": "Other"     , "color": "#999999", "centerColor": "#999999", "edgeColor": "#999999" },
