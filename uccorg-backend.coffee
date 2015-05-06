@@ -298,7 +298,6 @@ faye = require "faye"
 async = require "async"
 mssql = require "mssql"
 request = require "request"
-clientConfig = require("./client-config/default")
 
 # {{{2 Utility functions
 #
@@ -1070,7 +1069,10 @@ apiServer = ->
     res.end()
 
   app.all "/client-config", (req, res) ->
-    res.json clientConfig
+    try
+      res.json JSON.parse(fs.readFileSync(__dirname + "/client-config/default.json", "utf8"))
+    catch e
+      res.json {}
     res.end()
 
   app.all "/arrivals", (req, res) ->
