@@ -137,6 +137,7 @@
   "agentFillColor": "#FFFFFF",
   "agentFillColorBasedOnAccentColor": true,
   "agentInvertFillAndLineColorBasedOnGender": true,
+  "agentSpeed": 0.02,
   "repulsionDistance": 0.01,
   "interactionDistance": 0.03,
   "minStudentAge": 18,
