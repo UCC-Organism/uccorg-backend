@@ -121,11 +121,11 @@
     { "from": "library", "to": "exit", "fromNum": "all", "toNum": 1, "energy": "dirt", "multiplier": "agents" }
   ],
   "societyBlobs": [
-    { "center": { "x": 1.00, "y":-0.60, "z": 0 }, "radius": 0.40, "numCells": 25, "energy": "knowledge", "roomType": "knowledgeBlob" },
-    { "center": { "x": 0.60, "y": 0.60, "z": 0 }, "radius": 0.24, "numCells":  5, "energy": "knowledge", "roomType": "knowledgeBlob" },
-    { "center": { "x": 1.00, "y": 0.17, "z": 0 }, "radius": 0.30, "numCells":  9, "energy": "knowledge", "roomType": "knowledgeBlob" },
-    { "center": { "x":-1.10, "y": 0.25, "z": 0 }, "radius": 0.30, "numCells": 15, "energy": "power",     "roomType": "powerBlob"     },
-    { "center": { "x":-1.20, "y":-0.50, "z": 0 }, "radius": 0.23, "numCells": 10, "energy": "power",     "roomType": "powerBlob"     },
+    { "center": { "x": 1.20, "y":-0.80, "z": 0 }, "radius": 0.40, "numCells": 25, "energy": "knowledge", "roomType": "knowledgeBlob" },
+    { "center": { "x": 0.80, "y": 0.60, "z": 0 }, "radius": 0.24, "numCells":  5, "energy": "knowledge", "roomType": "knowledgeBlob" },
+    { "center": { "x": 1.20, "y": 0.17, "z": 0 }, "radius": 0.30, "numCells":  9, "energy": "knowledge", "roomType": "knowledgeBlob" },
+    { "center": { "x":-1.20, "y": 0.25, "z": 0 }, "radius": 0.30, "numCells": 15, "energy": "power",     "roomType": "powerBlob"     },
+    { "center": { "x":-1.30, "y":-0.60, "z": 0 }, "radius": 0.23, "numCells": 10, "energy": "power",     "roomType": "powerBlob"     },
     { "center": { "x":-0.50, "y":-1.40, "z": 0 }, "radius": 0.35, "numCells": 10, "energy": "social",    "roomType": "socialBlob"    },
     { "center": { "x": 0.25, "y":-1.30, "z": 0 }, "radius": 0.25, "numCells":  5, "energy": "social",    "roomType": "socialBlob"    }
   ],
