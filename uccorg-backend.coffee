@@ -1070,7 +1070,9 @@ apiServer = ->
 
   app.all "/client-config", (req, res) ->
     try
-      res.json JSON.parse(fs.readFileSync(__dirname + "/client-config/default.json", "utf8"))
+      file = __dirname + "/client-config/default.json"
+      file = __dirname + "/client-config/user.json" if fs.existsSync(__dirname + "/client-config/user.json")
+      res.json JSON.parse(fs.readFileSync(file, "utf8"))
     catch e
       res.json {}
     res.end()
