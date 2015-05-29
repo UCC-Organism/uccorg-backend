@@ -141,6 +141,7 @@
   "agentInvertFillAndLineColorBasedOnGender": true,
   "agentSpeed": 0.02,
   "repulsionDistance": 0.01,
+  "repulsionStrengthInCorridor": 0,
   "interactionDistance": 0.03,
   "minStudentAge": 18,
   "maxStudentAge": 40,
