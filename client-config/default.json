@@ -160,5 +160,8 @@
   "energyPulseDuration": 10,
   "cameraRotationDuration": 600,
   "cameraTiltDuration": 600,
-  "cameraMaxTilt": 2
+  "cameraMaxTilt": 2,
+  "trainWaveSpeed": 0.2,
+  "trainWaveWidth": 0.1,
+  "trainWaveStrength": 0.01
 }
