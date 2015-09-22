@@ -1093,11 +1093,17 @@ for agent in agents
         if data.status && data.status.warnings
           for key, val of data.status.warnings
             status.warnings[key] = "data " + val
-        process.nextTick enrichData
       catch e
         console.log "reading cached data:", e
-        data = {}
+        data =
+          activities: {}
+          calendarEvents: []
+          groups: {}
+          locations: {}
+          status: {}
+          teachers: {}
         warn "couldn't read cached data"
+      process.nextTick enrichData
       
       
 
