@@ -18,6 +18,8 @@ Depending on the configuration, this runs as:
 
 All configuration options are listed in `config.json.sample`. Also see `test.json` for an actual configuration, the content of this configuration wille also be a good choice for a frontend development server, - just remove `"outfile"`, and reduce the time speed factor `"xTime"` - which tells how much faster the mocked clock should run.
 
+Client config pushed on deman to the Odroids / Screens is in client-config/default.js
+
 ## API
 
 The api delivers JSON objects, and is available through http, with JSONP and CORS enabled. The endpoints are:
@@ -25,6 +27,7 @@ The api delivers JSON objects, and is available through http, with JSONP and COR
 - `/(agent|location|event)/$ID` returns info about the particular entity
 - `/now/(agent|location)/$ID` returns an object with status for the moment, NOTICE: this varies over time
 - `/current-state` returns active agents+activities
+- `/client-config` returns client config
 
 Old api:
 - `/(agents|locations|events)` returns list of ids. NOTICE: This is meant for development/exploration, and not expected to be used in production, as some events/agents will be created on the fly and may not be in the list yet
@@ -1156,7 +1159,7 @@ no need to tell the world what server software we are running, - security best p
       updateStatus = (cb) ->
         fs.stat config.apiserver.cachefile, (err, stat) ->
           status.organismTime = getDateTime()
-          status.lastDataUpdate = stat.mtime
+          status.lastDataUpdate = stat?.mtime
           status.eventDetails =
               count: data.eventList.length
               pos: data.eventPos
@@ -1178,6 +1181,15 @@ no need to tell the world what server software we are running, - security best p
     
       app.all "/current-state", (req, res) ->
         res.json data.agentNow
+        res.end()
+    
+      app.all "/client-config", (req, res) ->
+        try
+          file = __dirname + "/client-config/default.json"
+          file = __dirname + "/client-config/user.json" if fs.existsSync(__dirname + "/client-config/user.json")
+          res.json JSON.parse(fs.readFileSync(file, "utf8"))
+        catch e
+          res.json {}
         res.end()
     
       app.all "/arrivals", (req, res) ->

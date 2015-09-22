@@ -1044,7 +1044,7 @@ apiServer = ->
   updateStatus = (cb) ->
     fs.stat config.apiserver.cachefile, (err, stat) ->
       status.organismTime = getDateTime()
-      status.lastDataUpdate = stat.mtime
+      status.lastDataUpdate = stat?.mtime
       status.eventDetails =
           count: data.eventList.length
           pos: data.eventPos
