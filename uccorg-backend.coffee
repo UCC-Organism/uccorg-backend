@@ -1007,7 +1007,9 @@ apiServer = ->
   server = app.listen config.apiserver.port
   console.log "starting server on port: #{config.apiserver.port}"
   #{{{3 REST server
+  lastHTTPRequest = {}
   app.use (req, res, next) ->
+    lastHTTPRequest[req.connection.remoteAddress] = new Date()
     # no caching, if server through cdn
     res.header "Cache-Control", "public, max-age=0"
     # CORS
@@ -1058,6 +1060,8 @@ apiServer = ->
           next: data.eventList[data.eventPos + 1]
           last: data.eventList[data.eventList.length - 1]
       status.connections = clientCount
+      status.lastHTTPRequest = lastHTTPRequest
+      status.lastHTTPRequestCount = Object.keys(lastHTTPRequest).length
       cb? status
   updateStatus()
 
@@ -1106,7 +1110,7 @@ apiServer = ->
   #{{{4 Setup
   bayeux = new faye.NodeAdapter
     mount: '/faye'
-    timeout: 45
+    timeout: 60*5
   
   bayeux.on "subscribe", (clientId, channel) ->
     console.log channel, typeof channel
@@ -1114,7 +1118,8 @@ apiServer = ->
   clientCount = 0
 
   bayeux.on "handshake", (clientId, channel) ->
-    console.log new Date(), "handshake", clientId, channel
+    console.log new Date(), "handshake", clientId
+    #setTimeout (-> console.log bayeux._server._engine._connections[clientId].socket._socket), 2000
     ++clientCount
 
   bayeux.on "disconnect", (clientId, channel) ->
