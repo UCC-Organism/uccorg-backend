@@ -9,3 +9,5 @@ npm-debug.log
 test.
 test.out
 cached-calendar.ical
+.DS_Store
+client-config/user.json

@@ -1,50 +1,974 @@
-[{ "id": "A.004", "name": "VNT - Teori", "capacity": 40 }, 
-{ "id": "A.101", "name": "Teori", "capacity": 100 }, 
-{ "id": "A.102", "name": "Teori", "capacity": 36 }, 
-{ "id": "A.103", "name": "Teori", "capacity": 60 }, 
-{ "id": "A.124", "name": "Teori", "capacity": 40 }, 
-{ "id": "Atrium", "name": "Atrium", "capacity": 300 }, 
-{ "id": "Auditorium", "name": "Auditorium C.028", "capacity": 148 }, 
-{ "id": "B.101", "name": "Teori", "capacity": 32 }, 
-{ "id": "Behandlingsrum C.033", "name": "Behandlingsrum C.033", "capacity": 20 }, 
-{ "id": "Bevægelse 1", "name": "Bevægelsessal 1 (L)", "capacity": 30 }, 
-{ "id": "Bevægelse 2", "name": "Bevægelsessal 2 (S)", "capacity": 40 }, 
-{ "id": "Bevægelse B.001", "name": "Bevægelsessal B.001", "capacity": 40 }, 
-{ "id": "Bevægelse B001", "name": "Bevægelsessal B001", "capacity": 40 }, 
-{ "id": "Brikserum C.125", "name": "Brikserum (L)", "capacity": 40 }, 
-{ "id": "Brikserum C.129", "name": "Brikserum (S)", "capacity": 44 }, 
-{ "id": "C.101", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.106", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.107", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.108", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.116", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.117", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.123", "name": "Naturvidensk. Café C.123", "capacity": 40 }, 
-{ "id": "C.201", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.206", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.208", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.224", "name": "Mikrobiologi", "capacity": 40 }, 
-{ "id": "C.226", "name": "Teori", "capacity": 40 }, 
-{ "id": "C.230", "name": "Teori", "capacity": 40 }, 
-{ "id": "FrederiksborgCentret", "name": "Frederiksborg Centret", "capacity": 60 }, 
-{ "id": "Grupperum C.113", "name": "Grupperum 1. sal", "capacity": 10 }, 
-{ "id": "Grupperum C113", "name": "Grupperum 1. sal", "capacity": 10 }, 
-{ "id": "Grupperum C.213", "name": "Grupperum 2. sal", "capacity": 10 }, 
-{ "id": "Grupperum C213", "name": "Grupperum 2. sal", "capacity": 10 }, 
-{ "id": "Kantine", "name": "Kantine", "capacity": 150 }, 
-{ "id": "Køkken", "name": "Køkken" }, 
-{ "id": "Konference B.105", "name": "Konference B.105", "capacity": 15 }, 
-{ "id": "Learning Lab C.216", "name": "Learning Lab", "capacity": 4 }, 
-{ "id": "SIM Lab C.220", "name": "SIM Lab (H-L-R)", "capacity": 6 }, 
-{ "id": "Studieadministration", "name": "Studieadministrationen", "categories": ["adm"] }, 
-{ "id": "Teatersal", "name": "Teatersal", "capacity": 40 }, 
-{ "id": "Via Wiseflow", "name": "Via Wiseflow" }, 
-{ "id": "Titangade", "name": "Titangade" }, 
-{ "id": "Ude af huset", "name": "Ude af huset" }, 
-{ "id": "Reservér selv flexru", "name": "Flexrum" }, 
-{ "id": "global-state", "name": "global-state" }, 
-{ "id": "BUS", "categories": ["public transport"] }, 
-{ "id": "EXB", "categories": ["public transport"]  }, 
-{ "id": "S", "categories": ["public transport"]  }, 
-{ "id": "NB", "categories": ["public transport"]  }, 
-{ "id": "TOG", "categories": ["public transport"] }]
+[
+  {
+    "id": "A.004",
+    "name": "VNT - Teori",
+    "capacity": 40
+  },
+  {
+    "id": "A.101",
+    "name": "Teori",
+    "capacity": 100
+  },
+  {
+    "id": "A.102",
+    "name": "Teori",
+    "capacity": 36
+  },
+  {
+    "id": "A.103",
+    "name": "Teori",
+    "capacity": 60
+  },
+  {
+    "id": "A.124",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "Atrium",
+    "name": "Atrium",
+    "capacity": 300
+  },
+  {
+    "id": "Auditorium",
+    "name": "Auditorium C.028",
+    "capacity": 148
+  },
+  {
+    "id": "B.101",
+    "name": "Teori",
+    "capacity": 32
+  },
+  {
+    "id": "Behandlingsrum C.033",
+    "name": "Behandlingsrum C.033",
+    "capacity": 20
+  },
+  {
+    "id": "Bevægelse 1",
+    "name": "Bevægelsessal 1 (L)",
+    "capacity": 30
+  },
+  {
+    "id": "Bevægelse 2",
+    "name": "Bevægelsessal 2 (S)",
+    "capacity": 40
+  },
+  {
+    "id": "Bevægelse B.001",
+    "name": "Bevægelsessal B.001",
+    "capacity": 40
+  },
+  {
+    "id": "Bevægelse B001",
+    "name": "Bevægelsessal B001",
+    "capacity": 40
+  },
+  {
+    "id": "Brikserum C.125",
+    "name": "Brikserum (L)",
+    "capacity": 40
+  },
+  {
+    "id": "Brikserum C.129",
+    "name": "Brikserum (S)",
+    "capacity": 44
+  },
+  {
+    "id": "C.101",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.106",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.107",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.108",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.116",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.117",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.123",
+    "name": "Naturvidensk. Café C.123",
+    "capacity": 40
+  },
+  {
+    "id": "C.201",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.206",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.208",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.224",
+    "name": "Mikrobiologi",
+    "capacity": 40
+  },
+  {
+    "id": "C.226",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "C.230",
+    "name": "Teori",
+    "capacity": 40
+  },
+  {
+    "id": "FrederiksborgCentret",
+    "name": "Frederiksborg Centret",
+    "capacity": 60
+  },
+  {
+    "id": "Grupperum C.113",
+    "name": "Grupperum 1. sal",
+    "capacity": 10
+  },
+  {
+    "id": "Grupperum C113",
+    "name": "Grupperum 1. sal",
+    "capacity": 10
+  },
+  {
+    "id": "Grupperum C.213",
+    "name": "Grupperum 2. sal",
+    "capacity": 10
+  },
+  {
+    "id": "Grupperum C213",
+    "name": "Grupperum 2. sal",
+    "capacity": 10
+  },
+  {
+    "id": "Kantine",
+    "name": "Kantine",
+    "capacity": 150
+  },
+  {
+    "id": "Køkken",
+    "name": "Køkken",
+    "capacity": 5
+  },
+  {
+    "id": "Konference B.105",
+    "name": "Konference B.105",
+    "capacity": 15
+  },
+  {
+    "id": "Learning Lab C.216",
+    "name": "Learning Lab",
+    "capacity": 4
+  },
+  {
+    "id": "SIM Lab C.220",
+    "name": "SIM Lab (H-L-R)",
+    "capacity": 6
+  },
+  {
+    "id": "Studieadministration",
+    "name": "Studieadministrationen",
+    "categories": [
+      "adm"
+    ]
+  },
+  {
+    "id": "Teatersal",
+    "name": "Teatersal",
+    "capacity": 40
+  },
+  {
+    "id": "Via Wiseflow",
+    "name": "Via Wiseflow"
+  },
+  {
+    "id": "Titangade",
+    "name": "Titangade"
+  },
+  {
+    "id": "Ude af huset",
+    "name": "Ude af huset"
+  },
+  {
+    "id": "Reservér selv flexru",
+    "name": "Flexrum"
+  },
+  {
+    "id": "global-state",
+    "name": "global-state"
+  },
+  {
+    "id": "BUS",
+    "categories": [
+      "public transport"
+    ]
+  },
+  {
+    "id": "EXB",
+    "categories": [
+      "public transport"
+    ]
+  },
+  {
+    "id": "S",
+    "categories": [
+      "public transport"
+    ]
+  },
+  {
+    "id": "NB",
+    "categories": [
+      "public transport"
+    ]
+  },
+  {
+    "id": "TOG",
+    "categories": [
+      "public transport"
+    ]
+  },
+  {
+    "id": "Cafe",
+    "name": "Cafe",
+    "capacity": 100
+  },
+  {
+    "id": "A.09D toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.013D closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "A.013E closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "A.015E admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.010Q toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.010S toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.018 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.021 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.023Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.011 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "A.013 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "A.025Q",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.014",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.027",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.017",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.029",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.031",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.019 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.023U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.025V closet",
+    "name": "closet",
+     "capacity": 1
+  },
+  {
+    "id": "A.028 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.032 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.16A research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "A.18A research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "A.110A research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "A.111A research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "A.16D closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "A.17D research ",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "A.112D toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.110D toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.18H",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.112H",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.18J",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.18L",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.112J",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.18N",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.19Q toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.110Q toilet ",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.112O admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.19Qa toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.19R toilet ",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.19S toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.110S toilet ",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.113Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.113R closet",
+    "name": "closet",
+     "capacity": 2
+  },
+  {
+    "id": "A.117Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.119Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.18U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.121Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.111U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.123Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.113U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.125Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.113P admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.127Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.117U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.129Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.117P admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.131Q admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.121U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.123U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.125U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.127U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.129U admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "A.132U toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.132P toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.132Q toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "A.132R toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "B.0E7 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "B.0D9 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "B.0D9a toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "B.0E9 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "B.0D10 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "B.0E11 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "B.0D12 closet",
+    "name": "closet",
+    "capacity": 3
+  },
+  {
+    "id": "B.0A13 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "B.0D13 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "B.0D14 toilet ",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "B.0E13 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "B.0D22 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "knowledge studiecenter",
+    "name": "studiecenter",
+    "capacity": 25
+  },
+  {
+    "id": "B.1A1 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1B1 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1A2 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1B2 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1A4 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1B4 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1A6 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1B6 research",
+    "name": "research",
+    "capacity": 3
+  },
+  {
+    "id": "B.1B8 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "B.1A9 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "B.1D10 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "B.1A13 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "B.1D12 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "knowledge library",
+    "name": "library",
+    "capacity": 40
+  },
+  {
+    "id": "C.02 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.01 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.05 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.04 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.05a classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.06 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.022 closet ",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.024 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.025 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.023 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.026 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.08 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.011 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.030 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.032 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.016 classroom",
+    "name": "classroom",
+	"capacity": 40
+  },
+  {
+    "id": "C.040 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.035 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.038 admin",
+    "name": "admin",
+    "capacity": 3
+  },
+  {
+    "id": "C.017 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.103 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.119 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.114 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.103a toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.115 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.120 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.126 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.128 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.109 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.135 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.130 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.131 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.212 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.203 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.214 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.219 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.220 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.222 classroom",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.215 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.217 classroom ",
+    "name": "classroom",
+"capacity": 40
+  },
+  {
+    "id": "C.221 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.227 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.229 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.236 toilet",
+    "name": "toilet",
+    "capacity": 4
+  },
+  {
+    "id": "C.231 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.232 closet",
+    "name": "closet",
+    "capacity": 2
+  },
+  {
+    "id": "C.207 classroom",
+    "name": "classroom",
+    "capacity": 40
+  },
+  {
+    "id": "C.210 closet",
+    "name": "closet",
+    "capacity": 2
+  }
+]
