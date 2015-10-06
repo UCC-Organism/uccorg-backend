@@ -1114,9 +1114,11 @@ apiServer = ->
   clientCount = 0
 
   bayeux.on "handshake", (clientId, channel) ->
+    console.log new Date(), "handshake", clientId, channel
     ++clientCount
 
   bayeux.on "disconnect", (clientId, channel) ->
+    console.log new Date(), "disconnect", clientId, channel
     --clientCount
   
   bayeux.attach server
