@@ -1,4 +1,4 @@
-# Status
+# Status from sprint 2015-10-28
 
 I looked into the following:
 
@@ -26,24 +26,6 @@ Initial indications of something very wrong was that `faye` did not stay connect
 
 Next: how to change the mac address, when the network is bad. Turns out that the MAC-address on the odroid is initialised at first boot, and is stored in `/data/misc/smsc95xx_mac_addr`. A solution would be to ssh in to the odroid, remove the mac-address, and reboot the device, - but the network is too unstable to be able to ssh due to the duplicate MAC-addresses. Solution: first identify which odroid is most likely possible to reach, by pinging all odroids with wrong mac address, and see where an answer actually comes through. Then rapidly ping that odroid, such that the network packages that flow through the network makes the route to this odroid more likely to be the current one in the routing table. After this: some attempts to ssh to that odroid and execute `rm /data/misc/smsc95xx_mac_addr; toolbox restart` was sometimes successful within the retry/timeout of the TCP-connection, and the MAC-addresses got slowly reset.
 
-----
-
-
-Sporadic connectivity to odroids. Both the faye-connection, and the requests for `client-config` (which should happen every 30s) happens rarely and at random, except from 10.251.25.32 and 10.251.25.46. To see if it was a network issue, I ping'ed 10.251.25.32-10.251.25.64 every minute for ten minutes, with the following result:
-
-- `10.251.25.32`(=localhost) and `10.251.25.46`(the other mac mini) replied to all 10 pings
-- `10.251.25.34` replied to three of the pings, `10.251.25.50` replied to two of the pings, and `10.251.25.52`, `10.251.25.53`, `10.251.25.58`, and `10.251.25.60` replied to one ping each.
-- none of the others replied
-
-So apparently something is failing with the network connectivity of the odroids.
-
-    /data/misc/smsc95xx_mac_addr
-
-
-
-
-----
-
 *Conclusion:* Problem was due to duplicate MAC-address on odroids. This is fixed for most odroids now (there were a couple that I couldn't connect to, which still have the old(same) MAC-address). When new images are copied on the odroid it should _not_ contain `/data/misc/smsc95xx_mac_addr`, as this needs to be unique on each odroid, and is randomly generated on boot if it is not there. 
 
 ## Misc changes
@@ -65,6 +47,3 @@ Temporary changes during for debugging:
 - Variables leaks to global scope, etc. - linting with jshint or similar might improve code, and possibly find errors
 - `npm run watch` fails on non-mac
 - Not sure if "random toilet" and "random closet" location for janitor works in the frontend.
-
-
-
